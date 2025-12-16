@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap" rel="stylesheet">
+  <title>404 — dumpthis.sh</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div id="resource-monitor"></div>
+  <h1 class="title">404</h1>
+          <div class="links">
+          <span class="toggle">+</span>
+          <span class="root" tabindex="0" aria-expanded="false">root/</span>
+          <ul class="dropdown">
+            <li><a href="about.html">context/</a></li>
+            <li><a href="dump.html">dump/</a></li>
+            <li><a href="docs/Prologue.pdf" target="_blank">docs/</a></li>
+          </ul>
+      </div>
+        </div>
+  <div class="panel">
+    <p>[MISSING] File not found.</p>
+    <p><a href="/">← return to root</a></p>
+  </div>
+  <script>
+    const c=document.getElementById("matrix"),x=c.getContext("2d");
+    function s(){c.width=innerWidth;c.height=innerHeight} s(); addEventListener("resize",s);
+    const L="01",fs=14; let cols=Math.floor(c.width/fs),d=Array(cols).fill(1);
+    setInterval(()=>{x.fillStyle="rgba(0,0,0,.09)";x.fillRect(0,0,c.width,c.height);
+      x.fillStyle="#ff4d4d";x.font=fs+"px monospace";
+      for(let i=0;i<d.length;i++){const t=L[Math.floor(Math.random()*L.length)];
+        x.fillText(t,i*fs,d[i]*fs); if(d[i]*fs>c.height&&Math.random()>.975)d[i]=0; d[i]++;}},35);
+  </script>
+  <footer class="system-footer">
+  dumpthis.sh:~$ <span class="cursor-blink">_</span>
+  <div id="future-clock" aria-hidden="true"></div>
+</footer>
+  <script src="assets/matrix.js" defer></script>
+  <script src="assets/konami.js" defer></script>
+  <script src="assets/cursor.js" defer></script>
+  <script src="assets/oto0.js" defer></script>
+  <script src="assets/menu.js" defer></script>
+  <script src="assets/time.js" defer></script>
+  <script src="assets/monitor.js" defer></script>
+</body>
+</html>

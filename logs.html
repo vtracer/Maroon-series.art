@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Dump – dumpthis.sh</title>
+    <link rel="icon" href="assets/favicon.ico">
+    <link rel="icon" href="assets/icon.png" sizes="any">
+    <link rel="apple-touch-icon" href="assets/icon-180.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+      <style>
+    body {
+      background: #000;
+      color: var(--red, #ff4d4d);
+      font-family: monospace;
+      padding: 2em;
+    }
+    #terminal {
+      white-space: pre-wrap;
+    }
+    .prompt::before {
+      content: "nlt> ";
+      color: var(--red-bright, #ff1a1a);
+    }
+    input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--red, #ff4d4d);
+      font-family: inherit;
+      font-size: 1em;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <div id="resource-monitor"></div>
+    <h1 class="title">L0GS</h1>
+    <div class="links">
+          <span class="toggle">+</span>
+          <span class="root" tabindex="0" aria-expanded="false">root/</span>
+          <ul class="dropdown">
+            <li><a href="about.html">context/</a></li>
+            <li><a href="dump.html">dump/</a></li>
+            <li><a href="docs/Prologue.pdf" target="_blank">docs/</a></li>
+          </ul>
+      </div>
+  <div id="terminal"></div>
+  <div class="prompt">
+    <input id="commandInput" autofocus autocomplete="off">
+  </div>
+<footer class="system-footer">
+  dumpthis.sh:~$ <span class="cursor-blink">_</span>
+  <div id="future-clock" aria-hidden="true"></div>
+</footer>
+    <script src="assets/matrix.js" defer></script>
+    <script src="assets/konami.js" defer></script>
+    <script src="assets/cursor.js" defer></script>
+    <script src="assets/dump.js" defer></script>
+    <script src="assets/oto0.js" defer></script>
+    <script src="assets/menu.js" defer></script>
+    <script src="assets/time.js" defer></script>
+    <script src="assets/monitor.js" defer></script>
+</body>
+</html>
