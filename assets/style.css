@@ -1,0 +1,322 @@
+<style>
+    .ibm-plex-mono-bold {
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 700;
+      font-style: normal;
+    }
+      #resource-monitor {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-family: monospace;
+        font-size: 1em;
+        color: var(--red);
+        text-shadow: 0 0 5px var(--red), 0 0 10px var(--red-bright);
+        text-align: right;
+        line-height: 1.4;
+        white-space: pre; /* keeps spacing */
+      }
+.bar {
+  display: inline-block;
+  font-weight: bold;
+}
+
+    body {
+      background: linear-gradient(180deg, var(--bg1), var(--bg2));
+      background-attachment: fixed;
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: #ff4d4d;
+      font-family: monospace;
+      margin: 0;
+      padding: 2em;
+      min-height: 100vh;
+    }
+    #crumb {
+      color: var(--red-bright, #ff1a1a);
+      margin-right: .35rem;
+      white-space: pre;
+    }
+    :root {
+      --bg1: #2a0000;
+      --bg2: #660000;
+      --red: #ff4d4d;
+      --red-bright: #ff1a1a;
+      --notice: #ff4dff; 
+      --notice-bright: #ff99ff;
+    }
+
+    .title {
+      color: var(--red);
+      text-shadow: 0 0 10px var(--red), 0 0 15px var(--red-bright);
+      animation: flicker 3s infinite alternate;
+    }
+
+    h1 {
+      font-family: "IBM Plex Mono";
+      font-size: 12em;
+      text-align: center;
+      text-shadow: 0 0 10px #ff4d4d, 0 0 15px #ff1a1a;
+      animation: flicker 3s infinite alternate;
+    }
+    @keyframes flicker {
+      0% { opacity: 1; }
+      89% { opacity: 1; }
+      90% { opacity: 0; }
+      95% { opacity: .2; }
+      100% { opacity: 0; }
+    }
+    .links {
+      position: fixed; 
+      top: 20px; 
+      font-family: monospace;
+      font-size: 1.25em;
+      text-align: left;
+      width: max-content;
+      color: var(--red);
+      text-shadow: 0 0 5px var(--red), 0 0 15px var(--red-bright);
+    }
+    .links .root {
+      cursor: none !important;
+      display: inline-block;
+      font-weight: bold;
+      text-shadow: 0 0 8px var(--red-bright);
+    }
+    .links .dropdown {
+      display: none;
+      list-style: none;
+      margin: 0;
+      padding: 0; 
+    }
+    .links .toggle {
+      cursor: none;
+      margin-right: 1em;
+      user-select: none;
+    }
+
+    .links.open .dropdown {
+      display: block;
+    }
+
+    .links li {
+      margin: 0.25em 0;
+      white-space: nowrap;
+      list-style: none;  
+      position: relative;   
+      padding-left: 2em;
+    }
+
+    .links a {
+      color: var(--red);
+      text-decoration: none;
+    }
+    
+    .links a:hover {
+      text-shadow: 0 0 5px #fff, 0 0 10px var(--red-bright);
+    }
+    .links ul {    
+      margin: 0;  
+      padding: 0;
+      display: none; 
+      padding-left: 1em;            
+    }
+    .links li::before {
+      content: "├──";
+      position: absolute;
+      left: 0;
+      color: var(--red);
+    }
+    .links li:last-child::before {
+      content: "└──";
+    }
+    body::before {
+      content: "0101100101101111011101010010011101110010011001010010000001001101010010010100111001000101";
+      position: fixed;
+      color: var(--red);
+      opacity: 0.05;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 2em;
+      color: rgba(255,77,77,0.05);
+      line-height: 1.2;
+      white-space: pre;
+      z-index: -1;
+      overflow: hidden;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .notices {
+        font-family: monospace;
+        text-align: center;
+        color: #66ccff;
+        text-shadow: 0 0 5px var(--red), 0 0 15px var(--red-bright);
+    }
+    .notices a {
+        color: var(--notice);
+        text-decoration: none;
+        text-shadow: 0 0 5px var(--notice), 0 0 15px var(--notice-bright);
+    }
+    .notices a:hover {
+        text-shadow: 0 0 5px #ff4d4d;
+    }
+
+    .panel{
+      width:min(900px, 90vw);
+      margin: 2em auto 4em;
+      padding: 1.25em 1.5em;
+      background: rgba(0,0,0,0.75);
+      border:1px solid var(--red);
+      color: var(--red);
+      text-shadow: 0 0 5px var(--red), 0 0 15px var(--red-bright);
+      line-height:1.5;
+    }
+    .panel h2{
+      margin:1em 0 .25em;
+      font-size:1.1em;
+      letter-spacing:.03em;
+    }
+    .panel a {
+        color: #66ccff;
+        text-decoration: none;
+    }
+    .panel a:hover {
+        text-shadow: 0 0 5px #ff4d4d;
+    }
+    .substratum {
+        --bg1: #001a00;    
+        --bg2: #004d26;
+        --red: #00ff88;      
+        --red-bright: #11ffbb;
+        --notice a: #cc66ff;     
+        --notice-bright a: #e699ff;
+    }
+
+    .substratum .title,
+    .substratum .notices { color: var(--red); text-shadow: 0 0 10px var(--red); }
+
+    .substratum .cursor { color: var(--red); }
+    .substratum .cursor.link { color: var(--red); transform: translate(-50%, -50%) scale(1.35); }
+
+
+    /* hide OS cursor on desktop, but not in text fields */
+    body.cursor-hidden { cursor: none; }
+    body.cursor-hidden a,
+    body.cursor-hidden button { cursor: none; }
+    body.cursor-hidden [role="button"]
+    body.cursor.hidden label {cursor:none !important;}
+    input, textarea { cursor: text; }
+
+    /* custom crosshair cursor */
+    .cursor {
+      position: fixed;
+      width: 22px;
+      height: 22px;
+      pointer-events: none;
+      z-index: 9999; 
+      color: #ff4d4d;                
+      mix-blend-mode: difference;     
+      transform: translate(-50%, -50%);
+      transition: none;
+    }
+
+    /* crosshair lines */
+    .cursor::before, .cursor::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+    }
+    .cursor::before {                 /* horizontal */
+      left: 0; top: 50%;
+      width: 100%; height: 2px;
+      transform: translateY(-50%);
+    }
+    .cursor::after {                  /* vertical */
+      top: 0; left: 50%;
+      height: 100%; width: 2px;
+      transform: translateX(-50%);
+    }
+
+    /* hover feedback on links/buttons */
+    .cursor.link {
+      transform: translate(-50%, -50%) scale(1.35);
+      color: #ff4d4d;
+    }
+
+    /* secret theme color */
+    .substratum .cursor { color: #00ff88; } 
+    .substratum .cursor.link { 
+      color: #00ff88; 
+      transform: translate(-50%, -50%) scale(1.35);
+    } 
+
+    /* override MailerLite embed colors */
+.ml-form-embedContainer input,
+.ml-form-embedContainer textarea,
+.ml-form-embedContainer select,
+.ml-form-embedContainer button {
+  background-color: #000 !important;
+  color: var(--red) !important;
+}
+
+.ml-form-embedContainer input::placeholder,
+.ml-form-embedContainer textarea::placeholder {
+  color: var(--red) !important;
+}
+
+.ml-form-embedContainer button {
+  text-transform: uppercase;
+}
+
+/*footer*/
+.system-footer {
+  font-family: monospace;
+  font-size: 1em;
+  text-align: left;
+  padding: 2em;
+  color: var(--red);
+  text-shadow: 0 0 5px var(--red), 0 0 10px var(--red-bright);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+}
+
+.cursor-blink {
+  display: inline-block;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* future-clock */
+#future-clock {
+  position: fixed;
+  font-size: 1em;
+  right: 16px;
+  bottom: 16px;
+  padding: 1em;
+  z-index: 10000; 
+  -webkit-backdrop-filter: blur(4px);
+}
+@media (max-width: 520px) {
+  #future-clock { right: 10px; bottom: 10px; font-size: 0.85rem; }
+}
+body.substratum #future-clock {
+  color: var(--red, #00ff88);
+  text-shadow: 0 0 6px var(--red, #00ff88);
+}
+
+/*end footer*/
+
+</style>
