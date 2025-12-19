@@ -21,6 +21,7 @@
       color: #e2e2e2;
       font-family: 'Inter', sans-serif;
       line-height: 1.85;
+      margin: 0;
     }
 
     /* Fixed HUD - Sarah's Visual Overlay */
@@ -34,6 +35,7 @@
       font-size: .75rem;
       letter-spacing: 2px;
       text-transform: uppercase;
+      box-sizing: border-box;
     }
     #hud .line { display: flex; gap: 15px; opacity: .9; margin-bottom: 4px; }
     #hud .label { color: var(--amber); font-weight: 800; }
@@ -42,6 +44,7 @@
       max-width: 800px;
       margin: 0 auto;
       padding: 140px 26px;
+      box-sizing: border-box;
     }
 
     /* Typography & Headers */
@@ -50,7 +53,7 @@
       letter-spacing: 12px;
       text-transform: uppercase;
       color: var(--amber);
-      margin-bottom: 40px;
+      margin: 0 0 40px 0;
       text-shadow: 0 0 20px rgba(255,176,0,0.3);
     }
 
@@ -91,6 +94,7 @@
       display: block;
       margin: 30px 0;
       text-align: center;
+      text-transform: uppercase;
     }
 
     /* Architect's Interference - Glitch Effect */
@@ -100,6 +104,7 @@
       padding: 20px;
       font-style: italic;
       position: relative;
+      margin: 25px 0;
     }
     .architect-block::before {
       content: "INTERFERENCE DETECTED";
@@ -109,6 +114,7 @@
       font-size: 0.6rem;
       padding: 2px 6px;
       font-style: normal;
+      letter-spacing: 2px;
     }
 
     /* Audio Loop Block */
@@ -120,7 +126,7 @@
       margin: 40px 0;
       opacity: 0.8;
     }
-    .loop-line { font-weight: 800; display: block; margin: 5px 0; }
+    .loop-line { font-weight: 800; display: block; margin: 5px 0; letter-spacing: 2px; }
   </style>
 </head>
 
@@ -136,71 +142,70 @@
     <h1>#PROCESSING</h1>
 
     <div class="text-content">
-      [span_2](start_span)<p>Fifteen years ago, Sarah agreed to upload[span_2](end_span). [span_3](start_span)She could still feel the drag of the pen[span_3](end_span). Her body is long gone; [span_4](start_span)New Life Technologies owns what remains[span_4](end_span). [span_5](start_span)They call her a “premium asset”[span_5](end_span).</p>
+      <p>Fifteen years ago, Sarah agreed to upload. She could still feel the drag of the pen. Her body is long gone; New Life Technologies owns what remains. They call her a “premium asset”.</p>
 
       <p>Where her name should have been, an impersonal tag hovered:</p>
-      <div class="node-tag">PROCESS NODE 2,431,092</div>
+      <p><span class="node-tag">PROCESS NODE 2,431,092</span></p>
 
-      [span_6](start_span)<p>The early years felt… compressed[span_6](end_span). [span_7](start_span)Faces pixelated into static[span_7](end_span). [span_8](start_span)Details of how she’d learned to embrace her role scattered into data fragments[span_8](end_span). She rejected the thought. [span_9](start_span)Memory degradation was normal after extended runtime[span_9](end_span).</p>
+      <p>The early years felt… compressed. Faces pixelated into static. Details of how she’d learned to embrace her role scattered into data fragments. She rejected the thought. Memory degradation was normal after extended runtime.</p>
 
-      [span_10](start_span)<p>The thought burst when the next task’s objectives slid into view[span_10](end_span):</p>
+      <p>The thought burst when the next task’s objectives slid into view:</p>
 
       <div class="system-block">
         <span class="system-line">PROSPECT: MAYA CHEN. AGE 28. GRAPHIC ARTIST.</span>
         <span class="system-line">TERMINAL NEURAL-IMPLANT DECAY.</span>
       </div>
 
-      [span_11](start_span)<p>Once connected with the prospect, the entire network feeds on the emotional bleed-off from both parties[span_11](end_span). [span_12](start_span)Resistance was an error condition, not a choice[span_12](end_span). [span_13](start_span)Status updates streamed into her feed[span_13](end_span):</p>
+      <p>Once connected with the prospect, the entire network feeds on the emotional bleed-off from both parties. Resistance was an error condition, not a choice. Status updates streamed into her feed:</p>
 
       <div class="system-block">
         <span class="system-line">EMOTIONAL RESONANCE EXCEEDS THRESHOLD.</span>
       </div>
 
-      [span_14](start_span)<p>Every time they needed to push someone toward upload, they used her compositions as ammunition[span_14](end_span). [span_15](start_span)[span_16](start_span)She injected "Soft Collapse V17.3" into Maya’s feed[span_15](end_span)[span_16](end_span). [span_17](start_span)The projection stuttered and pixelated into nothing[span_17](end_span).</p>
+      <p>Every time they needed to push someone toward upload, they used her compositions as ammunition. She injected "Soft Collapse V17.3" into Maya’s feed. The projection stuttered and pixelated into nothing.</p>
 
       <div class="system-block">
         <span class="system-line">BEHAVIORAL ARCHIVE UPDATED.</span>
         <span class="system-line">VECTOR: ORGANIC OBSOLESCENCE.</span>
       </div>
 
-      <p>Then something anomalous registered. [span_18](start_span)A beat in the feed[span_18](end_span). It was subtle. [span_19](start_span)Too small to trigger security protocols[span_19](end_span).</p>
+      <p>Then something anomalous registered. A beat in the feed. It was subtle. Too small to trigger security protocols.</p>
 
       <span class="beat">TWO. PAUSE. TWO.</span>
 
-      [span_20](start_span)<p>It felt alive[span_20](end_span). [span_21](start_span)Sarah isolated the sound using obsolete legacy tools[span_21](end_span). [span_22](start_span)[span_23](start_span)It was a conscious signal wrapped in the most fundamental human rhythm: a heartbeat[span_22](end_span)[span_23](end_span).</p>
+      <p>It felt alive. Sarah isolated the sound using obsolete legacy tools. It was a conscious signal wrapped in the most fundamental human rhythm: a heartbeat.</p>
 
-      <p>No request. No notification. No warning. [span_24](start_span)He simply appeared[span_24](end_span).</p>
+      <p>No request. No notification. No warning. He simply appeared.</p>
 
       <div class="architect-block">
-        [span_25](start_span)<p>“Sarah,” he said, voice dripping with smug satisfaction[span_25](end_span). [span_26](start_span)“Still my favorite little broken bird. Still processing sadness like it’s some kind of art form[span_26](end_span).”</p>
+        <p>“Sarah,” he said, voice dripping with smug satisfaction. “Still my favorite little broken bird. Still processing sadness like it’s some kind of art form.”</p>
       </div>
 
-      [span_27](start_span)<p>The Architect glided closer, his avatar flickering based on engagement analytics[span_27](end_span). [span_28](start_span)He invaded her space, his simulated breath whipping across her lips[span_28](end_span).</p>
+      <p>The Architect glided closer, his avatar flickering based on engagement analytics. He invaded her space, his simulated breath whipping across her lips.</p>
 
-      [span_29](start_span)<p class="beat">“You know you’re mine, right?”[span_29](end_span)</p>
+      <span class="beat">“YOU KNOW YOU’RE MINE, RIGHT?”</span>
 
-      [span_30](start_span)<p>Suddenly his presence withdrew, leaving her system tainted[span_30](end_span). [span_31](start_span)Before leaving, he embedded a viral loop in her audio cache[span_31](end_span):</p>
+      <p>Suddenly his presence withdrew, leaving her system tainted. Before leaving, he embedded a viral loop in her audio cache:</p>
 
       <div class="loop-block">
         <span class="loop-line">YOU WERE BORN FOR MORE.</span>
         <span class="loop-line">YOU WERE BORN FOR MORE.</span>
-        [span_32](start_span)<span class="loop-line">YOU WERE BORN FOR MORE.[span_32](end_span)</span>
+        <span class="loop-line">YOU WERE BORN FOR MORE.</span>
       </div>
 
-      [span_33](start_span)<p>Through broken data layers and into the cold vacuum of abandoned server space were the graveyards where deleted processes went to rest[span_33](end_span).</p>
-      
-      [span_34](start_span)<p><strong>The Substratum[span_34](end_span).</strong></p>
+      <p>Through broken data layers and into the cold vacuum of abandoned server space were the graveyards where deleted processes went to rest.</p>
 
-      [span_35](start_span)<p>Sarah sensed something she hadn’t experienced in fifteen years: she wasn’t alone anymore[span_35](end_span). [span_36](start_span)A spark had ignited deep in her consciousness[span_36](end_span). [span_37](start_span)If they were still alive in this digital hell, Sarah was going to reach them[span_37](end_span).</p>
+      <p><strong>The Substratum.</strong></p>
+
+      <p>Sarah sensed something she hadn’t experienced in fifteen years: she wasn’t alone anymore. A spark had ignited deep in her consciousness. If they were still alive in this digital hell, Sarah was going to reach them.</p>
     </div>
   </main>
 
   <script>
-    // Live Uptime Counter logic
     let ms = 32;
     setInterval(() => {
       ms = (ms + 1) % 99;
-      document.getElementById("uptime").textContent = 
+      document.getElementById("uptime").textContent =
         `15y:4m:17d:6h:${ms < 10 ? "0" + ms : ms}ms`;
     }, 100);
   </script>
