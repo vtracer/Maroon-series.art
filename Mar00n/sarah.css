@@ -1,0 +1,39 @@
+:root{
+  --font-sarah: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body.pov-sarah{
+  font-family: var(--font-sarah);
+  font-kerning: normal;
+  font-variant-ligatures: none;
+  text-rendering: geometricPrecision;
+
+  /* Sarah reads like “processed data with feelings trapped inside” */
+  letter-spacing: 0.15px;
+  word-spacing: 0.2px;
+}
+
+
+body.pov-sarah p{
+  margin: 0 0 1.1rem 0;
+  max-width: 70ch;
+}
+
+body.pov-sarah h1,
+body.pov-sarah h2{
+  text-transform: uppercase;
+  letter-spacing: 8px;
+}
+
+/* Inline “system emphasis” */
+body.pov-sarah .sarah-em{
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* “Thought fracture” style */
+body.pov-sarah .fracture{
+  opacity: 0.92;
+  filter: saturate(0.95);
+}
