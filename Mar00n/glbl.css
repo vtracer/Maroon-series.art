@@ -47,19 +47,13 @@ h1{
   color: var(--amber);
   margin: 0 0 40px 0;
   text-shadow: 0 0 20px rgba(255,176,0,0.3);
-
-  /* FIX: never wrap */
   white-space: nowrap;
   overflow: hidden;
-
-  /* nice */
   width: 100%;
   text-align: center;
   line-height: 1.02;
-
-  /* start values; JS will shrink if needed */
   font-size: 3.5rem;
-  letter-spacing: 0.28em; /* use em so it scales with font-size */
+  letter-spacing: 0.28em;
 }
 
 .system-block{
