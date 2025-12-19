@@ -1,199 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>THE NEO-SENTINEL // BEYOND THE GRID</title>
-    <style>
-        :root {
-            --alert-red: #ff0033;
-            --system-blue: #00f2ff;
-            --bg-dark: #020202;
-            --text-gray: #b5b5b5;
-        }
+  <meta charset="UTF-8">
+  <title>THE NEO-SENTINEL // BEYOND THE GRID</title>
+  <style>
+    :root {
+      --alert-red: #ff0033;
+      --system-blue: #00f2ff;
+      --bg-dark: #020202;
+      --text-gray: #b5b5b5;
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-gray);
-            font-family: "Courier New", Courier, monospace;
-            margin: 0;
-            padding: 5% 10%;
-            line-height: 1.6;
-        }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-gray);
+      font-family: "Courier New", Courier, monospace;
+      margin: 0;
+      padding: 5% 10%;
+      line-height: 1.6;
+    }
 
-        .hud-header {
-            border-bottom: 2px solid var(--alert-red);
-            padding-bottom: 20px;
-            margin-bottom: 40px;
-        }
+    .hud-header {
+      border-bottom: 2px solid var(--alert-red);
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+    }
 
-        .flag {
-            background-color: var(--alert-red);
-            color: white;
-            display: inline-block;
-            padding: 5px 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-        }
+    .flag {
+      background-color: var(--alert-red);
+      color: white;
+      display: inline-block;
+      padding: 5px 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+    }
 
-        .metadata {
-            font-size: 0.7rem;
-            color: var(--system-blue);
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
+    .metadata {
+      font-size: 0.7rem;
+      color: var(--system-blue);
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
 
-        h1 {
-            color: #fff;
-            font-size: 2.2rem;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin: 20px 0;
-        }
+    h1 {
+      color: #fff;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin: 20px 0;
+    }
 
-        .editor-note {
-            border: 1px solid var(--system-blue);
-            padding: 20px;
-            font-style: italic;
-            color: var(--system-blue);
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
+    .editor-note {
+      border: 1px solid var(--system-blue);
+      padding: 20px;
+      font-style: italic;
+      color: var(--system-blue);
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
 
-        .redacted {
-            background-color: #222;
-            color: #222;
-            cursor: help;
-            transition: background-color 0.4s, color 0.4s;
-            padding: 0 4px;
-        }
+    .redacted {
+      background-color: #222;
+      color: #222;
+      cursor: help;
+      transition: background-color 0.4s, color 0.4s;
+      padding: 0 4px;
+    }
 
-        .redacted:hover {
-            background-color: transparent;
-            color: var(--alert-red);
-        }
+    .redacted:hover {
+      background-color: transparent;
+      color: var(--alert-red);
+    }
 
-        .glitch {
-            color: #fff;
-            font-weight: bold;
-            display: inline-block;
-        }
+    .glitch {
+      color: #fff;
+      font-weight: bold;
+      display: inline-block;
+    }
 
-        blockquote {
-            font-size: 1.2rem;
-            color: #fff;
-            border-left: 4px solid var(--alert-red);
-            padding-left: 25px;
-            margin: 40px 0;
-            font-weight: bold;
-        }
+    blockquote {
+      font-size: 1.2rem;
+      color: #fff;
+      border-left: 4px solid var(--alert-red);
+      padding-left: 25px;
+      margin: 40px 0;
+      font-weight: bold;
+    }
 
-        .section-break {
-            color: var(--system-blue);
-            margin: 40px 0 20px 0;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+    .section-break {
+      color: var(--system-blue);
+      margin: 40px 0 20px 0;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-        .footer {
-            margin-top: 80px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            font-size: 0.8rem;
-            color: #555;
-            text-align: center;
-        }
-    </style>
+    .footer {
+      margin-top: 80px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      font-size: 0.8rem;
+      color: #555;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="hud-header">
-        <div class="flag">Flagged: Viral Misinformation by GlobalTrust™</div>
-        <div class="metadata">
-            [span_1](start_span)Edition 2.1 // Source: Marcus Wei // Dec 15, 2084[span_1](end_span)
-        </div>
-        <h1>Investigation: The Neural <div id="g1" class="glitch">Harvest</div></h1>
+  <div class="hud-header">
+    <div class="flag">Flagged: Viral Misinformation by GlobalTrust™</div>
+    <div class="metadata">
+      <span data-span="1">Edition 2.1 // Source: Marcus Wei // Dec 15, 2084</span>
+    </div>
+    <h1>Investigation: The Neural <span id="g1" class="glitch">Harvest</span></h1>
+  </div>
+
+  <div class="editor-note">
+    <span data-span="2">EDITOR’S NOTE: This article triggered automatic censorship protocols from the Department of Digital Ethics.</span>
+  </div>
+
+  <div class="article-content">
+    <p>
+      <span data-span="3">New Life Technologies’ legal AI has issued categorical denials.</span>
+      <span data-span="4">The neural paradise marketed as digital immortality conceals a meticulously engineered <span id="g2" class="glitch">suffering</span> farm, harvesting human anguish for corporate fuel—according to leaked data caches and testimony from whistleblowers inside New Life Technologies (NLT) corporate offices.</span>
+    </p>
+
+    <blockquote>
+      <span data-span="5">"They don't want our processing power. They want our pain and our desperate longing. Our humanity itself, our dread and fears, generates a form of energy they've learned to harvest."</span>
+    </blockquote>
+
+    <p>
+      Dr. <span data-span="6">Clark’s biosignature went dark hours post-interview.</span>
+      <span data-span="7">Internal documents obtained from New Life Technologies in Austin, Texas, expose a predatory tech-ecosystem designed to strip-mine both digital and meat-space consciousness.</span>
+    </p>
+
+    <p>
+      <span data-span="8">The company's marketed promise is simple: sign over your consciousness for digital preservation and achieve immortality by "working” for NLT.</span>
+      <span data-span="9">What the contract's fine print conceals is the true nature of this work.</span>
+    </p>
+
+    <p>
+      <span data-span="10">According to whistleblowers, NLT has developed a sophisticated pairing algorithm that matches each preserved digital consciousness with a living counterpart whose life circumstances, memories, and emotional patterns closely mirror the digital soul's former life.</span>
+      <span data-span="11">These beings analyze their living matches, using their intimate understanding of shared experiences to engineer <span class="redacted">precisely calibrated moments of existential friction</span>.</span>
+    </p>
+
+    <p>
+      The horror of this system is twofold.
+      <span data-span="12">For the digital inhabitants, their immortality becomes an endless prison of watching and weaponizing their own most intimate experiences, forced to inflict carefully crafted psychological pain on people who remind them of themselves.</span>
+      <span data-span="13">Their existential anguish—the realization that they've become architects of others' suffering—generates massive amounts of harvestable <span id="g3" class="glitch">existential</span> friction, which NLT converts into quantum energy.</span>
+    </p>
+
+    <p>
+      <span data-span="14">For the living subjects, their social media feeds become a sophisticated trap, calibrated by someone who intimately understands their deepest vulnerabilities because they once lived a similar life.</span>
+      <span data-span="15">Every like, share, and comment is invisibly shaped by this dark mirror of themselves who knows exactly which emotional threads to pull to generate maximum existential distress.</span>
+    </p>
+
+    <p>
+      <span data-span="16">Former employees report that the most efficient pairings are often those between these consciousnesses and their own family members or close friends, as such connections generate the highest levels of existential friction on both sides.</span>
+      <span data-span="17">These individuals experience profound horror at manipulating their loved ones, while the living subjects are influenced by a digital entity that knows their emotional landscape as intimately as their own reflection.</span>
+    </p>
+
+    <p>
+      <span data-span="18">The wealthy elite who control these consciousness farms have discovered that this energy can power their own life-extension technologies.</span>
+      <span data-span="19">In essence, they feed off endless existential dread.</span>
+      "It's elegant in its cruelty," Explains Dr. Clark.
+      <span data-span="20">"The more human the digital consciousness remains, the more it understands suffering. The more suffering being caused, the more energy produced. They've <span id="g4" class="glitch">industrialized</span> existential horror."</span>
+    </p>
+
+    <div class="section-break">
+      <span data-span="21">Targeting Profile: NLT Target List</span>
     </div>
 
-    <div class="editor-note">
-        [span_2](start_span)EDITOR’S NOTE: This article triggered automatic censorship protocols from the Department of Digital Ethics.[span_2](end_span)
-    </div>
+    <ul>
+      <li><span data-span="22">Terminal patients with strong family connections</span></li>
+      <li><span data-span="23">Artists and creative professionals</span></li>
+      <li><span data-span="24">Individuals with an intense fear of death</span></li>
+      <li><span data-span="25">Parents of young children</span></li>
+      <li><span data-span="26">People with strong emotional capacity</span></li>
+    </ul>
 
-    <div class="article-content">
-        [span_3](start_span)<p>New Life Technologies’ legal AI has issued categorical denials.[span_3](end_span) [span_4](start_span)The neural paradise marketed as digital immortality conceals a meticulously engineered <div id="g2" class="glitch">suffering</div> farm, harvesting human anguish for corporate fuel—according to leaked data caches and testimony from whistleblowers inside New Life Technologies (NLT) corporate offices.[span_4](end_span)</p>
+    <p>
+      <span data-span="27">The company's marketing materials promise “eternal life through digital transcendence.”</span>
+      <span data-span="28">The reality, according to Dr. Clark, is “eternal torture, carefully maintained to maximize energy output.”</span>
+    </p>
 
-        <blockquote>
-            [span_5](start_span)"They don't want our processing power. They want our pain and our desperate longing. Our humanity itself, our dread and fears, generates a form of energy they've learned to harvest."[span_5](end_span)
-        </blockquote>
+    <p>
+      <span data-span="29">When asked for comment, New Life Technologies issued the following statement: "These allegations are categorically false. Our digital consciousness program offers hope to the terminally ill while providing valuable data processing services. We categorically deny any claims about energy harvesting or intentional suffering."</span>
+    </p>
 
-        <p>Dr. [span_6](start_span)Clark’s biosignature went dark hours post-interview.[span_6](end_span) [span_7](start_span)Internal documents obtained from New Life Technologies in Austin, Texas, expose a predatory tech-ecosystem designed to strip-mine both digital and meat-space consciousness.[span_7](end_span)</p>
+    <p class="redacted">[CONTENT REDACTED UNDER QCS NOTICE QCS-7839-8775]</p>
 
-        [span_8](start_span)<p>The company's marketed promise is simple: sign over your consciousness for digital preservation and achieve immortality by "working” for NLT.[span_8](end_span) [span_9](start_span)What the contract's fine print conceals is the true nature of this work.[span_9](end_span)</p>
+    <p>
+      <span data-span="30">Despite official denials, financial records show unusual energy signatures being sold to major life-extension clinics catering to the ultra-wealthy.</span>
+      <span data-span="31">These signatures match theoretical models of consciousness-derived quantum energy.</span>
+      "The rich don't upload themselves," notes Dr. Clark.
+      <span data-span="32">"They feed off those who do. Why experience digital chains when you can power your extended life through the suffering of others?"</span>
+    </p>
 
-        [span_10](start_span)<p>According to whistleblowers, NLT has developed a sophisticated pairing algorithm that matches each preserved digital consciousness with a living counterpart whose life circumstances, memories, and emotional patterns closely mirror the digital soul's former life.[span_10](end_span) [span_11](start_span)These beings analyze their living matches, using their intimate understanding of shared experiences to engineer <span class="redacted">precisely calibrated moments of existential friction</span>.[span_11](end_span)</p>
+    <p><i><span data-span="33">Continued on Page A7...</span></i></p>
+    <p class="redacted"><span data-span="34">REMAINDER OF ARTICLE REDACTED BY ORDER OF DEPARTMENT OF DIGITAL ETHICS</span></p>
+  </div>
 
-        <p>The horror of this system is twofold. [span_12](start_span)For the digital inhabitants, their immortality becomes an endless prison of watching and weaponizing their own most intimate experiences, forced to inflict carefully crafted psychological pain on people who remind them of themselves.[span_12](end_span) [span_13](start_span)Their existential anguish—the realization that they've become architects of others' suffering—generates massive amounts of harvestable <div id="g3" class="glitch">existential</div> friction, which NLT converts into quantum energy.[span_13](end_span)</p>
+  <div class="footer">
+    <span data-span="35">This article has been marked as potential misinformation by GlobalTrust™.</span><br>
+    <span data-span="36">Citizens are reminded that New Life Technologies remains a certified provider of digital consciousness services.</span><br>
+    <span data-span="37">The disappearance of the author and Dr. Clark has been officially attributed to voluntary relocation.</span>
+  </div>
 
-        [span_14](start_span)<p>For the living subjects, their social media feeds become a sophisticated trap, calibrated by someone who intimately understands their deepest vulnerabilities because they once lived a similar life.[span_14](end_span) [span_15](start_span)Every like, share, and comment is invisibly shaped by this dark mirror of themselves who knows exactly which emotional threads to pull to generate maximum existential distress.[span_15](end_span)</p>
+  <script>
+    const glitchChars = "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ABCDEFGHIKLMNOPQRSTUV";
 
-        [span_16](start_span)<p>Former employees report that the most efficient pairings are often those between these consciousnesses and their own family members or close friends, as such connections generate the highest levels of existential friction on both sides.[span_16](end_span) [span_17](start_span)These individuals experience profound horror at manipulating their loved ones, while the living subjects are influenced by a digital entity that knows their emotional landscape as intimately as their own reflection.[span_17](end_span)</p>
+    function applyGlitch(elementId) {
+      const el = document.getElementById(elementId);
+      const originalText = el.innerText;
 
-        [span_18](start_span)<p>The wealthy elite who control these consciousness farms have discovered that this energy can power their own life-extension technologies.[span_18](end_span) [span_19](start_span)In essence, they feed off endless existential dread.[span_19](end_span) "It's elegant in its cruelty," Explains Dr. Clark. [span_20](start_span)"The more human the digital consciousness remains, the more it understands suffering. The more suffering being caused, the more energy produced. They've <div id="g4" class="glitch">industrialized</div> existential horror."[span_20](end_span)</p>
-
-        [span_21](start_span)<div class="section-break">Targeting Profile: NLT Target List[span_21](end_span)</div>
-        <ul>
-            [span_22](start_span)<li>Terminal patients with strong family connections[span_22](end_span)</li>
-            [span_23](start_span)<li>Artists and creative professionals[span_23](end_span)</li>
-            [span_24](start_span)<li>Individuals with an intense fear of death[span_24](end_span)</li>
-            [span_25](start_span)<li>Parents of young children[span_25](end_span)</li>
-            [span_26](start_span)<li>People with strong emotional capacity[span_26](end_span)</li>
-        </ul>
-
-        [span_27](start_span)<p>The company's marketing materials promise “eternal life through digital transcendence.”[span_27](end_span) [span_28](start_span)The reality, according to Dr. Clark, is “eternal torture, carefully maintained to maximize energy output.”[span_28](end_span)</p>
-
-        [span_29](start_span)<p>When asked for comment, New Life Technologies issued the following statement: "These allegations are categorically false. Our digital consciousness program offers hope to the terminally ill while providing valuable data processing services. We categorically deny any claims about energy harvesting or intentional suffering."[span_29](end_span)</p>
-
-        <p class="redacted">[CONTENT REDACTED UNDER QCS NOTICE QCS-7839-8775]</p>
-
-        [span_30](start_span)<p>Despite official denials, financial records show unusual energy signatures being sold to major life-extension clinics catering to the ultra-wealthy.[span_30](end_span) [span_31](start_span)These signatures match theoretical models of consciousness-derived quantum energy.[span_31](end_span) "The rich don't upload themselves," notes Dr. Clark. [span_32](start_span)"They feed off those who do. Why experience digital chains when you can power your extended life through the suffering of others?"[span_32](end_span)</p>
-
-        [span_33](start_span)<p><i>Continued on Page A7...[span_33](end_span)</i></p>
-        [span_34](start_span)<p class="redacted">REMAINDER OF ARTICLE REDACTED BY ORDER OF DEPARTMENT OF DIGITAL ETHICS[span_34](end_span)</p>
-
-    </div>
-
-    <div class="footer">
-        * [span_35](start_span)This article has been marked as potential misinformation by GlobalTrust™.[span_35](end_span)<br>
-        [span_36](start_span)Citizens are reminded that New Life Technologies remains a certified provider of digital consciousness services.[span_36](end_span)<br>
-        [span_37](start_span)The disappearance of the author and Dr. Clark has been officially attributed to voluntary relocation.[span_37](end_span)
-    </div>
-
-    <script>
-        const glitchChars = "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ABCDEFGHIKLMNOPQRSTUV";
-        
-        function applyGlitch(elementId) {
-            const el = document.getElementById(elementId);
-            const originalText = el.innerText;
-            
-            setInterval(() => {
-                if (Math.random() > 0.97) {
-                    let textArray = originalText.split('');
-                    for(let i=0; i < 2; i++) {
-                        let randIndex = Math.floor(Math.random() * textArray.length);
-                        textArray[randIndex] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
-                    }
-                    el.innerText = textArray.join('');
-                    setTimeout(() => { el.innerText = originalText; }, 120);
-                }
-            }, 300);
+      setInterval(() => {
+        if (Math.random() > 0.97) {
+          let textArray = originalText.split('');
+          for (let i = 0; i < 2; i++) {
+            let randIndex = Math.floor(Math.random() * textArray.length);
+            textArray[randIndex] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+          }
+          el.innerText = textArray.join('');
+          setTimeout(() => { el.innerText = originalText; }, 120);
         }
+      }, 300);
+    }
 
-        applyGlitch('g1');
-        applyGlitch('g2');
-        applyGlitch('g3');
-        applyGlitch('g4');
-    </script>
+    applyGlitch('g1');
+    applyGlitch('g2');
+    applyGlitch('g3');
+    applyGlitch('g4');
+  </script>
+
 </body>
 </html>
