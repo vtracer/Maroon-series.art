@@ -1,0 +1,57 @@
+h1{
+  /* scales between phone and desktop */
+  font-size: clamp(1.8rem, 8vw, 3.5rem);
+
+  /* tracking scales too (big tracking kills small screens) */
+  letter-spacing: clamp(3px, 1.4vw, 12px);
+
+  /* allow wrapping instead of overflow */
+  white-space: normal;
+  overflow-wrap: anywhere;
+
+  /* reduce the “giant gap” when it wraps */
+  line-height: 1.05;
+
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0 0 40px 0;
+  text-shadow: 0 0 20px rgba(255,176,0,0.3);
+}
+
+/* --- AFFECT: THE SUBSTRATUM (Marcus) --- */
+.setting-substratum {
+  background-color: #0a0c0a;
+  --accent: #4ade80; /* Ghostly Green */
+  background-image: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 2px, 3px 100%; /* Scanline effect */
+}
+
+/* --- AFFECT: THE GARDEN (Architect) --- */
+.setting-garden {
+  background-color: #0d001a;
+  --accent: #d4af37; /* Imperial Gold */
+  box-shadow: inset 0 0 100px rgba(212, 175, 55, 0.1);
+}
+
+/* --- AFFECT: THE ARENA (Maintenance) --- */
+.setting-arena {
+  background-color: #050505;
+  --accent: #ff003c; /* Redline Alert */
+  filter: contrast(1.2) brightness(0.8);
+}
+
+/* --- POV TYPOGRAPHY --- */
+.pov-sarah .text { font-family: 'Inter', sans-serif; font-weight: 300; }
+.pov-marcus .text { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; }
+.pov-architect .text { font-family: 'Playfair Display', serif; font-style: italic; letter-spacing: 0.5px; }
+.pov-ray .text { font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 2px; }
+
+/* --- HEARTBEAT ANIMATION --- */
+@keyframes pulse {
+  0% { opacity: 0.4; text-shadow: 0 0 0px var(--accent); }
+  50% { opacity: 1; text-shadow: 0 0 15px var(--accent); }
+  100% { opacity: 0.4; text-shadow: 0 0 0px var(--accent); }
+}
+.beat { animation: pulse 1s infinite; color: var(--accent); }
