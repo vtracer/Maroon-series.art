@@ -1,3 +1,23 @@
+h1{
+  /* scales between phone and desktop */
+  font-size: clamp(1.8rem, 8vw, 3.5rem);
+
+  /* tracking scales too (big tracking kills small screens) */
+  letter-spacing: clamp(3px, 1.4vw, 12px);
+
+  /* allow wrapping instead of overflow */
+  white-space: normal;
+  overflow-wrap: anywhere;
+
+  /* reduce the “giant gap” when it wraps */
+  line-height: 1.05;
+
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0 0 40px 0;
+  text-shadow: 0 0 20px rgba(255,176,0,0.3);
+}
+
 /* --- AFFECT: THE SUBSTRATUM (Marcus) --- */
 .setting-substratum {
   background-color: #0a0c0a;
