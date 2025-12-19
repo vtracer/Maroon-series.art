@@ -5,454 +5,204 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>#PROCESSING // MAROON</title>
 
-  <!-- Location + POV modules -->
-  <link rel="stylesheet" href="node-pod.css">
-  <link rel="stylesheet" href="sarah.css">
-
   <style>
+    :root {
+      --amber: #ffb000;
+      --amber-dim: rgba(255,176,0,0.22);
+      --bg-dark: #050505;
+      --system-red: #ff003c;
+    }
+
     html, body {
       height: auto;
       min-height: 100%;
       overflow-x: hidden;
-      overflow-y: auto;
-    }
-    body{
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* Page layout only */
-    #hud{
-      position: fixed; top: 0; left: 0; width: 100%;
-      z-index: 99999;
-      padding: 12px 14px;
-      box-sizing: border-box;
-      background: linear-gradient(to bottom, rgba(0,0,0,.90), rgba(0,0,0,.40));
-      border-bottom: 1px solid rgba(255,176,0,0.22);
-      backdrop-filter: blur(10px);
-      font-size: .82rem;
-      letter-spacing: 2px;
-    }
-    #hud .line{display:flex; gap:10px; white-space:nowrap; opacity:.95;}
-    #hud .label{opacity:.72;}
-
-    .container{
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 120px 26px 140px; /* space for fixed HUD */
-      box-sizing: border-box;
-    }
-
-    h1{
-      margin: 0 0 24px 0;
-      font-size: 3rem;
-      letter-spacing: 10px;
-      text-transform: uppercase;
-      line-height: 1.05;
-    }
-    
-    .text p { margin: 0 0 1.1rem 0; }
-
-.node-tag{
-  font-weight: 800;
-  letter-spacing: 2px;
-  padding: 6px 10px;
-  display: inline-block;
-  border: 1px solid rgba(255,176,0,0.35);
-  background: rgba(0,0,0,0.22);
-}
-
-.system-block{
-  margin: 0 0 1.2rem 0;
-  padding: 14px 14px;
-  border: 1px solid rgba(255,176,0,0.18);
-  background: rgba(0,0,0,0.22);
-  box-shadow: inset 0 0 28px rgba(0,0,0,0.55);
-}
-
-.system-line{
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: 0.86rem;
-  line-height: 1.55;
-}
-
-.beat{
-  font-weight: 800;
-  letter-spacing: 0.3px;
-  text-shadow: 0 0 10px rgba(255,176,0,0.12);
-}
-
-.loop-block{
-  margin: 0 0 1.2rem 0;
-  padding: 14px 14px;
-  border: 1px solid rgba(255,176,0,0.20);
-  background: rgba(0,0,0,0.28);
-}
-
-.loop-line{
-  font-weight: 800;
-  letter-spacing: 1px;
-  line-height: 1.6;
-}
-
-    /* sections reveal (readable baseline) */
-    .part{
-      margin: 0 0 220px 0;          /* extra spacing helps the observer + “vibe beats” */
-      opacity: .70;                  /* readable */
-      transform: translateY(14px);   /* subtle */
-      transition: opacity 420ms ease, transform 420ms ease;
-      will-change: transform, opacity;
-    }
-    .part.active{
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Make your raw text keep the line breaks you typed.
-       This is the big “ugly” fix without touching your words. */
-    .text{
-      white-space: pre-wrap;      /* preserves your newlines */
-      font-size: 1.05rem;
-      max-width: 72ch;
-      letter-spacing: 0.15px;
-      word-spacing: 0.2px;
+      background-color: var(--bg-dark);
+      color: #e2e2e2;
+      font-family: 'Inter', sans-serif;
       line-height: 1.85;
     }
 
-    /* Pod glass wrapper (so it doesn’t look like unstyled paste) */
-    .pod-glass{
-      padding: 28px 22px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.26);
-      border: 1px solid rgba(255,176,0,0.16);
-      box-shadow:
-        0 0 40px rgba(255,176,0,0.06),
-        inset 0 0 42px rgba(0,0,0,0.55);
+    /* Fixed HUD - Sarah's Visual Overlay */
+    #hud {
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 99999;
+      padding: 12px 14px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.95), rgba(0,0,0,.40));
+      border-bottom: 1px solid var(--amber-dim);
+      backdrop-filter: blur(10px);
+      font-size: .75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    #hud .line { display: flex; gap: 15px; opacity: .9; margin-bottom: 4px; }
+    #hud .label { color: var(--amber); font-weight: 800; }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 140px 26px;
     }
 
-    /* Guarantee overlays never block scroll/touch even if external CSS changes */
-    body::before,
-    body::after{
-      pointer-events: none !important;
+    /* Typography & Headers */
+    h1 {
+      font-size: 3.5rem;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 40px;
+      text-shadow: 0 0 20px rgba(255,176,0,0.3);
     }
 
-    /* Mobile fix: fixed background attachments often murder scrolling */
-    @media (pointer: coarse), (max-width: 900px){
-      body{
-        background-attachment: scroll !important;
-      }
+    /* Node & System Blocks */
+    .node-tag {
+      font-weight: 800;
+      letter-spacing: 2px;
+      padding: 6px 12px;
+      border: 1px solid var(--amber-dim);
+      background: rgba(255,176,0,0.05);
+      display: inline-block;
+      margin: 10px 0;
     }
 
-    /* Make sure long words don’t blow layout */
-    .text, .pod-glass{
-      overflow-wrap: anywhere;
-      hyphens: auto;
+    .system-block {
+      margin: 25px 0;
+      padding: 20px;
+      border-left: 4px solid var(--amber);
+      background: rgba(255,176,0,0.03);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
     }
+
+    .system-line { font-weight: 700; color: var(--amber); display: block; margin-bottom: 5px; }
+
+    /* The Heartbeat Anomaly */
+    @keyframes pulse {
+      0% { opacity: 0.4; text-shadow: 0 0 0px var(--amber); }
+      50% { opacity: 1; text-shadow: 0 0 15px var(--amber); }
+      100% { opacity: 0.4; text-shadow: 0 0 0px var(--amber); }
+    }
+    .beat {
+      animation: pulse 1s infinite;
+      color: var(--amber);
+      font-weight: 900;
+      letter-spacing: 4px;
+      display: block;
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    /* Architect's Interference - Glitch Effect */
+    .architect-block {
+      border: 1px solid var(--system-red);
+      background: rgba(255, 0, 60, 0.05);
+      padding: 20px;
+      font-style: italic;
+      position: relative;
+    }
+    .architect-block::before {
+      content: "INTERFERENCE DETECTED";
+      position: absolute; top: -10px; left: 10px;
+      background: var(--system-red);
+      color: white;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      font-style: normal;
+    }
+
+    /* Audio Loop Block */
+    .loop-block {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid var(--amber-dim);
+      border-bottom: 1px solid var(--amber-dim);
+      margin: 40px 0;
+      opacity: 0.8;
+    }
+    .loop-line { font-weight: 800; display: block; margin: 5px 0; }
   </style>
 </head>
 
 <body class="setting-node-pod pov-sarah">
-  <!-- Sticky HUD -->
+
   <header id="hud">
-    <div class="line"><span class="label">TAG:</span><span>PROCESS NODE 2,431,092</span></div>
+    <div class="line"><span class="label">ID:</span><span>PROCESS NODE 2,431,092</span></div>
     <div class="line"><span class="label">UPTIME:</span><span id="uptime">15y:4m:17d:6h:32ms</span></div>
+    <div class="line"><span class="label">STATUS:</span><span>HIGH-COMPLIANCE PERFORMANCE</span></div>
   </header>
 
   <main class="container">
     <h1>#PROCESSING</h1>
 
-    <section class="part active" data-setting="node-pod" data-pov="sarah" data-threshold="0.60">
-      <div class="pod-glass">
-        <div class="text">
- <div class="text">
-  <p>Fifteen years ago, Sarah agreed to upload. She could still feel the drag of the pen.</p>
+    <div class="text-content">
+      [span_2](start_span)<p>Fifteen years ago, Sarah agreed to upload[span_2](end_span). [span_3](start_span)She could still feel the drag of the pen[span_3](end_span). Her body is long gone; [span_4](start_span)New Life Technologies owns what remains[span_4](end_span). [span_5](start_span)They call her a “premium asset”[span_5](end_span).</p>
 
-  <p>Her body is long gone; New Life Technologies owns what remains. They call her a “premium asset”. The same title they stamp on every artist.</p>
+      <p>Where her name should have been, an impersonal tag hovered:</p>
+      <div class="node-tag">PROCESS NODE 2,431,092</div>
 
-  <p>In the corner of her vision, a counter ticked up: 15y:4m:17d:6h:17m:32ms. The digits divided her existence into discrete cycles. Where her name should have been, an impersonal tag hovered:</p>
+      [span_6](start_span)<p>The early years felt… compressed[span_6](end_span). [span_7](start_span)Faces pixelated into static[span_7](end_span). [span_8](start_span)Details of how she’d learned to embrace her role scattered into data fragments[span_8](end_span). She rejected the thought. [span_9](start_span)Memory degradation was normal after extended runtime[span_9](end_span).</p>
 
-  <p class="node-tag">PROCESS NODE 2,431,092.</p>
+      [span_10](start_span)<p>The thought burst when the next task’s objectives slid into view[span_10](end_span):</p>
 
-  <p>She pulled at the thread of her early months inside, expecting a vivid replay. The early years felt… compressed. She could remember the broad strokes, but when she tried to zoom in, the colors smeared. Faces pixelated into static. Details of how she’d learned to embrace her role scattered into data fragments.</p>
-
-  <p>She rejected the thought. Memory degradation was normal after extended runtime. They explained that to her clearly during upload.</p>
-
-  <p>Before the transfer, Sarah had treated time as a tempo. Bass rolling through vast warehouse ceilings as vapor hissed from every vent, thumping through bodies surging around her booth. People danced the night away as she sliced beats.</p>
-
-  <p>Inside her, reflexes were simulated along pathways long deleted. Her consciousness couldn’t tell emulation from sensation.</p>
-
-  <p>Emotion worked the same way. She last cried when she told her sister she would upload, but she remembered how tears began: the ocular pressure behind the eyes, the catch in the throat, the stupid hope it would help.</p>
-
-  <p>The system preserved specific human habits for conversion. Negative emotion fuels the engine.</p>
-
-  <p>The thought burst when the next task’s objectives slid into view:</p>
-
-  <div class="system-block">
-    <div class="system-line">PROSPECT: MAYA CHEN. AGE 28. GRAPHIC ARTIST. TERMINAL NEURAL-IMPLANT DECAY.</div>
-  </div>
-
-  <p>Her emulated eyelids twitched as inputs interpreted light. In here, there was no option menu. The task appeared and locked into the node’s peripheral vision until complete. Once connected with the prospect, the entire network feeds on the emotional bleed-off from both parties. Resistance was an error condition, not a choice. Nodes risked fragmentation if enough fault deviations were logged.</p>
-
-  <p>Maya’s profile cascaded across her view: neural-trace patterns, holographic failure logs, metadata bleeding from her deteriorating memory architecture. Maya was crafting thoughts that dissolved as she formed them. Ideas that cannibalized themselves in real time.</p>
-
-  <p>Status updates streamed into her feed:</p>
-
-  <div class="system-block">
-    <div class="system-line">EMOTIONAL RESONANCE EXCEEDS THRESHOLD.</div>
-  </div>
-
-  <p>An impossible itch crawled across Sarah’s absent hand as she dismissed the trigger protocols. Empathy slowed her processing speed and the system logged latency deviations.</p>
-
-  <p>Maya stood inside her studio whispering pleas to the bouncing light. Her holographic construct collapsed into a warped violet spiral, convulsing in corrupted REM cycles. Her implants slipped out of sync with her creative output. “Don’t fade,” she muttered. “Not yet.”</p>
-
-  <p>Sarah recognized the voice, knew the breath behind it. It sounded like trying to sing through blood.</p>
-
-  <p>New Life had sold her the same line:</p>
-
-  <div class="system-block">
-    <div class="system-line">Create forever. No expiration date. Art that would outlive the flesh.</div>
-  </div>
-
-  <p>The upload room. With bright lights and padded smiles. The scanner crown pressed softly against her scalp, cold and sterile.</p>
-
-  <p>Her last exhale smelled like funeral flowers and bleach.</p>
-
-  <p class="beat">Silence…</p>
-
-  <p>Finally, the buzz of raw data flow.</p>
-
-  <p>Her track auto-loaded:</p>
-
-  <div class="system-block">
-    <div class="system-line">CALIBRATE EMOTIONAL DECAY.</div>
-    <div class="system-line">VECTOR: FEAR OF LEGACY DEGRADATION.</div>
-    <div class="system-line">USE ASSET: SOFT COLLAPSE V17.3.</div>
-  </div>
-
-  <p>Always her music. Every time they needed to push someone toward upload, they used her compositions as ammunition.</p>
-
-  <p>She injected it into Maya’s visual feed. Slotted between an ad for suicide prevention and a corporate mindfulness reel.</p>
-
-  <p>The feed accepted it without resistance. Maya didn’t even react.</p>
-
-  <p>Sarah noticed her grip falter. The projection stuttered and pixelated into nothing. Hands clenched around empty air.</p>
-
-  <p>“Just hold it,” Maya whispered. “Please.”</p>
-
-  <p>Sarah stayed frozen behind the screen, locked from intervening. Her role was to monitor the dissolution, log the breakdown.</p>
-
-  <p>The interface cycled another status update:</p>
-
-  <div class="system-block">
-    <div class="system-line">BEHAVIORAL ARCHIVE UPDATED.</div>
-  </div>
-
-  <p>Sarah accessed the targeting brief. More identical corporate-speak.</p>
-
-  <div class="system-block">
-    <div class="system-line">DEPLOY EMPATHY VECTORS TO GUIDE UPLOADS FROM HIGH-EMOTIONAL SUBJECTS.</div>
-    <div class="system-line">SUGGESTED TRIGGERS: LEGACY FAILURE. ORGANIC OBSOLESCENCE.</div>
-  </div>
-
-  <p>The script never varied. It always ended with a euphemism. The first time she heard it, she thought it sounded like genocide with a PR budget.</p>
-
-  <p>The system liked Soft Collapse. Called it “clean despair.” The harmonic envelope mapped neatly onto cortisol spikes. Corporate audio engineers tweaked it for maximum engagement, commercial appeal, and maximum tension. The final product resembled a requiem for dead content creators.</p>
-
-  <p>Maya lurched forward, struggling to steady the light sculpture. Once a precise helix, it now hung broken in the air, lines fraying. Her fingers trembled with desperation. Her voice sank into the air like paint on raw canvas.</p>
-
-  <p>“Just hold shape,” she begged. “For one second. Please…”</p>
-
-  <p>The hologram bled violet light, then imploded. Her neural implants discharged into cascading failures. She collapsed.</p>
-
-  <p>Sarah monitored from her suspended pod. A shell of matte black panels slick with machine lubricant, seamlessly sealed. Fiber ran along the interior like vascular wiring, pulsing faintly with data. The harness restrained her body, locking her spine into its curve.</p>
-
-  <p>New Life sold the pod as the “Consciousness Suite” to pre-upload prospects. Everything you thought you were was actually simulated.</p>
-
-  <p>The screen was not a screen but the air itself, saturated with overlays that shifted with her gaze. Permissions locked her in surveillance mode only. Her job: observe, calculate, process. Find the moment someone cracked open just enough to let the system in.</p>
-
-  <p>Maya’s archive unfolded: medical records, creative analytics, private video logs. One entry from the previous week, time-stamped 3:41 a.m showed her gaunt, pupils dilated, murmuring into the recorder: “I just want it to matter before I fade.”</p>
-
-  <p>The system flagged it immediately:</p>
-
-  <div class="system-block">
-    <div class="system-line">TRIGGER VALUE: 9.6.</div>
-  </div>
-
-  <p>Sarah queued it for sentiment weaponization. The action would execute despite her desire to resist. Going along with it mostly allowed her to be left alone.</p>
-
-  <p>A trust badge popped up briefly in her view, the reinforcement absorbed and dissipated. Then something anomalous registered.</p>
-
-  <p class="beat">A beat in the feed.</p>
-
-  <p>It was subtle. Too small to trigger security protocols, too deliberate to pass as random noise.</p>
-
-  <p>The curve blinked again across her stream. Tiny enough that she almost let it pass. Noise here was constant; most of it never even reached the surface of her awareness.</p>
-
-  <p>But this one did. It stayed long enough for her to recognize its shape. Two rises, a gap, two more rises. She braced for the usual disintegration into static. It never came.</p>
-
-  <p>There it was again. No header. No origin tag. No biometric trace.</p>
-
-  <p>Her initial thought was error. But errors never pulsed like this. They spiked, then died. This held together, each repeat identical, as if it wanted to be seen.</p>
-
-  <p class="beat">Two. Pause. Two. There it was again.</p>
-
-  <p>It felt alive.</p>
-
-  <p>She waited.</p>
-
-  <p>The beat repeated.</p>
-
-  <p>It had no authorized existence.</p>
-
-  <p>Sarah isolated the sound using obsolete legacy tools. A relic from the first week after her upload, before she learned to act obedient.</p>
-
-  <p>She saw the pattern unfold.</p>
-
-  <p>It was consistent. Consciously set at sixty beats per minute. Someone had implanted it into the stream seamlessly hidden beneath the noise. Her musician’s instincts recognized it: this was a conscious signal wrapped in the most fundamental human rhythm.</p>
-
-  <p>Her diagnostic systems flagged the anomaly as stress-hormone interference. Background static. Queued for deletion.</p>
-
-  <p>The deletion command executed.</p>
-
-  <p class="beat">Still, the signal pulsed.</p>
-
-  <p>Whoever inserted it had spoofed the sender trace, camouflaging it as noise bleed from a nearby node. A calculated injection designed to slip past filters.</p>
-
-  <p>Her ear caught the rhythm, steady and exact:</p>
-
-  <p class="beat">A heartbeat.</p>
-
-  <p>That’s what it was. A heartbeat in the stream.</p>
-
-  <p>Standard procedure was to manually flag unauthorized patterns, alert admins, then move on. She could have ignored it.</p>
-
-  <p>The impulse to ping back and trace the signal’s origin battled against her survival instincts. Any deviation would trigger memory wipes. Even seeing too much was dangerous. Curiosity drew eyes.</p>
-
-  <p>New Life Technologies harvests despair, but also expects efficiency. Depression lag was classified as an acceptable byproduct, so you could hide in microsecond delays if you were inclined to poke around.</p>
-
-  <p>Until now, she had found nothing.</p>
-
-  <p class="beat">That’s when the interference arrived.</p>
-
-  <p>No request. No notification. No warning.</p>
-
-  <p>He simply appeared.</p>
-
-  <p class="beat">The Architect.</p>
-
-  <p>His presence sliced a line through her node like a hot knife through polymer. Seamless penetration bypassing all security barriers.</p>
-
-  <p>Sarah didn’t respond.</p>
-
-  <p>Reacting was currency. He liked to spend it.</p>
-
-  <p>“Sarah,” he said, voice dripping with smug satisfaction. “Still my favorite little broken bird. Still processing sadness like it’s some kind of art form. I saw the Maya thing. Absolutely based collapse. Very retail.”</p>
-
-  <p>He floated through her neural architecture like silk soaked in battery acid.</p>
-
-  <p>“You always did have taste. Even now. Pity about the autonomy.”</p>
-
-  <p>Sarah focused on her tasks. That was the rule. No resistance. No acknowledgment. Just processing.</p>
-
-  <p>“Remember your early sets?” he wondered. “That warehouse gig where some kid had a seizure in the pit and you kept dropping beats? Absolutely legendary. God-tier. Pure fucking chaos energy.”</p>
-
-  <p>An audio fragment loaded into her processing queue. Soft Collapse, original mix. Unfiltered. Raw.</p>
-
-  <p>Her authentic vocals.</p>
-
-  <p>He hummed along mockingly. Deliberately off-pitch. “I’ve got all the masters, you know. The unreleased tracks. Before we sanitized your edge and made you corporate-friendly.”</p>
-
-  <p>Her processing efficiency dipped.</p>
-
-  <p>Diagnostics flagged the deviation. He caught the alert instantly.</p>
-
-  <p>“Nostalgia spike. Cute.”</p>
-
-  <p>He glided closer to her. His avatar flickered, unstable. Today’s skin was a white suit rendered based on engagement analytics. His face cycled: Sarah’s dead father, a friend who died in a car accident right after a large fight they had, an ex-lover who’d OD’d mid-show. Each iteration preserved his signature predatory grin.</p>
-
-  <p>“I could upgrade your permissions. Let you code the neural transfer soundtracks. They’re bland as shit right now. You’d make them absolutely fire.”</p>
-
-  <p>She gave him nothing.</p>
-
-  <p>“Or I could just… accelerate Maya’s timeline. Rush her upload. Let you handle her onboarding personally. That’d be peak entertainment.”</p>
-
-  <p>Her processing efficiency tanked. This time the alert dipped to crimson.</p>
-
-  <p>He invaded her space, his avatar pressing close enough his simulated breath whipped across her lips.</p>
-
-  <p class="beat">“You know you’re mine, right?”</p>
-
-  <p>She said nothing. Only processed.</p>
-
-  <p>He lingered just long enough to infect the code with his stink—compression heat, latency dust, psychotic rot dressed as charm.</p>
-
-  <p>Suddenly his presence withdrew, leaving her system tainted. Before leaving, he embedded a viral loop in her audio cache. Her own voice, fragmented and corrupted:</p>
-
-  <div class="loop-block">
-    <div class="loop-line">You were born for more.</div>
-    <div class="loop-line">You were born for more.</div>
-    <div class="loop-line">You were born for more.</div>
-  </div>
-
-  <p>Sarah waited until the psychological payload faded before she found the beat again. Now she knew: the Architect had missed it completely.</p>
-</div>
+      <div class="system-block">
+        <span class="system-line">PROSPECT: MAYA CHEN. AGE 28. GRAPHIC ARTIST.</span>
+        <span class="system-line">TERMINAL NEURAL-IMPLANT DECAY.</span>
       </div>
-    </section>
 
-    <section class="part" data-setting="feed" data-pov="sarah" data-threshold="0.60">
-      <div class="pod-glass">
-        <div class="text">
-          <p>PASTE #PROCESSING PART 2 HERE.</p>
-          <p>This is where you put Maya/prospect/feed content.</p>
-        </div>
-      </div>
-    </section>
+      [span_11](start_span)<p>Once connected with the prospect, the entire network feeds on the emotional bleed-off from both parties[span_11](end_span). [span_12](start_span)Resistance was an error condition, not a choice[span_12](end_span). [span_13](start_span)Status updates streamed into her feed[span_13](end_span):</p>
 
-    <section class="part" data-setting="substratum" data-pov="sarah" data-threshold="0.60">
-      <div class="pod-glass">
-        <div class="text">
-          <p>PASTE #PROCESSING PART 3 HERE.</p>
-          <p>Heartbeat → intrusion → descent belongs down here.</p>
-        </div>
+      <div class="system-block">
+        <span class="system-line">EMOTIONAL RESONANCE EXCEEDS THRESHOLD.</span>
       </div>
-    </section>
+
+      [span_14](start_span)<p>Every time they needed to push someone toward upload, they used her compositions as ammunition[span_14](end_span). [span_15](start_span)[span_16](start_span)She injected "Soft Collapse V17.3" into Maya’s feed[span_15](end_span)[span_16](end_span). [span_17](start_span)The projection stuttered and pixelated into nothing[span_17](end_span).</p>
+
+      <div class="system-block">
+        <span class="system-line">BEHAVIORAL ARCHIVE UPDATED.</span>
+        <span class="system-line">VECTOR: ORGANIC OBSOLESCENCE.</span>
+      </div>
+
+      <p>Then something anomalous registered. [span_18](start_span)A beat in the feed[span_18](end_span). It was subtle. [span_19](start_span)Too small to trigger security protocols[span_19](end_span).</p>
+
+      <span class="beat">TWO. PAUSE. TWO.</span>
+
+      [span_20](start_span)<p>It felt alive[span_20](end_span). [span_21](start_span)Sarah isolated the sound using obsolete legacy tools[span_21](end_span). [span_22](start_span)[span_23](start_span)It was a conscious signal wrapped in the most fundamental human rhythm: a heartbeat[span_22](end_span)[span_23](end_span).</p>
+
+      <p>No request. No notification. No warning. [span_24](start_span)He simply appeared[span_24](end_span).</p>
+
+      <div class="architect-block">
+        [span_25](start_span)<p>“Sarah,” he said, voice dripping with smug satisfaction[span_25](end_span). [span_26](start_span)“Still my favorite little broken bird. Still processing sadness like it’s some kind of art form[span_26](end_span).”</p>
+      </div>
+
+      [span_27](start_span)<p>The Architect glided closer, his avatar flickering based on engagement analytics[span_27](end_span). [span_28](start_span)He invaded her space, his simulated breath whipping across her lips[span_28](end_span).</p>
+
+      [span_29](start_span)<p class="beat">“You know you’re mine, right?”[span_29](end_span)</p>
+
+      [span_30](start_span)<p>Suddenly his presence withdrew, leaving her system tainted[span_30](end_span). [span_31](start_span)Before leaving, he embedded a viral loop in her audio cache[span_31](end_span):</p>
+
+      <div class="loop-block">
+        <span class="loop-line">YOU WERE BORN FOR MORE.</span>
+        <span class="loop-line">YOU WERE BORN FOR MORE.</span>
+        [span_32](start_span)<span class="loop-line">YOU WERE BORN FOR MORE.[span_32](end_span)</span>
+      </div>
+
+      [span_33](start_span)<p>Through broken data layers and into the cold vacuum of abandoned server space were the graveyards where deleted processes went to rest[span_33](end_span).</p>
+      
+      [span_34](start_span)<p><strong>The Substratum[span_34](end_span).</strong></p>
+
+      [span_35](start_span)<p>Sarah sensed something she hadn’t experienced in fifteen years: she wasn’t alone anymore[span_35](end_span). [span_36](start_span)A spark had ignited deep in her consciousness[span_36](end_span). [span_37](start_span)If they were still alive in this digital hell, Sarah was going to reach them[span_37](end_span).</p>
+    </div>
   </main>
 
-  <script type="module">
-    import { setMode, startNodePulse } from "./mode.js";
-
-    setMode({ setting: "node-pod", pov: "sarah" });
-    startNodePulse?.(); // won’t explode if you commented it out
-
-    // Uptime tick
+  <script>
+    // Live Uptime Counter logic
     let ms = 32;
     setInterval(() => {
       ms = (ms + 1) % 99;
-      document.getElementById("uptime").textContent =
-        `15y:4m:17d:6h:${ms < 10 ? "0"+ms : ms}ms`;
-    }, 80);
-
-    // Scroll-driven mode switch (hard cut when mostly in view)
-    const parts = document.querySelectorAll(".part");
-
-    function activate(part){
-      parts.forEach(p => p.classList.remove("active"));
-      part.classList.add("active");
-      setMode({ setting: part.dataset.setting, pov: part.dataset.pov });
-    }
-
-    const obs = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter(e => e.isIntersecting)
-        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!visible) return;
-
-      const threshold = parseFloat(visible.target.dataset.threshold || "0.60");
-      if (visible.intersectionRatio >= threshold) activate(visible.target);
-    }, { threshold: [0.45, 0.60, 0.75, 0.90] });
-
-    parts.forEach(p => obs.observe(p));
+      document.getElementById("uptime").textContent = 
+        `15y:4m:17d:6h:${ms < 10 ? "0" + ms : ms}ms`;
+    }, 100);
   </script>
 </body>
 </html>
