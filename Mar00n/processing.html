@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>#PROCESSING // MAROON</title>
+
+  <!-- Location + POV modules -->
+  <link rel="stylesheet" href="settings/node-pod.css">
+  <link rel="stylesheet" href="pov/sarah.css">
+
+  <style>
+    /* Page layout only (keep this “dumb”) */
+    #hud{
+      position: fixed; top: 0; left: 0; width: 100%;
+      z-index: 99999;
+      padding: 12px 14px;
+      box-sizing: border-box;
+      background: linear-gradient(to bottom, rgba(0,0,0,.86), rgba(0,0,0,.34));
+      border-bottom: 1px solid rgba(255,176,0,0.18);
+      backdrop-filter: blur(10px);
+      font-size: .82rem;
+      letter-spacing: 2px;
+    }
+    #hud .line{display:flex; gap:10px; white-space:nowrap; opacity:.95;}
+    #hud .label{opacity:.72;}
+
+    .container{
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 120px 42px 120px; /* space for fixed HUD */
+      box-sizing: border-box;
+    }
+
+    h1{
+      margin: 0 0 24px 0;
+      font-size: 3rem;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+    }
+
+    /* sections reveal (readable baseline) */
+    .part{
+      margin: 0 0 180px 0;
+      opacity: .62;
+      transform: translateY(22px);
+      transition: opacity 520ms ease, transform 520ms ease;
+      will-change: transform, opacity;
+    }
+    .part.active{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Optional wrapper to feel like “inside the pod” */
+    .pod-glass{
+      padding: 28px 26px;
+      border-radius: 14px;
+    }
+  </style>
+</head>
+
+<body class="setting-node-pod pov-sarah">
+  <!-- Sticky HUD -->
+  <header id="hud">
+    <div class="line"><span class="label">TAG:</span><span>PROCESS NODE 2,431,092</span></div>
+    <div class="line"><span class="label">UPTIME:</span><span id="uptime">15y:4m:17d:6h:32ms</span></div>
+  </header>
+
+  <main class="container">
+    <h1>#PROCESSING</h1>
+
+    <!-- =======================
+         PART 1: NODE POD / SARAH
+         (Location: node pod, POV: Sarah)
+         ======================= -->
+    <section class="part active"
+      data-setting="node-pod"
+      data-pov="sarah"
+      data-threshold="0.70">
+      <div class="pod-glass">
+        <div class="text">
+          <!-- DROP TEXT HERE (Part 1) -->
+          <p>PASTE #PROCESSING PART 1 HERE.</p>
+          <p>Use <span class="node-chip">chips</span> and <span class="node-chip node-warning">warnings</span> if you want.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         PART 2: FEED / SARAH
+         (Location: feed, POV: Sarah)
+         You can create settings/feed.css later; for now we’ll just switch setting class.
+         ======================= -->
+    <section class="part"
+      data-setting="feed"
+      data-pov="sarah"
+      data-threshold="0.70">
+      <div class="pod-glass">
+        <div class="text">
+          <!-- DROP TEXT HERE (Part 2) -->
+          <p>PASTE #PROCESSING PART 2 HERE.</p>
+          <p>This is where you put Maya/prospect/feed content.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         PART 3: SUBSTRATUM / SARAH
+         (Location: substratum, POV: Sarah)
+         Same: you can make settings/substratum.css later, but the structure is ready.
+         ======================= -->
+    <section class="part"
+      data-setting="substratum"
+      data-pov="sarah"
+      data-threshold="0.70">
+      <div class="pod-glass">
+        <div class="text">
+          <!-- DROP TEXT HERE (Part 3) -->
+          <p>PASTE #PROCESSING PART 3 HERE.</p>
+          <p>Heartbeat → intrusion → descent belongs down here.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module">
+    import { setMode, startNodePulse } from "./mode.js";
+
+    // Start in Sarah/node pod
+    setMode({ setting: "node-pod", pov: "sarah" });
+    startNodePulse();
+
+    // Uptime tick
+    let ms = 32;
+    setInterval(() => {
+      ms = (ms + 1) % 99;
+      document.getElementById("uptime").textContent =
+        `15y:4m:17d:6h:${ms < 10 ? "0"+ms : ms}ms`;
+    }, 80);
+
+    // Scroll-driven mode switch (hard cut when mostly in view)
+    const parts = document.querySelectorAll(".part");
+
+    function activate(part){
+      parts.forEach(p => p.classList.remove("active"));
+      part.classList.add("active");
+
+      setMode({
+        setting: part.dataset.setting,
+        pov: part.dataset.pov
+      });
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+
+      const threshold = parseFloat(visible.target.dataset.threshold || "0.70");
+      if (visible.intersectionRatio >= threshold) activate(visible.target);
+    }, { threshold: [0.55, 0.70, 0.85] });
+
+    parts.forEach(p => obs.observe(p));
+  </script>
+</body>
+</html>
