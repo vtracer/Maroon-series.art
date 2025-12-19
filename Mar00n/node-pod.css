@@ -1,0 +1,125 @@
+:root {
+  /* Node palette */
+  --node-bg: #050402;
+  --node-amber: #ffb000;
+  --node-amber-dim: rgba(255, 176, 0, 0.10);
+  --node-amber-faint: rgba(255, 176, 0, 0.06);
+  --node-red: #ff0033;
+
+  /* Overlay knobs (JS can nudge these) */
+  --node-scan: 0.18;    /* 0..1 */
+  --node-noise: 0.10;   /* 0..1 */
+  --node-glow: 0.22;    /* 0..1 */
+  --node-pulse: 0.00;   /* 0..1 */
+}
+
+body.setting-node-pod {
+  background-color: var(--node-bg);
+  color: var(--node-amber);
+
+  /* “Pod interior” background layers */
+  background-image:
+    /* chamber glow */
+    radial-gradient(1200px 900px at 55% 30%, rgba(255,176,0, calc(0.10 + var(--node-pulse) * 0.10)), transparent 60%),
+    radial-gradient(1000px 800px at 15% 85%, rgba(255,0,51,0.03), transparent 58%),
+    radial-gradient(1300px 900px at 50% 120%, rgba(0,0,0,0.75), transparent 55%),
+
+    /* panel seams */
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px,
+      transparent 56px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 92px
+    ),
+
+    /* conduits */
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,176,0,0.04) 0px,
+      rgba(255,176,0,0.04) 2px,
+      transparent 2px,
+      transparent 160px
+    );
+
+  background-blend-mode: screen, screen, multiply, normal, normal, screen;
+  background-attachment: fixed;
+
+  /* make text look “display-rendered” */
+  text-shadow: 0 0 10px rgba(255,176,0,0.10);
+}
+
+/* Overlay stack: scanlines + subtle noise (under HUD, above content) */
+body.setting-node-pod::before,
+body.setting-node-pod::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 500; /* keep HUD above this */
+}
+
+/* Scanlines + slight RGB subpixel hint */
+body.setting-node-pod::before {
+  opacity: calc(0.18 + var(--node-scan) * 0.25);
+  background:
+    linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.30) 50%),
+    linear-gradient(90deg,
+      rgba(255, 0, 0, 0.045),
+      rgba(0, 255, 0, 0.018),
+      rgba(0, 0, 255, 0.045)
+    );
+  background-size: 100% 4px, 3px 100%;
+  mix-blend-mode: screen;
+}
+
+/* Noise speckle */
+body.setting-node-pod::after {
+  opacity: calc(0.05 + var(--node-noise) * 0.22);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.07) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 30%, rgba(255,255,255,0.05) 0 1px, transparent 2px),
+    radial-gradient(circle at 40% 72%, rgba(255,255,255,0.06) 0 1px, transparent 2px),
+    radial-gradient(circle at 68% 84%, rgba(255,255,255,0.04) 0 1px, transparent 2px);
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+/* Optional: “pod glass” vignette wrapper (use a container with .pod-glass) */
+.setting-node-pod .pod-glass {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.22), rgba(0,0,0,0.46));
+  border: 1px solid rgba(255,176,0,0.16);
+  box-shadow:
+    0 0 40px rgba(255,176,0,0.06),
+    inset 0 0 40px rgba(0,0,0,0.45);
+  border-radius: 14px;
+}
+
+/* Accent helpers */
+.setting-node-pod .node-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1px solid rgba(255,176,0,0.45);
+  background: rgba(0,0,0,0.25);
+  letter-spacing: 2px;
+  font-size: 0.78rem;
+}
+
+.setting-node-pod .node-warning {
+  color: var(--node-red);
+  border-color: rgba(255,0,51,0.55);
+  text-shadow: 0 0 10px rgba(255,0,51,0.18);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body.setting-node-pod::before,
+  body.setting-node-pod::after { opacity: 0.10; }
+}
