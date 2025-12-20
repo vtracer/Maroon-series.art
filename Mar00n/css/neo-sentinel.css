@@ -119,6 +119,36 @@ a{ color:inherit; }
   margin-bottom: 10px;
 }
 
+.risk{
+  display:inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  font-size: .72rem;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+.risk-low{
+  color: rgba(25,255,122,.95);
+  border-color: rgba(25,255,122,.35);
+  background: rgba(25,255,122,.08);
+}
+
+.risk-mod{
+  color: rgba(255,176,0,.98);
+  border-color: rgba(255,176,0,.40);
+  background: rgba(255,176,0,.08);
+}
+
+.risk-high{
+  color: rgba(255,0,60,.95);
+  border-color: rgba(255,0,60,.45);
+  background: rgba(255,0,60,.08);
+}
+
 .pill{
   font-size: .7rem;
   letter-spacing: 1.4px;
