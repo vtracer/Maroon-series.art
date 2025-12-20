@@ -244,6 +244,7 @@ a{ color:inherit; }
 }
 
 .modal{
+  position: relative;
   width: min(980px, 96vw);
   max-height: min(88vh, 920px);
   margin: 6vh auto;
