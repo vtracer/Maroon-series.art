@@ -106,11 +106,11 @@ h1{
 .beat { animation: pulse 1s infinite; color: var(--accent); }
 
 .maroon-footer{
-  margin-top: 80px;
-  padding: 26px 18px 40px;
-  border-top: 1px solid rgba(255,255,255,.10);
-  display:flex;
-  justify-content:center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
 }
 
 .maroon-home{
