@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NEO-SENTINEL // 2085</title>
+  <title>NEO-SENTINEL // 2084</title>
 
   <!-- Reusable CSS modules -->
 <link rel="stylesheet" href="/Mar00n/glbl.css?v=1">
@@ -14,11 +14,37 @@
 <body>
   <header class="topbar">
     <div class="brand">
+      <div class="brandRow">
+    		<!-- NEO-SENTINEL LOGO: Sentinel Eye + Scanline -->
+<svg class="ns-logo" width="34" height="34" viewBox="0 0 64 64" aria-label="Neo-Sentinel" role="img">
+  <defs>
+    <linearGradient id="nsG" x1="0" x2="1">
+      <stop offset="0" stop-color="currentColor" stop-opacity="0.75"/>
+      <stop offset="0.5" stop-color="currentColor" stop-opacity="1"/>
+      <stop offset="1" stop-color="currentColor" stop-opacity="0.75"/>
+    </linearGradient>
+  </defs>
+
+  <!-- outer ring -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="url(#nsG)" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="14 6"/>
+
+  <!-- “eye” brackets -->
+  <path d="M12 32c6-10 14-15 20-15s14 5 20 15c-6 10-14 15-20 15S18 42 12 32Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" opacity="0.92"/>
+
+  <!-- iris -->
+  <circle cx="32" cy="32" r="6.5" fill="none" stroke="currentColor" stroke-width="3" opacity="0.92"/>
+  <circle cx="32" cy="32" r="2.5" fill="currentColor"/>
+
+  <!-- scanline -->
+  <path d="M32 10v44" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+</svg>#
       <b>NEO-SENTINEL</b>
+      </div>
       <span>PUBLIC CONTEXT FEED • 2084</span>
     </div>
 
-    <!-- Minimal ticker only: in-world + satire -->
     <script id="tickerSnapshot" type="application/json">
 {
   "date": "2084-12-15",
@@ -45,7 +71,6 @@
   </header>
 
   <main class="wrap">
-    <!-- One tile. Click = enter simulation. -->
     <section class="tile" id="openArticle" role="button" tabindex="0" aria-controls="overlay" aria-expanded="false">
       <div class="meta">
         <span class="pill red">FLAGGED</span>
