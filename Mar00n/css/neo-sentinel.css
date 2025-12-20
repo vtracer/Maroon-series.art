@@ -113,6 +113,23 @@ a{ color:inherit; }
   font-size: .78rem;
 }
 
+.brandRow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.ns-logo{
+  flex: 0 0 auto;
+  color: rgba(255,176,0,.92); /* or currentColor if you want it to match text */
+  filter: drop-shadow(0 0 10px rgba(255,176,0,.16));
+}
+
+.wordmark{
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
 .tile .dek{
   margin: 6px 0 0;
   color: rgba(234,238,247,.72);
