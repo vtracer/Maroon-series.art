@@ -1,0 +1,57 @@
+name: Update ticker snapshot
+
+on:
+  schedule:
+    - cron: "15 22 * * 1-5"  # 5:15pm ET (after market close), Mon–Fri
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch closes and write snapshot
+        run: |
+          set -e
+          python3 - <<'PY'
+          import csv, json, urllib.request, datetime
+
+          symbols = {
+            "NVDA": "nvda.us",
+            "AAPL": "aapl.us",
+            "TSLA": "tsla.us",
+            "ORCL": "orcl.us",
+          }
+
+          def last_two_closes(stooq_sym):
+            url = f"https://stooq.com/q/d/l/?s={stooq_sym}&i=d"
+            with urllib.request.urlopen(url, timeout=20) as r:
+              text = r.read().decode("utf-8").splitlines()
+            rows = list(csv.DictReader(text))
+            rows = [x for x in rows if x.get("Close")]
+            if len(rows) < 2:
+              return None
+            a, b = rows[-2], rows[-1]   # previous, latest
+            return float(a["Close"]), float(b["Close"]), b["Date"]
+
+          out = {"date": datetime.date.today().isoformat()}
+
+          for sym, stooq in symbols.items():
+            prev_close, close, date = last_two_closes(stooq)
+            pct = (close - prev_close) / prev_close * 100.0
+            out[sym] = {"pct": round(pct, 2), "price": round(close, 2), "asof": date}
+
+          path = "Mar00n/ticker-snapshot.json"
+          with open(path, "w", encoding="utf-8") as f:
+            json.dump(out, f, indent=2)
+          print("Wrote", path, out)
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "ticker-bot"
+          git config user.email "ticker-bot@users.noreply.github.com"
+          git add Mar00n/ticker-snapshot.json
+          git commit -m "Update ticker snapshot" || exit 0
+          git push
