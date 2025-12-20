@@ -1,44 +1,331 @@
-<script>
-  function applyData(data){
-    document.querySelectorAll(".ticker .tick").forEach(el => {
-      const sym = el.dataset.real;
-      const q = data[sym];
-      if(!q) return;
+:root{
+  --bg:#05070b;
+  --panel:rgba(10,12,18,.82);
+  --line:rgba(255,255,255,.10);
 
-      const pct = Number(q.pct);
-      el.classList.remove("up","down","flat");
-      el.classList.add(pct > 0.05 ? "up" : pct < -0.05 ? "down" : "flat");
+  --text:#eaeef7;
+  --muted:rgba(234,238,247,.72);
 
-      const chg = el.querySelector(".chg");
-      if(chg) chg.textContent = `${pct >= 0 ? "▲" : "▼"} ${Math.abs(pct).toFixed(2)}%`;
-    });
+  --amber:#ffb000;
+  --cyan:#00f2ff;
+  --red:#ff003c;
+
+  --up:#19ff7a;
+  --down:#ff3b57;
+  --flat:rgba(234,238,247,.82);
+}
+
+html.no-scroll, html.no-scroll body { overflow: hidden; }
+
+html, body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+
+a{ color:inherit; }
+
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  justify-content: space-between;
+
+  padding: 12px 14px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.92), rgba(0,0,0,.50));
+  border-bottom: 1px solid rgba(255,176,0,.18);
+  backdrop-filter: blur(10px);
+}
+
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width: 180px;
+}
+.brand b{
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+.brand span{
+  font-size: .72rem;
+  letter-spacing: 1.6px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.status{
+  font-size: .72rem;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.status b{ color: var(--cyan); }
+
+/* Ticker */
+.ticker{
+  flex: 1;
+  overflow: hidden;
+  border-left: 1px solid rgba(255,255,255,.08);
+  border-right: 1px solid rgba(255,255,255,.08);
+  padding: 6px 10px;
+  min-width: 0;
+}
+.ticker i{
+  display:inline-block;
+  white-space: nowrap;
+  font-style: normal;
+  animation: tickerMove 28s linear infinite;
+}
+@keyframes tickerMove{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-45%); }
+}
+.ticker .tick{ color: var(--flat); font-size: .8rem; letter-spacing: .6px; }
+.ticker .tick b{ font-weight: 900; color: var(--amber); }
+.ticker .tick.up{ color: var(--up); }
+.ticker .tick.down{ color: var(--down); }
+.ticker .tick.flat{ color: var(--flat); opacity: .9; }
+
+.wrap{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 16px 70px;
+}
+
+.tile{
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  background: rgba(255,255,255,.03);
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,.30);
+}
+.tile:hover{ border-color: rgba(255,176,0,.35); }
+
+.tile .meta{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.pill{
+  font-size: .7rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--muted);
+}
+.pill.red{ border-color: rgba(255,0,60,.35); color: rgba(255,0,60,.95); }
+.pill.cyan{ border-color: rgba(0,242,255,.35); color: rgba(0,242,255,.95); }
+.pill.amber{ border-color: rgba(255,176,0,.35); color: rgba(255,176,0,.95); }
+
+.tile h1{
+  margin: 8px 0 6px;
+  font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+  line-height: 1.2;
+  letter-spacing: .4px;
+}
+.tile p{ margin: 0; color: var(--muted); }
+.hint{
+  margin-top: 12px;
+  color: rgba(255,176,0,.90);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  font-size: .78rem;
+}
+
+/* Overlay */
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.68);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: 2000;
+}
+.overlay.active{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal{
+  width: min(980px, 96vw);
+  max-height: min(88vh, 920px);
+  margin: 6vh auto;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 90px rgba(0,0,0,.55);
+  display:flex;
+  flex-direction: column;
+}
+@media (max-width: 560px){
+  .modal{
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
   }
+}
 
-  async function loadDailyTicker(){
-    const KEY = "neoTickerCache_v1";
-    const cached = localStorage.getItem(KEY);
-    const now = Date.now();
+.modalTop{
+  display:flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
 
-    if (cached){
-      try{
-        const obj = JSON.parse(cached);
-        if (now - obj.savedAt < 24*60*60*1000 && obj.data){
-          applyData(obj.data);
-          return;
-        }
-      } catch {}
-    }
+.modalTop .title{
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: .82rem;
+}
+.modalTop .flags{ display:flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 
-    // IMPORTANT: path must match where the JSON file lives relative to THIS html file
-    const day = new Date().toISOString().slice(0,10);
-    const res = await fetch(`ticker-snapshot.json?v=${day}`);
-    if(!res.ok) return;
+.close{
+  appearance: none;
+  border: 1px solid rgba(255,176,0,.25);
+  background: rgba(255,176,0,.08);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: .72rem;
+}
+.close:hover{ border-color: rgba(255,176,0,.5); }
 
-    const data = await res.json();
-    localStorage.setItem(KEY, JSON.stringify({ savedAt: now, data }));
-    applyData(data);
-  }
+.contextBanner{
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: rgba(0,242,255,.90);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  font-size: .72rem;
+  background: rgba(0,242,255,.06);
+}
+.contextBanner.active{
+  animation: bannerPulse 1.6s ease;
+}
+@keyframes bannerPulse{
+  0%{ filter: brightness(1); }
+  20%{ filter: brightness(1.35); }
+  100%{ filter: brightness(1); }
+}
 
-  // Run after DOM is ready
-  window.addEventListener("DOMContentLoaded", loadDailyTicker);
-</script>
+/* Article typography */
+.article{
+  padding: 18px 18px 30px;
+  overflow: auto;
+}
+.hud-header .ns-kicker{
+  margin: 0 0 6px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,176,0,.90);
+  font-weight: 900;
+}
+.hud-header .ns-meta{
+  margin: 0;
+  color: var(--muted);
+  font-size: .92rem;
+}
+.hud-header .flag{
+  margin: 14px 0 12px;
+  display:inline-block;
+  background: rgba(255,0,60,.12);
+  border: 1px solid rgba(255,0,60,.28);
+  color: rgba(255,0,60,.95);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: .78rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+.article h1{
+  margin: 10px 0 0;
+  font-size: clamp(1.35rem, 3.2vw, 2.1rem);
+  line-height: 1.15;
+}
+
+.editor-note{
+  margin: 16px 0 18px;
+  padding: 12px 12px;
+  border-left: 4px solid rgba(0,242,255,.70);
+  background: rgba(0,242,255,.06);
+  color: rgba(0,242,255,.90);
+  font-style: italic;
+}
+
+.article p{ margin: 14px 0; color: rgba(234,238,247,.92); }
+
+.article blockquote{
+  margin: 18px 0;
+  padding: 14px 14px;
+  border-left: 4px solid rgba(255,176,0,.75);
+  background: rgba(255,176,0,.06);
+  color: rgba(234,238,247,.96);
+  font-weight: 650;
+}
+
+.section-break{
+  margin: 22px 0 10px;
+  color: rgba(0,242,255,.88);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: .82rem;
+}
+
+.article ul{ margin: 10px 0 16px 20px; }
+.article li{ margin: 6px 0; color: rgba(234,238,247,.90); }
+
+.redaction-line{
+  margin: 18px 0;
+  padding: 12px 12px;
+  border: 1px dashed rgba(255,0,60,.40);
+  color: rgba(255,0,60,.92);
+  background: rgba(255,0,60,.06);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: .82rem;
+}
+
+.footer{
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  color: rgba(234,238,247,.62);
+  font-size: .9rem;
+}
+
+/* Glitch look (subtle) */
+.glitch{
+  color: rgba(255,176,0,.98);
+  text-shadow:
+    1px 0 0 rgba(255,0,60,.45),
+   -1px 0 0 rgba(0,242,255,.35);
+}
