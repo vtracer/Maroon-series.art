@@ -31,7 +31,7 @@
 
     // IMPORTANT: path must match where the JSON file lives relative to THIS html file
     const day = new Date().toISOString().slice(0,10);
-    const res = await fetch(`ticker-snapshot.json?v=${day}`);
+    const res = await fetch(`/Mar00n/ticker-snapshot.json?v=${day}`);
     if(!res.ok) return;
 
     const data = await res.json();
