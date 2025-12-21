@@ -79,16 +79,7 @@ a{ color:inherit; }
   padding: 6px 10px;
   min-width: 0;
 }
-.ticker i{
-  display:inline-block;
-  white-space: nowrap;
-  font-style: normal;
-  animation: tickerMove 28s linear infinite;
-}
-@keyframes tickerMove{
-  from{ transform: translateX(0); }
-  to{ transform: translateX(-45%); }
-}
+
 .ticker .tick{ color: var(--flat); font-size: .8rem; letter-spacing: .6px; }
 .ticker .tick b{ font-weight: 900; color: var(--amber); }
 .ticker .tick.up{ color: var(--up); }
