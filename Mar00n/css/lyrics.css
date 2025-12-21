@@ -1,0 +1,35 @@
+.lyric-loop{
+  margin: 14px 0 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,176,0,.22);
+  background: rgba(0,0,0,.42);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+}
+
+.lyric-loop__label{
+  font-size: .72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,176,0,.78);
+  margin-bottom: 10px;
+}
+
+.lyric-loop__lines{
+  color: rgba(234,238,247,.92);
+  font-style: italic;
+  letter-spacing: .4px;
+}
+
+.lyric-loop__lines > div{
+  margin: 6px 0;
+  padding-left: 10px;
+  border-left: 2px solid rgba(255,176,0,.18);
+}
+
+.lyric-loop__lines > div:nth-child(2){
+  opacity: .88;
+}
+.lyric-loop__lines > div:nth-child(3){
+  opacity: .80;
+}
