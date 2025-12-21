@@ -132,6 +132,32 @@
       font-size: 0.7rem;
       color: var(--nlt-dim);
     }
+    
+    .nlt-prop{
+  margin: 18px 0 22px;
+  padding: 16px 16px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,176,0,.28);
+  background: linear-gradient(180deg, rgba(255,176,0,.08), rgba(0,0,0,.22));
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+}
+
+.nlt-prop__line{
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: rgba(255,176,0,.98);
+  text-shadow: 0 0 18px rgba(255,176,0,.18);
+  font-size: clamp(1.05rem, 2.2vw, 1.55rem);
+  line-height: 1.12;
+  text-transform: uppercase;
+}
+
+.nlt-prop__sub{
+  margin-top: 10px;
+  color: rgba(234,238,247,.78);
+  font-size: .98rem;
+  letter-spacing: .2px;
+}
   </style>
 </head>
 <body>
@@ -205,7 +231,11 @@
 
 <span class="span-mark block" data-span="19">New Life had sold her the same line:</span>
 
-Create forever. No expiration date. Art that would outlive the flesh.
+<div class="nlt-prop">
+  <div class="nlt-prop__line">Create forever.</div>
+  <div class="nlt-prop__line">No expiration date.</div>
+  <div class="nlt-prop__sub">Art that would outlive the flesh.</div>
+</div>
 
 <span class="span-mark block" data-span="20">The upload room. With bright lights and padded smiles. The scanner crown pressed softly against her scalp, cold and sterile.</span>
 
