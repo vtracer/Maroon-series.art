@@ -92,7 +92,29 @@
   display: block;
   margin: 0 0 10px 0;
 }
+/* Subtle links (no underline, small color shift) */
+a{
+  color: rgba(255,176,0,.78);     /* soft amber */
+  text-decoration: none;
+}
 
+a:hover,
+a:focus-visible{
+  color: rgba(255,176,0,.92);
+  text-decoration: none;
+}
+
+/* If you want them even less obvious inside body copy */
+.manuscript-text a{
+  color: rgba(234,238,247,.78);   /* barely different from text */
+  border-bottom: 1px solid rgba(255,176,0,.18); /* optional “hint” underline */
+}
+
+.manuscript-text a:hover,
+.manuscript-text a:focus-visible{
+  color: rgba(234,238,247,.92);
+  border-bottom-color: rgba(255,176,0,.32);
+}
     .highlight {
       background-color: var(--nlt-violet);
       color: white;
