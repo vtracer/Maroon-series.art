@@ -297,25 +297,33 @@ const NS_AUDIO = (() => {
 })();
 
   function openSim() {
-    if (!overlay) return;
-    overlay.classList.add("active");
-    overlay.setAttribute("aria-hidden", "false");
-    openBtn?.setAttribute("aria-expanded", "true");
-    document.documentElement.classList.add("no-scroll");
+  if (!overlay) return;
+  if (overlay.classList.contains("active")) return; // prevent double-open spam
 
-    if (banner) {
-      banner.classList.add("active");
-      setTimeout(() => banner.classList.remove("active"), 1600);
-    }
-  }
+  NS_AUDIO.open(); // ✅ start loop + play a random one-shot
 
-  function closeSim() {
-    if (!overlay) return;
-    overlay.classList.remove("active");
-    overlay.setAttribute("aria-hidden", "true");
-    openBtn?.setAttribute("aria-expanded", "false");
-    document.documentElement.classList.remove("no-scroll");
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+  openBtn?.setAttribute("aria-expanded", "true");
+  document.documentElement.classList.add("no-scroll");
+
+  if (banner) {
+    banner.classList.add("active");
+    setTimeout(() => banner.classList.remove("active"), 1600);
   }
+}
+
+function closeSim() {
+  if (!overlay) return;
+  if (!overlay.classList.contains("active")) return;
+
+  NS_AUDIO.close(); // ✅ stop micro-events + fade out bed
+
+  overlay.classList.remove("active");
+  overlay.setAttribute("aria-hidden", "true");
+  openBtn?.setAttribute("aria-expanded", "false");
+  document.documentElement.classList.remove("no-scroll");
+}
 
   openBtn?.addEventListener("click", openSim);
   openBtn?.addEventListener("keydown", (e) => {
