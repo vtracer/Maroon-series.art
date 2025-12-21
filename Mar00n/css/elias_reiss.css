@@ -1,0 +1,15 @@
+.architect-speech{
+  color: rgba(0, 242, 255, .88);                
+  text-shadow:
+    0 0 14px rgba(0,242,255,.14);
+    1px 0 0 rgba(255, 0, 60, .18);              
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.architect-block{
+  border-left: 3px solid rgba(0,242,255,.22);
+  padding-left: 12px;
+  margin: 0 0 12px 0;
+  background: rgba(0,242,255,.03);
+}
