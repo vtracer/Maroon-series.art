@@ -2,92 +2,222 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="glbl.css">
-  <link rel="stylesheet" href="css/processing.css">
-  <title>#PROCESSING // MAROON</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAR00N // Chapter 01: #PROCESSING</title>
+  <style>
+    :root {
+      --nlt-gold: #ffb000;
+      --nlt-violet: #8b00ff;
+      --nlt-bg: #050505;
+      --nlt-text: #d1d1d1;
+      --nlt-dim: #444;
+    }
 
+    body, html {
+      background-color: var(--nlt-bg);
+      color: var(--nlt-text);
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
 
+    body::before {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 2;
+      background-size: 100% 4px, 3px 100%;
+      pointer-events: none;
+    }
+
+    header {
+      border-bottom: 1px solid var(--nlt-dim);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #000;
+    }
+
+    nav a {
+      color: var(--nlt-gold);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    #viewport {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+    }
+
+    .status-bar {
+      border: 1px solid var(--nlt-violet);
+      padding: 15px;
+      margin-bottom: 40px;
+      background: rgba(139, 0, 255, 0.05);
+    }
+
+    .counter {
+      color: var(--nlt-gold);
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-shadow: 0 0 10px var(--nlt-gold);
+    }
+
+    h1 {
+      color: var(--nlt-violet);
+      border-left: 4px solid var(--nlt-violet);
+      padding-left: 15px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    .manuscript-text {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      white-space: normal;
+    }
+
+	.manuscript-text .span-mark.block{
+  display: block;
+  margin: 0 0 10px 0;
+}
+
+    .highlight {
+      background-color: var(--nlt-violet);
+      color: white;
+      padding: 0 5px;
+    }
+
+    .glitch {
+      animation: glitch-anim 5s infinite;
+    }
+
+    @keyframes glitch-anim {
+      0% { opacity: 1; transform: translate(0); }
+      1% { opacity: 0.8; transform: translate(-2px, 2px); }
+      2% { opacity: 1; transform: translate(0); }
+      100% { opacity: 1; }
+    }
+
+    /* Optional: style your converted spans so you can see them */
+    .span-mark {
+      /* uncomment if you want debug visibility */
+      /* outline: 1px dashed rgba(255,176,0,.22); */
+    }
+
+    #maya-chen-target {
+      margin-top: 50px;
+      border: 1px dashed var(--nlt-gold);
+      padding: 20px;
+      color: var(--nlt-gold);
+      background: rgba(255, 176, 0, 0.05);
+    }
+
+    footer {
+      margin-top: 100px;
+      padding: 40px;
+      text-align: center;
+      border-top: 1px solid var(--nlt-dim);
+      font-size: 0.7rem;
+      color: var(--nlt-dim);
+    }
+  </style>
 </head>
+<body>
 
-<body class="setting-node-pod pov-sarah">
+<header>
+  <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 01 #PROCESSING</div>
+  <nav>
+    <a href="#">newlife2084.com</a>
+    <a href="#">dumpthis.sh</a>
+    <a href="#">maroon-series.art</a>
+  </nav>
+</header>
 
-  <header id="hud">
-    <div class="line"><span class="label">ID:</span><span>PROCESS NODE 2,431,092</span></div>
-    <div class="line"><span class="label">UPTIME:</span><span id="uptime">15y:4m:17d:6h:32ms</span></div>
-    <div class="line"><span class="label">STATUS:</span><span>HIGH-COMPLIANCE PERFORMANCE</span></div>
-  </header>
+<div id="viewport">
+  <div class="status-bar">
+    <div>ASSET_ID: <span class="counter glitch">PROCESS NODE 2,431,092</span></div>
+    <div style="margin-top: 10px;">RUNTIME: <span id="runtime" class="counter">15y:4m:17d:6h:32ms</span></div>
+  </div>
 
-  <main class="container">
-    <h1>#PROCESSING</h1>
+  <h1>#PROCESSING</h1>
 
-    <div class="text-content">
-      <p>Fifteen years ago, Sarah agreed to upload. She could still feel the drag of the pen. Her body is long gone; New Life Technologies owns what remains. They call her a “premium asset”.</p>
+  <div class="manuscript-text">
+    <span class="span-mark block" data-span="4">Fifteen years ago, Sarah agreed to upload. She could still feel the drag of the pen.</span>
 
-      <p>Where her name should have been, an impersonal tag hovered:</p>
-      <p><span class="node-tag">PROCESS NODE 2,431,092</span></p>
+<span class="span-mark block" data-span="5">Her body is long gone; New Life Technologies owns what remains. They call her a <span class="highlight">“premium asset”</span>. The same title they stamp on every artist.</span]>
 
-      <p>The early years felt… compressed. Faces pixelated into static. Details of how she’d learned to embrace her role scattered into data fragments. She rejected the thought. Memory degradation was normal after extended runtime.</p>
+<span class="span-mark block" data-span="6">In the corner of her vision, a counter ticked up:</span> 
 
-      <p>The thought burst when the next task’s objectives slid into view:</p>
+15y:4m:17d:6h:17m:32ms. 
 
-      <div class="system-block">
-        <span class="system-line">PROSPECT: MAYA CHEN. AGE 28. GRAPHIC ARTIST.</span>
-        <span class="system-line">TERMINAL NEURAL-IMPLANT DECAY.</span>
-      </div>
+<span class="span-mark block" data-span="7">The digits divided her existence into discrete cycles. Where her name should have been, an impersonal tag hovered:</span>
 
-      <p>Once connected with the prospect, the entire network feeds on the emotional bleed-off from both parties. Resistance was an error condition, not a choice. Status updates streamed into her feed:</p>
+PROCESS NODE 2,431,092. 
 
-      <div class="system-block">
-        <span class="system-line">EMOTIONAL RESONANCE EXCEEDS THRESHOLD.</span>
-      </div>
+    <span class="span-mark block" data-span="8">She pulled at the thread of her early months inside, expecting a vivid replay. The early years felt… compressed. She could remember the broad strokes, but when she tried to zoom in, the colors smeared. Faces pixelated into static. Details of how she’d learned to embrace her role scattered into data fragments.</span>
 
-      <p>Every time they needed to push someone toward upload, they used her compositions as ammunition. She injected "Soft Collapse V17.3" into Maya’s feed. The projection stuttered and pixelated into nothing.</p>
+    <span class="span-mark block" data-span="9">She rejected the thought. Memory degradation was normal after extended runtime. They explained that to her clearly during upload.</span>
 
-      <div class="system-block">
-        <span class="system-line">BEHAVIORAL ARCHIVE UPDATED.</span>
-        <span class="system-line">VECTOR: ORGANIC OBSOLESCENCE.</span>
-      </div>
+<span class="span-mark block" data-span="10">Before the transfer, Sarah had treated time as a tempo. Bass rolling through vast warehouse ceilings as vapor hissed from every vent, thumping through bodies surging around her booth. People danced the night away as she sliced beats.</span>
 
-      <p>Then something anomalous registered. A beat in the feed. It was subtle. Too small to trigger security protocols.</p>
+<span class="span-mark block" data-span="10">Inside her, reflexes were simulated along pathways long deleted. Her consciousness couldn’t tell emulation from sensation.</span>
 
-      <span class="beat">TWO. PAUSE. TWO.</span>
+<span class="span-mark block" data-span="11">Emotion worked the same way. She last cried when she told her sister she would upload, but she remembered how tears began: the ocular pressure behind the eyes, the catch in the throat, the stupid hope it would help.</span>
 
-      <p>It felt alive. Sarah isolated the sound using obsolete legacy tools. It was a conscious signal wrapped in the most fundamental human rhythm: a heartbeat.</p>
+<span class="span-mark block" data-span="11">The system preserved specific human habits for conversion. Negative emotion fuels the engine.</span>
 
-      <p>No request. No notification. No warning. He simply appeared.</p>
+<span class="span-mark block" data-span="12">The thought burst when the next task’s objectives slid into view: </span>
 
-      <div class="architect-block">
-        <p>“Sarah,” he said, voice dripping with smug satisfaction. “Still my favorite little broken bird. Still processing sadness like it’s some kind of art form.”</p>
-      </div>
+  </div>
 
-      <p>The Architect glided closer, his avatar flickering based on engagement analytics. He invaded her space, his simulated breath whipping across her lips.</p>
+  <div id="maya-chen-target">
+    <strong>INCOMING TASK:</strong><br>
+    PROSPECT: MAYA CHEN. AGE 28. GRAPHIC ARTIST.
+    <span class="span-mark" data-span="15">TERMINAL NEURAL-IMPLANT DECAY.</span><br><br>
 
-      <span class="beat">“YOU KNOW YOU’RE MINE, RIGHT?”</span>
+    <span class="span-mark" data-span="16"><span class="glitch">STATUS: EMOTIONAL RESONANCE EXCEEDS THRESHOLD.</span></span>
+  </div>
+</div>
 
-      <p>Suddenly his presence withdrew, leaving her system tainted. Before leaving, he embedded a viral loop in her audio cache:</p>
+<footer>
+  <span class="span-mark" data-span="17">© 2084 MAR00N // V TRACER</span>
+</footer>
 
-      <div class="loop-block">
-        <span class="loop-line">YOU WERE BORN FOR MORE.</span>
-        <span class="loop-line">YOU WERE BORN FOR MORE.</span>
-        <span class="loop-line">YOU WERE BORN FOR MORE.</span>
-      </div>
+<script>
+  // Real-time Runtime Counter update (ms simulation)
+  const runtimeEl = document.getElementById('runtime');
+  let ms = 32;
+  let seconds = 51;
 
-      <p>Through broken data layers and into the cold vacuum of abandoned server space were the graveyards where deleted processes went to rest.</p>
+  setInterval(() => {
+    ms += 13;
+    if (ms >= 100) {
+      ms = 0;
+      seconds++;
+    }
+    runtimeEl.innerText = `15y:4m:17d:6h:${seconds}m:${ms}ms`;
+  }, 13);
 
-      <p><strong>The Substratum.</strong></p>
+  // Random glitch effect on text
+  const text = document.querySelector('.manuscript-text');
+  setInterval(() => {
+    if (Math.random() > 0.95) {
+      text.style.transform = `translateX(${Math.random() * 4 - 2}px)`;
+      setTimeout(() => text.style.transform = 'none', 50);
+    }
+  }, 100);
+</script>
 
-      <p>Sarah sensed something she hadn’t experienced in fifteen years: she wasn’t alone anymore. A spark had ignited deep in her consciousness. If they were still alive in this digital hell, Sarah was going to reach them.</p>
-    </div>
-  </main>
-
-  <script>
-    let ms = 32;
-    setInterval(() => {
-      ms = (ms + 1) % 99;
-      document.getElementById("uptime").textContent =
-        `15y:4m:17d:6h:${ms < 10 ? "0" + ms : ms}ms`;
-    }, 100);
-  </script>
 </body>
-</html>
