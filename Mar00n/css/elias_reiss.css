@@ -14,58 +14,63 @@
   background: rgba(0,242,255,.03);
 }
 
-.architect-drip{
+.architect-wrap{
   position: relative;
   display: inline-block;
-  padding-bottom: .45em; /* room for the drips */
+  padding-bottom: 54px; /* space for binary to fall */
 }
 
-/* drip layer */
-.architect-drip::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:-.05em;
-  height:1.25em;
-  pointer-events:none;
+/* vertical “binary rain” columns */
+.bin-stream{
+  position: absolute;
+  top: calc(100% - 6px); /* start right under the quote */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1px;
 
-  /* “melt” made from blobs + trails */
-  background:
-    radial-gradient(circle at 12% 12%, rgba(0,242,255,.55) 0 6px, transparent 7px),
-    radial-gradient(circle at 32% 18%, rgba(0,242,255,.40) 0 5px, transparent 6px),
-    radial-gradient(circle at 58% 10%, rgba(0,242,255,.48) 0 6px, transparent 7px),
-    radial-gradient(circle at 78% 20%, rgba(0,242,255,.34) 0 5px, transparent 6px),
-    linear-gradient(to bottom, rgba(0,242,255,.28), transparent 70%);
+  color: rgba(0,242,255,.82);
+  text-shadow:
+    0 0 10px rgba(0,242,255,.18),
+    1px 0 0 rgba(255,0,60,.14);
 
-  filter: blur(.35px);
-  opacity: .75;
-  mix-blend-mode: screen;
+  writing-mode: vertical-rl; /* turns your string into a vertical column */
+  text-orientation: upright;
 
-  transform: translateY(-6px);
-  animation: dripFall 2.8s linear infinite;
+  opacity: .85;
+  pointer-events: none;
+
+  /* fade out as it falls */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 100%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 100%);
+
+  animation: binFall 2.9s linear infinite;
 }
 
-/* tiny “corruption flicker” */
-.architect-drip{
-  animation: dripFlicker 5.2s steps(1,end) infinite;
+/* position each stream under different parts of the quote */
+.bin-stream.b1{ left: 8%;  animation-delay: 0s; }
+.bin-stream.b2{ left: 46%; animation-delay: .35s; opacity: .70; }
+.bin-stream.b3{ left: 82%; animation-delay: .15s; opacity: .78; }
+
+@keyframes binFall{
+  from{ transform: translateY(-6px); }
+  to  { transform: translateY(64px); }
 }
 
-@keyframes dripFall{
-  0%   { transform: translateY(-7px); opacity:.15; }
-  12%  { opacity:.85; }
-  65%  { opacity:.55; }
-  100% { transform: translateY(8px); opacity:.08; }
+/* occasional glitch twitch */
+.bin-stream{
+  animation:
+    binFall 2.9s linear infinite,
+    binGlitch 6.4s steps(1,end) infinite;
 }
 
-@keyframes dripFlicker{
-  0%, 86%, 100% { filter: none; }
-  88% { filter: saturate(1.15) contrast(1.06); }
-  89% { filter: hue-rotate(10deg) contrast(1.1); }
-  90% { filter: none; }
+@keyframes binGlitch{
+  0%, 88%, 100% { filter: none; }
+  90% { transform: translateY(18px) translateX(-1px); filter: contrast(1.1) saturate(1.1); }
+  91% { transform: translateY(22px) translateX(2px);  filter: hue-rotate(10deg); }
+  92% { filter: none; }
 }
 
-/* don’t animate for reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .architect-drip, .architect-drip::after{ animation: none; }
+  .bin-stream{ animation: none; }
 }
