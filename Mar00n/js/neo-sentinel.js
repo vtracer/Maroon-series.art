@@ -14,7 +14,7 @@ const NS_AUDIO = (() => {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
 
     master = ctx.createGain();
-    master.gain.value = 0.8; // overall loudness, keep civilized
+    master.gain.value = 0.4; // overall loudness, keep civilized
     master.connect(ctx.destination);
 
     bedGain = ctx.createGain();
