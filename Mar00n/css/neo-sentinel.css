@@ -585,7 +585,7 @@ html.no-scroll .maroon-footer{
 
 /* Glassy article panel: slightly see-through + blurs what's behind it */
 .modal{
-  background: rgba(10,12,18,.72);          /* was .82, make it more see-through */
+  background: rgba(10,12,18,.52);          /* was .82, make it more see-through */
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
 }
