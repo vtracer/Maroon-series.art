@@ -61,6 +61,27 @@ a{ color:inherit; }
   text-transform: uppercase;
 }
 
+.brand{ min-width: 180px; }
+.brandRow{ display:flex; align-items:center; gap:10px; }
+
+.brandText{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.brandText b{
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.brandText span{
+  font-size: .72rem;
+  letter-spacing: 1.6px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
 .status{
   font-size: .72rem;
   letter-spacing: 1.6px;
