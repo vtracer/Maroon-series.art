@@ -534,3 +534,19 @@ a{ color:inherit; }
   font-size: .78rem;
   font-weight: 900;
 }
+
+.topbar{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand{ grid-column: 1; }
+.ticker{ grid-column: 2; justify-self: center; }
+.status{ grid-column: 3; }
+
+.ticker{
+  width: min(680px, 100%);
+  overflow: hidden;
+}
