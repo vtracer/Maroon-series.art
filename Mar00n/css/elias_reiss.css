@@ -13,3 +13,59 @@
   margin: 0 0 12px 0;
   background: rgba(0,242,255,.03);
 }
+
+.architect-drip{
+  position: relative;
+  display: inline-block;
+  padding-bottom: .45em; /* room for the drips */
+}
+
+/* drip layer */
+.architect-drip::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-.05em;
+  height:1.25em;
+  pointer-events:none;
+
+  /* “melt” made from blobs + trails */
+  background:
+    radial-gradient(circle at 12% 12%, rgba(0,242,255,.55) 0 6px, transparent 7px),
+    radial-gradient(circle at 32% 18%, rgba(0,242,255,.40) 0 5px, transparent 6px),
+    radial-gradient(circle at 58% 10%, rgba(0,242,255,.48) 0 6px, transparent 7px),
+    radial-gradient(circle at 78% 20%, rgba(0,242,255,.34) 0 5px, transparent 6px),
+    linear-gradient(to bottom, rgba(0,242,255,.28), transparent 70%);
+
+  filter: blur(.35px);
+  opacity: .75;
+  mix-blend-mode: screen;
+
+  transform: translateY(-6px);
+  animation: dripFall 2.8s linear infinite;
+}
+
+/* tiny “corruption flicker” */
+.architect-drip{
+  animation: dripFlicker 5.2s steps(1,end) infinite;
+}
+
+@keyframes dripFall{
+  0%   { transform: translateY(-7px); opacity:.15; }
+  12%  { opacity:.85; }
+  65%  { opacity:.55; }
+  100% { transform: translateY(8px); opacity:.08; }
+}
+
+@keyframes dripFlicker{
+  0%, 86%, 100% { filter: none; }
+  88% { filter: saturate(1.15) contrast(1.06); }
+  89% { filter: hue-rotate(10deg) contrast(1.1); }
+  90% { filter: none; }
+}
+
+/* don’t animate for reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .architect-drip, .architect-drip::after{ animation: none; }
+}
