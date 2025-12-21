@@ -142,19 +142,34 @@
   box-shadow: 0 18px 60px rgba(0,0,0,.55);
 }
 
-.nlt-prop__line{
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  color: rgba(255,176,0,.98);
-  text-shadow: 0 0 18px rgba(255,176,0,.18);
-  font-size: clamp(1.05rem, 2.2vw, 1.55rem);
-  line-height: 1.12;
-  text-transform: uppercase;
+.nlt-poster{
+  margin: 18px 0 22px;
+  padding: 18px 16px;
+  border-radius: 12px;
+  border-left: 4px solid rgba(255,176,0,.85);
+  border-top: 1px solid rgba(255,176,0,.18);
+  border-right: 1px solid rgba(255,176,0,.12);
+  border-bottom: 1px solid rgba(255,176,0,.12);
+  background: rgba(0,0,0,.48);
+  box-shadow: 0 20px 80px rgba(0,0,0,.65);
 }
 
-.nlt-prop__sub{
-  margin-top: 10px;
-  color: rgba(234,238,247,.78);
+.nlt-poster__a,
+.nlt-poster__b{
+  font-weight: 950;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,176,0,.99);
+  text-shadow: 0 0 22px rgba(255,176,0,.18);
+  font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+  line-height: 1.08;
+}
+
+.nlt-poster__b{ margin-top: 6px; }
+
+.nlt-poster__c{
+  margin-top: 12px;
+  color: rgba(234,238,247,.68);
   font-size: .98rem;
   letter-spacing: .2px;
 }
@@ -231,10 +246,10 @@
 
 <span class="span-mark block" data-span="19">New Life had sold her the same line:</span>
 
-<div class="nlt-prop">
-  <div class="nlt-prop__line">Create forever.</div>
-  <div class="nlt-prop__line">No expiration date.</div>
-  <div class="nlt-prop__sub">Art that would outlive the flesh.</div>
+<div class="nlt-poster">
+  <div class="nlt-poster__a">Create forever.</div>
+  <div class="nlt-poster__b">No expiration date.</div>
+  <div class="nlt-poster__c">Art that would outlive the flesh.</div>
 </div>
 
 <span class="span-mark block" data-span="20">The upload room. With bright lights and padded smiles. The scanner crown pressed softly against her scalp, cold and sterile.</span>
