@@ -1,6 +1,6 @@
 .lyric-viewport{
   margin: 14px 0 18px;
-  height: 110px;                /* adjust: how tall the “window” is */
+  height: 110px;            
   overflow: hidden;
   border-radius: 12px;
   border: 1px solid rgba(255,176,0,.22);
