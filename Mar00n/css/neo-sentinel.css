@@ -419,6 +419,7 @@ a{ color:inherit; }
   margin: 10px 0 0;
   font-size: clamp(1.35rem, 3.2vw, 2.1rem);
   line-height: 1.15;
+  text-align: left;
 }
 
 .editor-note{
