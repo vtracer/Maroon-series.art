@@ -572,11 +572,13 @@ a{ color:inherit; }
   overflow: hidden;
 }
 
-/* Overlay must always win */
 .overlay{ z-index: 5000; }
 
-/* Footer must lose */
 .maroon-footer{
   z-index: 10;
-  position: fixed; /* keep if glbl.css uses fixed */
+  position: fixed;
+}
+
+html.no-scroll .maroon-footer{
+  pointer-events: none;
 }
