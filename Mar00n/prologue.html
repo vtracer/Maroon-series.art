@@ -56,15 +56,27 @@
 </script>
 
 <div class="ticker" aria-hidden="true">
-  <i>
-    <span class="tick flat" data-real="NVDA"><b>NLT</b> <span class="chg">…</span> • </span>
-    <span class="tick flat" data-real="AAPL"><b>GLTR</b> <span class="chg">…</span> • </span>
-    <span class="tick flat" data-real="TSLA"><b>NEOS</b> <span class="chg">…</span> • </span>
-    <span class="tick flat" data-real="ORCL"><b>QCSQ</b> <span class="chg">…</span> • </span>
+  <div class="tickerTrack">
+    <i class="tickerRun">
+      <!-- your ticks -->
+      <span class="tick flat" data-real="NVDA"><b>NLT</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="AAPL"><b>GLTR</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="TSLA"><b>NEOS</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="ORCL"><b>QCSQ</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="NVDA"><b>GRFT</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="TSLA"><b>VIBE</b> <span class="chg">…</span> • </span>
+    </i>
 
-    <span class="tick flat" data-real="NVDA"><b>GRFT</b> <span class="chg">…</span> • </span>
-    <span class="tick flat" data-real="TSLA"><b>VIBE</b> <span class="chg">…</span> • </span>
-  </i>
+    <!-- duplicate for seamless loop -->
+    <i class="tickerRun" aria-hidden="true">
+      <span class="tick flat" data-real="NVDA"><b>NLT</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="AAPL"><b>GLTR</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="TSLA"><b>NEOS</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="ORCL"><b>QCSQ</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="NVDA"><b>GRFT</b> <span class="chg">…</span> • </span>
+      <span class="tick flat" data-real="TSLA"><b>VIBE</b> <span class="chg">…</span> • </span>
+    </i>
+  </div>
 </div>
 
     <div class="status"><b>CONTEXT</b> ACTIVE</div>
