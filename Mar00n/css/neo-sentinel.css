@@ -612,3 +612,24 @@ html.no-scroll .maroon-footer{
 .article{
   background: rgba(10,12,18,.12);
 }
+
+/* Overlay article title: stop the giant tracked single-line clipping */
+.hud-header h1{
+  text-align: left;
+
+  white-space: normal !important;      /* overrides any global nowrap */
+  overflow: visible;                   /* don't crop */
+  max-width: 100%;
+  box-sizing: border-box;
+
+  overflow-wrap: anywhere;             /* allow wrapping instead of horizontal overflow */
+  word-break: normal;
+
+  letter-spacing: clamp(0.02em, 0.25vw, 0.10em) !important; /* tame the spacing */
+  padding-right: 0.35em;               /* avoids last-glyph edge clipping on iOS */
+}
+
+/* Make sure the glitch span doesn't re-introduce weird spacing */
+.hud-header h1 .glitch{
+  letter-spacing: inherit !important;
+}
