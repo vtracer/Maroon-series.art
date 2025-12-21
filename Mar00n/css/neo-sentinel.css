@@ -582,3 +582,14 @@ a{ color:inherit; }
 html.no-scroll .maroon-footer{
   pointer-events: none;
 }
+
+/* Glassy article panel: slightly see-through + blurs what's behind it */
+.modal{
+  background: rgba(10,12,18,.72);          /* was .82, make it more see-through */
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.article{
+  background: rgba(10,12,18,.18);
+}
