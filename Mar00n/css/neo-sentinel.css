@@ -571,3 +571,12 @@ a{ color:inherit; }
   width: min(680px, 100%);
   overflow: hidden;
 }
+
+/* Overlay must always win */
+.overlay{ z-index: 5000; }
+
+/* Footer must lose */
+.maroon-footer{
+  z-index: 10;
+  position: fixed; /* keep if glbl.css uses fixed */
+}
