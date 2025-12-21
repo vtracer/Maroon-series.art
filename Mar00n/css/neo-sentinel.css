@@ -95,6 +95,25 @@ a{ color:inherit; }
 .ticker .tick.down{ color: var(--down); }
 .ticker .tick.flat{ color: var(--flat); opacity: .9; }
 
+.tickerTrack{
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: tickerScroll var(--tickerDur, 22s) linear infinite;
+}
+
+.tickerRun{
+  display: flex;
+  gap: 14px;
+  padding-right: 14px;
+  white-space: nowrap;
+}
+
+@keyframes tickerScroll{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); }
+}
+
 .front{
   display: grid;
   gap: 16px;
