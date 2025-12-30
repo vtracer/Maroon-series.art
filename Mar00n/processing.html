@@ -187,12 +187,14 @@ a:focus-visible{
     }
 
     .maroon-footer .maroon-home{
-      display:inline-block;
+      display:inline-flex;
+      flex-direction:column;
+      gap:2px;
+      align-items:center;
       text-decoration:none;
       color: var(--nlt-text);
       font-weight:700;
       letter-spacing:2px;
-      text-align:center;
     }
 
     .maroon-footer .maroon-mark{
@@ -206,7 +208,7 @@ a:focus-visible{
       color: var(--nlt-dim);
       font-weight:400;
       letter-spacing:1px;
-      margin-top:6px;
+      margin-top:-2px;
     }
 
     .maroon-footer .maroon-home:hover .maroon-mark{ text-decoration:underline; }
