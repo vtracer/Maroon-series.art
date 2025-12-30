@@ -63,6 +63,24 @@
       position: relative;
     }
 
+    /* Background image for the pod interior (50% opacity) */
+    #viewport::before{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('pod_background.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.10;
+      pointer-events: none;
+      z-index: 0;
+      filter: brightness(0.85) contrast(0.98);
+    }
+
+    /* ensure viewport children render above the background image */
+    #viewport > * { position: relative; z-index: 1; }
+
     .status-bar {
       border: 1px solid var(--nlt-violet);
       padding: 15px;
@@ -157,6 +175,41 @@ a:focus-visible{
       font-size: 0.7rem;
       color: var(--nlt-dim);
     }
+
+    /* MAR00N footer styles (copied/implemented for processing.html) */
+    .maroon-footer{
+      margin-top: 60px;
+      padding: 28px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      color: var(--nlt-dim);
+      background: transparent;
+    }
+
+    .maroon-footer .maroon-home{
+      display:inline-block;
+      text-decoration:none;
+      color: var(--nlt-text);
+      font-weight:700;
+      letter-spacing:2px;
+      text-align:center;
+    }
+
+    .maroon-footer .maroon-mark{
+      font-size:1rem;
+      display:inline-block;
+    }
+
+    .maroon-footer .maroon-sub{
+      display:block;
+      font-size:0.75rem;
+      color: var(--nlt-dim);
+      font-weight:400;
+      letter-spacing:1px;
+      margin-top:6px;
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-mark{ text-decoration:underline; }
     
     .nlt-prop{
   margin: 18px 0 22px;
@@ -806,8 +859,8 @@ A heartbeat.
   
 
 
-</div>
- <footer class="maroon-footer">
+ </div>
+<footer class="maroon-footer">
   <a class="maroon-home" href="http://maroon-series.art">
     <span class="maroon-mark">MAR00N</span>
     <span class="maroon-sub">return to root</span>
