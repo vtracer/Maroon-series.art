@@ -297,6 +297,69 @@ a:focus-visible{
   margin: 0 0 12px 0;
 }
 
+/* Architect wrap with binary drip effect */
+.architect-wrap {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.architect-speech.architect-drip {
+  display: block;
+  position: relative;
+  color: var(--nlt-gold);
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 0 0 20px var(--nlt-gold);
+}
+
+/* Binary stream drip animation */
+.bin-stream {
+  display: block;
+  color: rgba(139, 0, 255, 0.7);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  font-weight: bold;
+  line-height: 1.4;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bin-stream.b1 {
+  animation: dripDown 8s linear infinite;
+  opacity: 0.8;
+}
+
+.bin-stream.b2 {
+  animation: dripDown 8s linear infinite;
+  animation-delay: 1.2s;
+  opacity: 0.6;
+}
+
+.bin-stream.b3 {
+  animation: dripDown 8s linear infinite;
+  animation-delay: 2.4s;
+  opacity: 0.4;
+}
+
+@keyframes dripDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  5% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+}
+
   </style>
 </head>
 <body>
