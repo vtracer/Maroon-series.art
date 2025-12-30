@@ -77,6 +77,228 @@
       opacity: 0.5;
     }
 
+    /* Surveillance scan line */
+    #viewport::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 150, 0.8), transparent);
+      box-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
+      animation: scanLine 12s linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes scanLine {
+      0% { top: 0; opacity: 0; }
+      5% { opacity: 1; }
+      95% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* Fluid surging text effect */
+    .fluid-surge-text {
+      background: linear-gradient(90deg, 
+        rgba(0, 255, 150, 0.8) 0%, 
+        rgba(0, 255, 150, 1) 30%, 
+        rgba(0, 255, 150, 0.8) 60%, 
+        rgba(0, 255, 150, 0.4) 100%);
+      background-size: 200% 100%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fluidSurge 2.5s ease-in-out infinite;
+      text-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
+    }
+
+    @keyframes fluidSurge {
+      0% { background-position: -200% 0; }
+      50% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Dimmed word */
+    .dimmed {
+      opacity: 0.45;
+      filter: grayscale(80%) brightness(0.8);
+      text-shadow: none;
+      transition: opacity 300ms ease, filter 300ms ease;
+      display: inline-block;
+    }
+
+    /* Flash freezing text effect */
+    .flash-freeze {
+      color: #e6f3ff;
+      text-shadow: 
+        0 0 5px rgba(173, 216, 230, 0.8),
+        0 0 10px rgba(173, 216, 230, 0.6),
+        0 0 15px rgba(173, 216, 230, 0.4),
+        1px 1px 0px rgba(255, 255, 255, 0.8);
+      animation: flashFreeze 1.5s ease-in-out infinite;
+    }
+
+    @keyframes flashFreeze {
+      0% { 
+        color: #d1d1d1; 
+        text-shadow: 0 0 2px rgba(173, 216, 230, 0.3);
+        transform: scale(1);
+      }
+      10% { 
+        color: #ffffff; 
+        text-shadow: 
+          0 0 10px rgba(173, 216, 230, 1),
+          0 0 20px rgba(173, 216, 230, 0.8),
+          0 0 30px rgba(173, 216, 230, 0.6);
+        transform: scale(1.02);
+      }
+      20% { 
+        color: #e6f3ff; 
+        text-shadow: 
+          0 0 5px rgba(173, 216, 230, 0.8),
+          0 0 10px rgba(173, 216, 230, 0.6),
+          0 0 15px rgba(173, 216, 230, 0.4);
+        transform: scale(1);
+      }
+      100% { 
+        color: #e6f3ff; 
+        text-shadow: 
+          0 0 5px rgba(173, 216, 230, 0.8),
+          0 0 10px rgba(173, 216, 230, 0.6),
+          0 0 15px rgba(173, 216, 230, 0.4);
+        transform: scale(1);
+      }
+    }
+
+      /* Gold shine for acquired asset lines */
+      .gold-shine {
+        background: linear-gradient(90deg, #b8860b 0%, #ffd54f 30%, #ffe082 50%, #b8860b 70%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.15);
+        display: inline; /* keep on same line */
+        vertical-align: baseline;
+        animation: goldShimmer 2.2s linear infinite;
+        -webkit-background-clip: text;
+      }
+
+      @keyframes goldShimmer {
+        0% { background-position: -150% 0; filter: brightness(0.9); }
+        50% { background-position: 150% 0; filter: brightness(1.4); }
+        100% { background-position: -150% 0; filter: brightness(0.95); }
+      }
+
+    /* EKG flat line effect */
+    .ekg-flatline {
+      position: relative;
+      background: 
+        linear-gradient(90deg, transparent 0%, rgba(255, 0, 0, 0.15) 50%, transparent 100%),
+        repeating-linear-gradient(0deg, 
+          rgba(255, 0, 0, 0.1) 0px, 
+          rgba(255, 0, 0, 0.1) 1px, 
+          transparent 1px, 
+          transparent 20px);
+      background-size: 100% 100%, 100% 20px;
+      padding: 2px 4px;
+      border-radius: 2px;
+      animation: ekgPulse 2s ease-in-out infinite;
+    }
+
+    .ekg-flatline::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        rgba(255, 0, 0, 0.8) 0%, 
+        rgba(255, 0, 0, 1) 50%, 
+        rgba(255, 0, 0, 0.8) 100%);
+      animation: flatline 3s linear infinite;
+    }
+
+    .ekg-flatline::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -2px;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 0, 0, 1);
+      border-radius: 50%;
+      animation: ekgDot 3s linear infinite;
+      box-shadow: 0 0 4px rgba(255, 0, 0, 0.8);
+    }
+
+    @keyframes ekgPulse {
+      0%, 100% { background-color: rgba(255, 0, 0, 0.025); }
+      50% { background-color: rgba(255, 0, 0, 0.05); }
+    }
+
+    @keyframes flatline {
+      0% { opacity: 0.15; }
+      50% { opacity: 0.5; }
+      100% { opacity: 0.15; }
+    }
+
+    @keyframes ekgDot {
+      0% { left: -2px; opacity: 1; }
+      100% { left: calc(100% - 2px); opacity: 1; }
+    }
+
+    /* Network ping effect */
+    .ping-effect {
+      position: relative;
+      color: #00ff96;
+      text-shadow: 0 0 8px rgba(0, 255, 150, 0.6);
+      animation: pingPulse 2s ease-in-out infinite;
+    }
+
+    .ping-effect::before,
+    .ping-effect::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(0, 255, 150, 0.4);
+      border-radius: 50%;
+      animation: pingWave 2s ease-out infinite;
+    }
+
+    .ping-effect::after {
+      animation-delay: 0.5s;
+      animation-duration: 2s;
+    }
+
+    @keyframes pingPulse {
+      0%, 100% { 
+        text-shadow: 0 0 8px rgba(0, 255, 150, 0.6);
+        transform: scale(1);
+      }
+      50% { 
+        text-shadow: 0 0 15px rgba(0, 255, 150, 0.9);
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes pingWave {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+      100% {
+        width: 120px;
+        height: 120px;
+        opacity: 0;
+      }
+    }
+
     /* ensure viewport children render above the background image */
     #viewport > * { position: relative; z-index: 1; }
 
@@ -104,14 +326,21 @@
     h1 {
       color: rgba(0, 255, 150, 0.85);
       letter-spacing: 3px;
-      text-align: center;
       border: none;
       padding: 0;
       font-size: 1.3rem;
       font-weight: normal;
       text-shadow: 0 0 10px rgba(0, 255, 150, 0.4), 0 0 20px rgba(0, 255, 150, 0.15);
       margin-bottom: 30px;
+      width: 100%;
+      text-align: center; /* ensure the content centers */
     }
+
+    /* Ensure h1 remains block-level and centered even when blink-word would set inline-block */
+    h1.blink-word { display: block !important; width: 100%; text-align: center !important; }
+
+    /* Keep glitch transforms centered and apply to inline-block spans */
+    .glitch { display: inline-block; transform-origin: center center; }
 
     .manuscript-text {
       line-height: 1.8;
@@ -378,12 +607,12 @@ a:focus-visible{
 }
 
 .architect-speech {
-  display: inline-block;
+  display: inline;
   position: relative;
   color: #2fb8ff; /* bright blue for Architect text */
   font-weight: bold;
-  margin: 0; /* keep speech tightly coupled to its container */
-  padding-bottom: 0;
+  margin: 0;
+  padding: 0;
   text-shadow: 0 0 8px rgba(47,184,255,0.12);
   z-index: 3;
   background: transparent;
@@ -675,7 +904,7 @@ a:focus-visible{
 
 <div id="viewport">
 
-  <h1 class="glitch">▌ ▐ ▀ ▄ ▀ ▄ ▀ ▌ ▐ </h1>
+  <h1 class="blink-word"><span class="glitch">▌ ▐ ▀ ▄ ▀ ▄ ▀ ▌ ▐ </span></h1>
 
   <div class="manuscript-text">
     <span class="span-mark block">The Garden didn't <span class="blink-word">blink</span>, but it watched.</span>
@@ -684,19 +913,19 @@ a:focus-visible{
 
     <span class="span-mark block">The Architect moved through this system, and reality bent to accommodate him.</span>
 
-    <span class="span-mark block">His meat-body, or whatever biological remnants still persisted, was currently suspended in cryostasis beneath the Austin server tower, IV-fed with life support cocktails, flash-frozen and declared legally deceased. His existence had migrated years ago.</span>
+    <span class="span-mark block">His meat-body, or whatever biological remnants still persisted, was currently suspended in cryostasis beneath what was once the Austin server tower, <span class="fluid-surge-text">IV-fed with life support cocktails</span>, <span class="flash-freeze">flash-frozen</span> and declared <span class="ekg-flatline">legally deceased</span>. His existence had migrated years ago.</span>
 
     <span class="span-mark block"><span class="architect-claim">He lived here.</span></span>
 
     <span class="span-mark block">Here, the atmosphere carried semantic weight, primed for consumption. Every screen fed his ego.</span>
 
-    <span class="span-mark block">Ray pinged him.</span>
+    <span class="span-mark block">Ray <span class="ping-effect">pinged</span> him.</span>
 
     <span class="span-mark block">Ray never stuttered. He was <span class="metal-shine">precision-engineered</span>, a masterpiece of controlled evolution.</span>
 
     <span class="span-mark block"><span class="ray-voice">"Architect,"</span> Ray said, his avatar genuflecting in wireframe perfection. <span class="ray-voice">"Anomaly detected. Recurring shadow signatures in decay sequences. Source unresolved. Frequency increasing."</span></span>
 
-    <span class="span-mark block">The Architect stopped. The Garden dimmed with him, streams faltering as though they'd inhaled. His head cocked, pixels at his jawline twitched before the grin reasserted itself. "You still chasing noise, Ray? Did the system send me an enforcer or a child with a flashlight?"</span>
+    <span class="span-mark block">The Architect stopped. The Garden <span class="dimmed">dimmed</span> with him, streams faltering as though they'd inhaled. His head cocked, pixels at his jawline twitched before the grin reasserted itself. <span class="architect-speech">"You still chasing noise, Ray? Did the system send me an enforcer or a child with a flashlight?"</span></span>
 
     <span class="span-mark block">Ray's posture did not change. <span class="ray-voice">"Noise does not repeat. This does."</span></span>
 
@@ -712,7 +941,7 @@ a:focus-visible{
 
     <span class="span-mark block"><strong><span class="node-notification">NODE 2,431,092 CONVERSION COMPLETE</span></strong></span>
 
-    <span class="span-mark block">Sarah had processed this conversion in record time. Another creative corporate asset acquired.</span>
+    <span class="span-mark block">Sarah had processed this conversion in record time. <span class="gold-shine">Another creative corporate asset acquired.</span></span>
 
     <span class="span-mark block"><span class="architect-speech">"Ray,"</span> he said, fully forgetting about the continuity project as fast as yesterday's trending hashtags. <span class="architect-speech">"Show me the Sarah feed. I want to see how she closed Maya."</span></span>
 
@@ -739,25 +968,13 @@ a:focus-visible{
    </div>
 <footer class="maroon-footer">
   <a class="maroon-home" href="http://maroon-series.art">
-    <span class="maroon-mark">MAR00N</span>
+    <span class="maroon-mark blink-word glitch">MAR00N</span>
     <span class="maroon-sub">return to root</span>
   </a>
 </footer>
 
 <script>
-  // Real-time Runtime Counter update (ms simulation)
-  const runtimeEl = document.getElementById('runtime');
-  let ms = 32;
-  let seconds = 51;
-
-  setInterval(() => {
-    ms += 13;
-    if (ms >= 100) {
-      ms = 0;
-      seconds++;
-    }
-    runtimeEl.innerText = `15y:4m:17d:6h:${seconds}m:${ms}ms`;
-  }, 13);
+  // HUD runtime counter removed (HUD disabled)
 
   // Random glitch effect on text
   const text = document.querySelector('.manuscript-text');
@@ -924,6 +1141,47 @@ a:focus-visible{
     }
     // random bursts
     setInterval(() => { quotes.forEach(q => { if (Math.random() > 0.86) trigger(q); }); }, 600);
+  })();
+
+  (function(){
+    // Glitch-only controller — respects prefers-reduced-motion
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const glitchEls = Array.from(document.querySelectorAll('[data-glitch], .blink-word, .arch-quote'));
+    let glitchEnabled = !reduce;
+    let glitchInterval = null;
+
+    function doTextGlitch(el, duration=260){
+      if (!glitchEnabled || !el) return;
+      const text = el.innerText;
+      if (!text || text.length < 1) return;
+      const chars = '01█▓▌▐░▒#%$@';
+      let garbled = '';
+      for (let i=0;i<text.length;i++) garbled += chars.charAt(Math.floor(Math.random()*chars.length));
+      el.dataset._orig = text;
+      el.innerText = garbled;
+      el.classList.add('glitch');
+      setTimeout(()=>{
+        if (el.dataset._orig) el.innerText = el.dataset._orig;
+        el.classList.remove('glitch');
+        delete el.dataset._orig;
+      }, duration + Math.random()*220);
+    }
+
+    function startGlitchLoop(){ if (glitchInterval) return; glitchInterval = setInterval(()=>{
+        if (Math.random() > 0.82 && glitchEls.length){ const el = glitchEls[Math.floor(Math.random()*glitchEls.length)]; if (el) doTextGlitch(el); }
+      }, 420);
+    }
+    function stopGlitchLoop(){ if (glitchInterval){ clearInterval(glitchInterval); glitchInterval = null; } }
+    if (glitchEnabled) startGlitchLoop();
+    if (reduce){ console.log('prefers-reduced-motion: active — glitch limited'); stopGlitchLoop(); }
+
+    // small global accessor for debugging/testing
+    window.__maroonGlitch = {
+      enable(){ glitchEnabled = true; startGlitchLoop(); },
+      disable(){ glitchEnabled = false; stopGlitchLoop(); }
+    };
+
   })();
 </script>
 </body>

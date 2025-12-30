@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="css/maya.css?v=1">
   <link rel="stylesheet" href="css/lyrics.css?v=1">
   <link rel="stylesheet" href="css/elias_reiss.css?v=1">
+  <link rel="stylesheet" href="css/maroon-glitch.css?v=1">
+  <script defer src="js/maroon-glitch.js"></script>
   <title>MAR00N // Chapter 01: #PROCESSING</title>
   <style>
     :root {
@@ -142,16 +144,7 @@ a:focus-visible{
       padding: 0 5px;
     }
 
-    .glitch {
-      animation: glitch-anim 5s infinite;
-    }
-
-    @keyframes glitch-anim {
-      0% { opacity: 1; transform: translate(0); }
-      1% { opacity: 0.8; transform: translate(-2px, 2px); }
-      2% { opacity: 1; transform: translate(0); }
-      100% { opacity: 1; }
-    }
+    /* `.glitch` and `.blink-word` styles moved to css/maroon-glitch.css */
 
     /* Optional: style your converted spans so you can see them */
     .span-mark {
@@ -581,7 +574,7 @@ a:focus-visible{
 </head>
 <body>
 
-<header>
+  <header>
   <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 01 #PROCESSING</div>
   <nav>
     <a href="#">newlife2084.com</a>
@@ -594,9 +587,10 @@ a:focus-visible{
   <div class="status-bar">
     <div>ASSET_ID: <span class="counter glitch pulse-counter">PROCESS NODE 2,431,092</span></div>
     <div style="margin-top: 10px;">RUNTIME: <span id="runtime" class="counter">15y:4m:17d:6h:32ms</span></div>
+
   </div>
 
-  <h1>#PROCESSING</h1>
+  <h1 class="glitch" data-glitch>#PROCESSING</h1>
 
   <div class="manuscript-text">
     <span class="span-mark block" data-span="4">Fifteen years ago, Sarah agreed to upload. She could still feel the drag of the pen.</span>
@@ -864,7 +858,7 @@ A heartbeat.
  </div>
 <footer class="maroon-footer">
   <a class="maroon-home" href="http://maroon-series.art">
-    <span class="maroon-mark">MAR00N</span>
+    <span class="maroon-mark blink-word glitch">MAR00N</span>
     <span class="maroon-sub">return to root</span>
   </a>
 </footer>
@@ -1028,6 +1022,62 @@ A heartbeat.
     for (let i=0;i<6;i++) setTimeout(makeGas, i * 140);
   })();
 
+  // Scroll-to-bottom detection and automatic transition (initialize after DOM ready)
+  (function(){
+    function initScrollTransition(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // opt-out
+      const sentinel = document.getElementById('end-of-doc');
+      if (!sentinel) return;
+      let triggered = false;
+      let scrollSeen = false;
+
+      // mark that the user has scrolled at least once — required before we trigger
+      window.addEventListener('scroll', function onFirstScroll(){
+        scrollSeen = true;
+      }, { passive: true });
+
+      function maybeTrigger(){
+        if (triggered) return;
+        triggered = true;
+        setTimeout(()=>{
+          if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+            window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing2.html' });
+          } else {
+            window.location.href = 'processing2.html';
+          }
+        }, 700);
+      }
+
+      if ('IntersectionObserver' in window){
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{
+            // only trigger if sentinel is intersecting AND the user has scrolled (prevents immediate fire on short pages)
+            if (e.isIntersecting && !triggered && scrollSeen){
+              maybeTrigger();
+            }
+          });
+        }, { threshold: 1.0 });
+        io.observe(sentinel);
+      } else {
+        // fallback: check scroll position periodically but only after user scrolled
+        const check = ()=>{
+          if (triggered || !scrollSeen) return;
+          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2){
+            maybeTrigger();
+          }
+        };
+        window.addEventListener('scroll', check, { passive: true });
+        // do not run immediately — wait for user scroll
+      }
+    }
+
+    if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initScrollTransition);
+    } else {
+      initScrollTransition();
+    }
+  })();
+
   // Ellipsis animator for .silence .dots
   (function(){
     const dotsEls = document.querySelectorAll('.silence .dots');
@@ -1051,5 +1101,10 @@ A heartbeat.
     setInterval(() => { quotes.forEach(q => { if (Math.random() > 0.86) trigger(q); }); }, 600);
   })();
 </script>
+</script>
+
+<!-- sentinel used to detect bottom of document for transition -->
+<div id="end-of-doc" style="height:1px; width:100%;"></div>
+
 </body>
 </html>

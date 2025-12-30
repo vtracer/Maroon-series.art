@@ -1,0 +1,79 @@
+:root{}
+
+/* Centering and blink-word behaviour for headings */
+h1.blink-word { display: block !important; width: 100%; text-align: center !important; }
+
+/* Keep glitch transforms centered and apply to inline-block spans */
+.glitch { display: inline-block; transform-origin: center center; }
+
+/* small glitch animation used by JS when toggling class */
+.glitch { animation: glitch-anim 5s infinite; }
+
+@keyframes glitch-anim {
+  0% { opacity: 1; transform: translate(0); }
+  1% { opacity: 0.8; transform: translate(-2px, 2px); }
+  2% { opacity: 1; transform: translate(0); }
+  100% { opacity: 1; }
+}
+
+/* Blinking sign animation for `blink-word` */
+.blink-word { display: inline-block; animation: signBlink 2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+
+@keyframes signBlink {
+  0% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+  45% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+  48% { opacity: 0.2; text-shadow: 0 0 2px rgba(0, 255, 150, 0.15); }
+  50% { opacity: 0.85; text-shadow: 0 0 6px rgba(0, 255, 150, 0.4); }
+  52% { opacity: 0.15; text-shadow: 0 0 1px rgba(0, 255, 150, 0.1); }
+  54% { opacity: 0.9; text-shadow: 0 0 7px rgba(0, 255, 150, 0.5); }
+  56% { opacity: 0.25; text-shadow: 0 0 2px rgba(0, 255, 150, 0.2); }
+  58% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+  100% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+}
+
+/* Overlay used by JS to render temporary garbled text without affecting layout */
+.maroon-glitch-overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  white-space: nowrap;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+  font: inherit;
+  color: inherit;
+}
+
+/* Full-screen transition glitch overlay */
+.maroon-fullscreen-glitch{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02), rgba(0,0,0,0)), linear-gradient(90deg, rgba(255,0,150,0.02), rgba(0,255,150,0.02));
+  mix-blend-mode: screen;
+  animation: fullGlitch 120ms steps(2) infinite;
+}
+
+@keyframes fullGlitch {
+  0% { filter: none; opacity: 0.06; transform: translateY(0); }
+  25% { filter: hue-rotate(8deg) contrast(1.2) saturate(1.3); opacity: 0.12; transform: translateY(-2px); }
+  50% { filter: hue-rotate(-6deg) contrast(1.35) saturate(1.5) blur(.2px); opacity: 0.22; transform: translateY(1px); }
+  75% { filter: hue-rotate(14deg) contrast(1.5) saturate(1.6); opacity: 0.18; transform: translateY(-1px); }
+  100% { filter: none; opacity: 0.04; transform: translateY(0); }
+}
+
+/* intense flash used briefly */
+.maroon-fullscreen-glitch.flash { animation: fullGlitchFlash 200ms linear 4; }
+@keyframes fullGlitchFlash { 0%{opacity:0} 20%{opacity:1} 60%{opacity:0.6} 100%{opacity:0} }
+
+/* small scanline overlay to enhance effect */
+.maroon-fullscreen-glitch::after{
+  content: '';
+  position: absolute; left:0; right:0; top:0; bottom:0;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: .6;
+}
