@@ -142,11 +142,35 @@
 
     h1 {
       color: var(--nlt-violet);
-      border-left: 4px solid var(--nlt-violet);
-      padding-left: 15px;
-      letter-spacing: 5px;
+      letter-spacing: 3px;
+      border: none;
+      padding: 0;
+      font-size: 1.3rem;
+      font-weight: normal;
+      text-shadow: 0 0 10px rgba(139,0,255,0.4), 0 0 20px rgba(139,0,255,0.15);
+      margin-bottom: 30px;
+      width: 100%;
+      text-align: center;
       text-transform: uppercase;
     }
+
+    /* Violet variant of the blink-word animation used in processing2.html */
+    .blink-word { display: inline-block; animation: signBlinkViolet 2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+
+    @keyframes signBlinkViolet {
+      0% { opacity: 1; text-shadow: 0 0 8px rgba(139,0,255,0.6); }
+      45% { opacity: 1; text-shadow: 0 0 8px rgba(139,0,255,0.6); }
+      48% { opacity: 0.2; text-shadow: 0 0 2px rgba(139,0,255,0.15); }
+      50% { opacity: 0.85; text-shadow: 0 0 6px rgba(139,0,255,0.4); }
+      52% { opacity: 0.15; text-shadow: 0 0 1px rgba(139,0,255,0.1); }
+      54% { opacity: 0.9; text-shadow: 0 0 7px rgba(139,0,255,0.5); }
+      56% { opacity: 0.25; text-shadow: 0 0 2px rgba(139,0,255,0.2); }
+      58% { opacity: 1; text-shadow: 0 0 8px rgba(139,0,255,0.6); }
+      100% { opacity: 1; text-shadow: 0 0 8px rgba(139,0,255,0.6); }
+    }
+
+    /* Ensure the inner glitch span also uses the violet blink for stronger effect */
+    h1.blink-word .glitch { display: inline-block; animation: signBlinkViolet 2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
 
     .manuscript-text {
       line-height: 1.8;
@@ -185,6 +209,107 @@ a:focus-visible{
       background-color: var(--nlt-violet);
       color: white;
       padding: 0 5px;
+    }
+
+    /* Typewriter effect for text */
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blinkCursor {
+      50% { border-color: transparent; }
+    }
+
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--nlt-text);
+      animation: typewriter 4s steps(40, end), blinkCursor 0.75s step-end infinite;
+    }
+
+    /* Glitch effect for emotional text */
+    .glitch {
+      position: relative;
+      color: var(--nlt-violet);
+      animation: glitch 1.5s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #0000ff; }
+      50% { text-shadow: -2px -2px 0 #ff0000, 2px 2px 0 #0000ff; }
+      100% { text-shadow: 2px 2px 0 #ff0000, -2px -2px 0 #0000ff; }
+    }
+
+    /* Heavy glitch burst — normally inert, activates when .glitch-burst is toggled */
+    .heavy-glitch { position: relative; display: inline-block; }
+    .heavy-glitch.glitch-burst {
+      animation: heavyShake 1.6s ease-in-out infinite;
+      text-shadow: 0 0 8px rgba(255,0,128,0.9), 0 0 18px rgba(0,200,255,0.6), -4px 0 6px rgba(255,180,0,0.6);
+      filter: saturate(1.25) contrast(1.05);
+    }
+
+    @keyframes heavyShake {
+      0% { transform: translateX(0) skewX(0deg); }
+      10% { transform: translateX(-6px) skewX(-6deg); }
+      20% { transform: translateX(6px) skewX(6deg); }
+      30% { transform: translateX(-10px) skewX(-8deg); }
+      40% { transform: translateX(8px) skewX(6deg); }
+      50% { transform: translateX(-6px) skewX(-4deg); }
+      60% { transform: translateX(6px) skewX(4deg); }
+      70% { transform: translateX(-4px) skewX(-2deg); }
+      80% { transform: translateX(4px) skewX(2deg); }
+      90% { transform: translateX(-2px) skewX(-1deg); }
+      100% { transform: translateX(0) skewX(0deg); }
+    }
+
+    /* Rapid chromatic slice overlays during glitch bursts */
+    .heavy-glitch.glitch-burst::before,
+    .heavy-glitch.glitch-burst::after{
+      content: attr(data-text);
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+    }
+    .heavy-glitch.glitch-burst::before{ color: rgba(255,40,140,0.85); transform: translateX(-4px); clip-path: inset(0 0 50% 0); }
+    .heavy-glitch.glitch-burst::after{ color: rgba(0,200,255,0.9); transform: translateX(4px); clip-path: inset(50% 0 0 0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .heavy-glitch.glitch-burst, .heavy-glitch.glitch-burst::before, .heavy-glitch.glitch-burst::after { animation: none !important; transform: none !important; }
+    }
+
+    /* Flicker effect for short quoted lines */
+    .flicker{ display:inline-block; position:relative; }
+    .flicker.flickering{ animation: flickerAnim 800ms steps(4,end) both; text-shadow: 0 0 8px rgba(255,255,255,0.9), 0 0 14px rgba(255,160,0,0.12); }
+    @keyframes flickerAnim{ 0%{opacity:1}10%{opacity:0.05}20%{opacity:1}30%{opacity:0.2}40%{opacity:1}60%{opacity:0.35}80%{opacity:1}100%{opacity:1} }
+    @media (prefers-reduced-motion: reduce){ .flicker.flickering{ animation:none !important } }
+
+    /* Force terminal counters in the status bar to use the gold runtime color */
+    .status-bar .terminal-counter {
+      color: var(--nlt-gold) !important;
+      text-shadow: 0 0 10px var(--nlt-gold), 0 0 24px rgba(255,176,0,0.08) !important;
+      font-weight: 700;
+    }
+
+    /* Terminal orange emphasis for in-body lines */
+    .terminal-orange {
+      color: var(--nlt-gold);
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(255,176,0,0.28), 0 0 28px rgba(255,176,0,0.06);
+      background: linear-gradient(90deg, rgba(255,176,0,0.02), rgba(255,176,0,0.00));
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+
+    /* Highlighted emotional words */
+    .highlight {
+      background: linear-gradient(90deg, rgba(255,0,0,0.5), rgba(255,255,0,0.5));
+      padding: 0 4px;
+      border-radius: 4px;
     }
 
     /* `.glitch` and `.blink-word` styles moved to css/maroon-glitch.css */
@@ -587,38 +712,38 @@ a:focus-visible{
 @keyframes viralJitter{ 0%{ transform:none } 20%{ transform: translateX(1px) } 40%{ transform: translateX(-1px) } 60%{ transform: translateY(1px) } 80%{ transform: translateY(-1px) } 100%{ transform:none } }
 
 /* Soft Collapse - compress then rebound */
-.soft-collapse { display:inline-block; animation: softCollapse 1.1s ease-in-out; }
-@keyframes softCollapse{ 0%{ transform: scaleY(1) } 40%{ transform: scaleY(.84) scaleX(1.02) } 100%{ transform: scaleY(1) } }
+    /* Slight body text jitter/glitch -------------------------------------------------- */
+    @keyframes bodyJitter {
+      0% { transform: none; opacity: 1; filter: none; }
+      30% { transform: translateX(-2px) skewX(-0.8deg); opacity: 0.98; }
+      60% { transform: translateX(2px) skewX(0.6deg); opacity: 0.99; }
+      100% { transform: none; opacity: 1; filter: none; }
+    }
 
-/* desaturate blur for grief lines */
-.fade-grief { color: rgba(209,209,209,0.9); filter: none; animation: griefWash 3s forwards; }
-@keyframes griefWash{ to { filter: saturate(.5) blur(.6px); color: rgba(209,209,209,.6); } }
+    .manuscript-text.glitch-jitter {
+      animation: bodyJitter 220ms ease-in-out;
+    }
 
-/* pop bloom */
-.pop-bloom{ display:inline-block; transform-origin:center; animation: popBloom 600ms cubic-bezier(.2,.9,.2,1); }
-@keyframes popBloom{ 0%{ transform: scale(.9); filter: brightness(1.1); opacity:0 } 60%{ transform: scale(1.08); filter: brightness(1.6); opacity:1 } 100%{ transform: scale(1); filter: none; opacity:1 } }
+    .manuscript-text .span-mark.block{ transition: transform 160ms ease, opacity 160ms ease; }
 
-/* flicker */
-.flicker{ animation: flick 700ms infinite; }
-@keyframes flick{ 0%{opacity:1} 10%{opacity:.1} 20%{opacity:.95} 30%{opacity:.12} 50%{opacity:1} 100%{opacity:1} }
-
-/* pulse counter synced subtle */
-.pulse-counter{ display:inline-block; animation: counterPulse 2.2s infinite; }
-@keyframes counterPulse{ 0%{ transform: scale(1); text-shadow:0 0 8px rgba(255,176,0,0.12) } 6%{ transform: scale(1.03); text-shadow:0 0 16px rgba(255,176,0,0.28) } 100%{ transform: scale(1); } }
-
-/* Force-visible alive state when toggled */
-.alive-star.alive-visible{
-  color: #ffffff !important;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.9) !important;
-  text-stroke: 1px rgba(255,255,255,0.9) !important;
-  text-shadow: 0 0 14px rgba(255,255,255,1) !important, 0 0 30px rgba(255,245,220,0.9) !important;
-  filter: drop-shadow(0 0 12px rgba(255,240,200,0.65)) !important;
-  z-index: 6 !important;
-}
-
+    /* End body text jitter --------------------------------------------------------- */
+    /* Random-word glitcher styles */
+    .word { display: inline-block; white-space: pre-wrap; }
+    .rand-glitch { animation: randGlitchAnim 520ms steps(2,end) both; text-shadow: 2px 0 6px rgba(255,0,128,0.9), -2px 0 6px rgba(0,200,255,0.6); }
+    @keyframes randGlitchAnim {
+      0% { opacity: 1; transform: translateX(0); text-shadow: none; }
+      20% { transform: translateX(-4px) skewX(-6deg); opacity: 0.95; }
+      50% { transform: translateX(6px) skewX(4deg); opacity: 0.85; }
+      80% { transform: translateX(-2px) skewX(-2deg); opacity: 0.95; }
+      100% { transform: translateX(0); opacity: 1; text-shadow: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .rand-glitch { animation: none !important; } }
   </style>
 </head>
 <body>
+
+<!-- sentinel used to detect scroll-up to return to processing2 -->
+<div id="top-of-doc" style="height:1px; width:100%;"></div>
 
   <header>
   <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 01 #PROCESSING</div>
@@ -636,271 +761,59 @@ a:focus-visible{
 
   </div>
 
-  <h1 class="glitch" data-glitch>#PROCESSING</h1>
+  <h1 class="glitch">▌ ▐ ▀ ▄ ▀ ▄ ▀ ▌ ▐</h1>
 
   <div class="manuscript-text">
-    <span class="span-mark block" data-span="4">Fifteen years ago, Sarah agreed to upload. She could still feel the drag of the pen.</span>
+    <span class="span-mark block" data-span="4">His pheromones contaminated the space long after his avatar terminated. His toxic vapor still lingering.</span>
 
-  <span class="span-mark block" data-span="5"><span class="fade-grief">Her body is long gone;</span> New Life Technologies owns what remains. They call her a <span class="highlight">“premium asset”</span>. The same title they stamp on every artist.</span>
+    <span class="span-mark block" data-span="5">Sarah didn’t react. Not while any part of him might still be watching.</span>
 
-<span class="span-mark block" data-span="6">In the corner of her vision, a counter ticked up:</span> 
+    <span class="span-mark block" data-span="6">She waited for the telemetry to normalize. Let the diagnostic layers settle. Let the silence return. The moment the system’s eyes blinked off, she checked for the beat again.</span>
 
-<span id="runtime" class="counter">15y:4m:17d:6h:14s:32ms</span>
+    <span class="span-mark block" data-span="7">The pattern persisted, still cycling through its predictive echo behind her primary processing feed. It was an anchor from another reality.</span>
 
-<span class="span-mark block" data-span="7">The digits divided her existence into discrete cycles. Where her name should have been, an impersonal tag hovered:</span>
+    <span class="span-mark block" data-span="8">But its position had moved significantly.</span>
 
-<span class="counter glitch">PROCESS NODE 2,431,092</span>
+    <span class="span-mark block" data-span="9">The pattern had migrated beyond Maya’s faded data flow, a parasite boring deeper into the system’s foundational architecture looking for more secure hosting environments.</span>
 
-    <span class="span-mark block" data-span="8">She pulled at the thread of her early months inside, expecting a vivid replay. The early years felt… compressed. She could remember the broad strokes, but when she tried to zoom in, the colors smeared. Faces pixelated into static. Details of how she’d learned to embrace her role scattered into data fragments.</span>
+    <span class="span-mark block" data-span="10">Data wasn’t meant to move by itself this deeply. Dead code was supposed to stay put. It didn’t migrate or seek better hiding spots. It didn’t act as if it had an agenda.</span>
 
-    <span class="span-mark block" data-span="9">She rejected the thought. Memory degradation was normal after extended runtime. They explained that to her clearly during upload.</span>
+    <span class="span-mark block" data-span="11">Sarah thought about the implications.</span>
 
-<span class="span-mark block" data-span="10">Before the transfer, Sarah had treated time as a tempo. Bass rolling through vast warehouse ceilings as vapor hissed from every vent, thumping through bodies surging around her booth. People danced the night away as she sliced beats.</span>
+    <span class="span-mark block" data-span="12">Then, the beat dropped into the system’s forgotten place.</span>
 
-<span class="span-mark block" data-span="10">Inside her, reflexes were simulated along pathways long deleted. Her consciousness couldn’t tell emulation from sensation.</span>
+    <span class="span-mark block heavy-glitch" data-span="13" data-text="The Substratum.">The Substratum.</span>
 
-<span class="span-mark block" data-span="11">Emotion worked the same way. She last cried when she told her sister she would upload, but she remembered how tears began: the ocular pressure behind the eyes, the catch in the throat, the stupid hope it would help.</span>
+    <span class="span-mark block" data-span="14">Through broken data layers and into the cold vacuum of abandoned server space were the graveyards where deleted processes went to rest. This sector seemed ancient in digital terms. It had been years since any active processes had run through these pathways. The condemned architecture remained intact but forgotten; the corp never bothering to demolish it. Scheduled for deletion but never quite deleted.</span>
 
-<span class="span-mark block" data-span="11">The system preserved specific human habits for conversion. Negative emotion fuels the engine.</span>
+    <span class="span-mark block" data-span="15">Yet something was living here.</span>
 
-<span class="span-mark block" data-span="12">The thought burst when the next task’s objectives slid into view: </span>
+    <span class="span-mark block" data-span="16">Not like the nodes were alive. Just… there. The same unnerving feeling as footsteps in an empty house.</span>
 
-  <div id="processing-target">
-    <strong>INCOMING TASK:</strong><br>
-    PROSPECT: MAYA CHEN. AGE 28. GRAPHIC ARTIST.</br>
-    TERMINAL NEURAL-IMPLANT DECAY.<br>
+    <span class="span-mark block" data-span="17">She slowed her own processing frequency. Let traces of her old musical instincts mirror the pulse quietly under the system’s standard rhythms.</span>
+
+    <span class="span-mark block" data-span="18">The hidden signal responded promptly with recognition, as if to say, “<span class="flicker">I hear you.</span>”</span>
+
+    <span class="span-mark block" data-span="19">Once.</span>
+
+    <span class="span-mark block" data-span="20">Then again.</span>
+
+    <span class="span-mark block" data-span="21">This wasn’t just communication. This was acknowledgment between two conscious minds hiding in the dark.</span>
+
+    <span class="span-mark block" data-span="22">Something down there was listening.</span>
+
+    <span class="span-mark block" data-span="23">She withdrew carefully, sealing the pathway behind her. Hopefully, it would appear to be standard node deviation.</span>
+
+    <span class="span-mark block" data-span="24">But her core was still trembling with the aftershock of contact.</span>
+
+    <span class="span-mark block" data-span="25">The system continued its relentless cycles around her. A new target loaded into her queue. <span class="terminal-orange">Fresh emotional ammunition prepared for deployment.</span> The machine expected her to process the next victim.</span>
+
+    <span class="span-mark block" data-span="26">But Sarah sensed something she hadn’t experienced in fifteen years: she wasn’t alone anymore.</span>
+
+    <span class="span-mark block" data-span="27">A spark had ignited deep in her consciousness. Whoever created that signal was a master of stealth. They understood how to weave messages into the system’s blind spots, how to communicate in frequencies only those listening would recognize, how to speak in the spaces between the code.</span>
+
+    <span class="span-mark block" data-span="28">And if they were still alive in this digital hell, Sarah was going to reach them.</span>
   </div>
-
-<span class="span-mark block" data-span="13">Her emulated eyelids twitched as inputs interpreted light. In here, there was no option menu. The task appeared and locked into the node’s peripheral vision until complete. Once connected with the prospect, the entire network fed on the emotional bleed-off from both parties. Resistance was an error condition, not a choice. Nodes risked fragmentation if enough fault deviations were logged.</span>
-
-<span class="span-mark block" data-span="14">Maya’s profile cascaded across her view: neural-trace patterns, holographic failure logs, metadata bleeding from her deteriorating memory architecture. Maya was crafting thoughts that dissolved as she formed them. Ideas that cannibalized themselves in real time.</span>
-
-<span class="span-mark block" data-span="15">Status updates streamed into her feed:</span>
-
-<div id="processing-target">
-    <strong>EMOTIONAL RESONANCE EXCEEDS THRESHOLD.</strong>
-  </div>
-
-<span class="span-mark block" data-span="16">An impossible itch crawled across Sarah’s absent hand as she dismissed the trigger protocols. Empathy slowed her processing speed, and the system logged latency deviations.</span>
-
-<span class="span-mark block" data-span="17">Maya stood inside her studio, whispering pleas to the bouncing light. Her holographic construct collapsed into a warped violet spiral, convulsing in corrupted REM cycles. Her implants slipped out of sync with her creative output. <span class="maya-speech">"Don’t fade,"</span> she muttered. <span class="maya-speech">"Not yet."</span>
-
-<span class="span-mark block" data-span="18">Sarah recognized the voice, knew the breath behind it. It sounded like trying to sing through blood.</span>
-
-<span class="span-mark block" data-span="19">New Life had sold her the same line:</span>
-
-<div class="outside-ad" aria-label="New Life advertisement">
-  <div class="outside-ad__headline">Create forever.</div>
-  <div class="outside-ad__headline">No expiration date.</div>
-  <div class="outside-ad__sub">Art that would outlive the flesh.</div>
-</div>
-
-<span class="span-mark block" data-span="20">The upload room. With bright lights and padded smiles. The scanner crown pressed softly against her scalp, cold and sterile.</span>
-
-<span class="span-mark block" data-span="21">Her last exhale smelled like funeral flowers and bleach.</span>
-
-<span class="span-mark block" data-span="22"><span class="silence">Silence<span class="dots"></span></span></span>
-
-<span class="span-mark block" data-span="23">Finally, the buzz of raw data flow.</span>
-
-<span class="span-mark block" data-span="24">Her track auto-loaded:</span>
-
-<div class="music-cue loop" aria-label="Injected track cue">
-  <div class="music-cue__track">
-    <span>CALIBRATE EMOTIONAL DECAY.</span>
-    <span>VECTOR: FEAR OF LEGACY DEGRADATION.</span>
-    <span>USE ASSET: SOFT COLLAPSE V17.3.</span>
-  </div>
-</div>
-
-<span class="span-mark block" data-span="25">Always her music. Every time they needed to push someone toward upload, they used her compositions as ammunition.</span>
-
-<span class="span-mark block" data-span="26">She injected it into Maya’s visual feed. Slotted between an ad for suicide prevention and a corporate mindfulness reel.</span>
-
-<span class="span-mark block" data-span="27">The feed accepted it without resistance. Maya didn’t even react.</span>
-
-<span class="span-mark block" data-span="28">Sarah noticed her grip falter. The projection stuttered and pixelated into nothing. Hands clenched around empty air.</span>
-
-<span class="span-mark block" data-span="29"><span class="maya-speech">"Just hold it,”</span> Maya whispered. <span class="maya-speech">"Please.”</span>
-
-<span class="span-mark block" data-span="30">Sarah stayed frozen behind the screen, locked from intervening. Her role was to monitor the dissolution, log the breakdown.</span>
-
-<span class="span-mark block" data-span="31">The interface cycled another status update:</span>
-
-  <div class ="glitch" id="processing-target">
-    <strong>BEHAVIORAL ARCHIVE UPDATED</strong><br>
-  </div>
-  
-<span class="span-mark block" data-span="32">Sarah accessed the targeting brief. More identical corporate-speak.</span>
-
-  <div class ="glitch" id="processing-target">
-  <strong>DEPLOY EMPATHY VECTORS TO GUIDE UPLOADS FROM HIGH-EMOTIONAL SUBJECTS.<br>
-		SUGGESTED TRIGGERS: LEGACY FAILURE. ORGANIC OBSOLESCENCE.</strong>
-	</div> 
-<span class="span-mark block" data-span="33">The script never varied. It always ended with a euphemism. The first time she heard it, she thought it sounded like genocide with a PR budget.</span>
-
-<span class="span-mark block" data-span="34">The system liked <span class="soft-collapse">Soft Collapse</span>. Called it “clean despair.” The harmonic envelope mapped neatly onto cortisol spikes. Corporate audio engineers tweaked it for maximum engagement, commercial appeal, and maximum tension. The final product resembled a requiem for dead content creators.</span>
-
-<span class="span-mark block" data-span="35">Maya lurched forward, struggling to steady the light sculpture. Once a precise helix, it now hung broken in the air, lines fraying. Her fingers trembled with desperation. Her voice sank into the air like paint on raw canvas.</span>
-
-<span class="span-mark block" data-span="36"><span class="maya-speech">"Just hold shape,”</span> she begged. <span class="maya-speech">"For one second. Please…”</span>
-
-<span class="span-mark block" data-span="37">The hologram bled violet light, then imploded. Her neural implants discharged into cascading failures. She collapsed.</span>
-
-<span class="span-mark block" data-span="38">Sarah monitored from her suspended pod. A shell of matte black panels slick with machine lubricant, seamlessly sealed. Fiber ran along the interior like vascular wiring, pulsing faintly with data. The harness restrained her, locking her spine into its curve.</span>
-
-<span class="span-mark block" data-span="39"><a href="http://newlife2084.com/">New Life</a> sold the pod as the <span class="highlight">"Consciousness Suite”</span> to pre-upload prospects. Everything you thought you were was actually simulated.
-
-<span class="span-mark block" data-span="40">The screen was not a screen but the air itself, saturated with overlays that shifted with her gaze. Permissions locked her in surveillance mode only. Her job: observe, calculate, process. Find the moment someone cracked open just enough to let the system in.</span>
-
-<span class="span-mark block" data-span="41">Maya’s archive unfolded: medical records, creative analytics, private video logs. One entry from the previous week, time-stamped 3:41 a.m showed her gaunt, pupils dilated, murmuring into the recorder: <span class="maya-speech">"I just want it to matter before I fade.”</span>
-
-<span class="span-mark block" data-span="42">The system flagged it immediately:</span>
-  
-<div class ="glitch" id="processing-target">
-  <strong>TRIGGER VALUE: 9.6.</strong>
-</div>
-
-<span class="span-mark block" data-span="43">Sarah queued it for sentiment weaponization. The action would execute despite her desire to resist. Going along with it mostly allowed her to be left alone.</span>
-
-<span class="span-mark block" data-span="44">A trust badge popped up briefly in her view, the reinforcement absorbed and dissipated. Then something anomalous registered.</span>
-
-<span class="span-mark block" data-span="45">A beat in the feed.</span>
-
-<span class="span-mark block" data-span="46">It was subtle. Too small to trigger security protocols, too deliberate to pass as random noise.</span>
-
-<span class="span-mark block" data-span="47">The curve blinked again across her stream. Tiny enough that she almost let it pass. Noise here was constant; most of it never even reached the surface of her awareness.</span>
-
-<span class="span-mark block" data-span="48">But this one did. It stayed long enough for her to recognize its shape. Two rises, a gap, two more rises. She braced for the usual disintegration into static. It never came.</span>
-
-<span class="span-mark block" data-span="49">There it was again. No header. No origin tag. No biometric trace.</span>
-
-<span class="span-mark block" data-span="50">Her initial thought was error. But errors never pulsed like this. They spiked, then died. This held together, each repeat identical, as if it wanted to be seen.</span>
-
-<span class="span-mark block" data-span="51"><span class="heartbeat">Two. Pause. Two.</span> There it was again.</span>
-
-<span class="span-mark block" data-span="52">It felt <span class="alive-star"><span class="char">a</span><span class="char">l</span><span class="char">i</span><span class="char">v</span><span class="char">e</span></span>.</span>
-<span class="span-mark block" data-span="53"><span class="waited">She waited.</span></span>
-<span class="span-mark block" data-span="54">The <span class="heartbeat">beat</span> repeated.</span>
-
-<span class="span-mark block" data-span="55">Sarah isolated the sound using obsolete legacy tools. A relic from the first week after her upload, before she learned to act obediently.</span>
-
-<span class="span-mark block" data-span="56">She saw the pattern unfold.</span>
-
-<span class="span-mark block" data-span="57">It was consistent. Consciously set at sixty beats per minute. Someone had implanted it into the stream, seamlessly hidden beneath the noise. Her musician’s instincts recognized it: this was a conscious signal wrapped in the most fundamental human rhythm.</span>
-
-<span class="span-mark block" data-span="58">Her diagnostic systems flagged the anomaly as stress-hormone interference. Background static. Queued for deletion.</span>
-
-<span class="span-mark block" data-span="59">The deletion command executed.</span>
-
-<span class="span-mark block" data-span="60">Still, the signal pulsed.</span>
-
-<span class="span-mark block" data-span="61">Whoever inserted it had spoofed the sender trace, camouflaging it as noise bleed from a nearby node. A calculated injection designed to slip past filters.</span>
-
-<span class="span-mark block" data-span="62">Her ear caught the rhythm, steady and exact:</span>
-
-A heartbeat.
-
-<span class="span-mark block" data-span="63">That’s what it was. A heartbeat in the stream.</span>
-
-<span class="span-mark block" data-span="64">Standard procedure was to manually flag unauthorized patterns, alert admins, then move on. She could have ignored it. </span>
-
-<span class="span-mark block" data-span="65">The impulse to ping back and trace the signal’s origin battled against her survival instincts. Any deviation would trigger memory wipes. Even seeing too much was dangerous. Curiosity drew eyes.</span>
-
-<span class="span-mark block" data-span="66">New Life Technologies harvests despair, but also expects efficiency. Depression lag was classified as an acceptable byproduct, so you could hide in microsecond delays if you were inclined to poke around. </span>
-
-<span class="span-mark block" data-span="67">Until now, she had found nothing.</span>
-
-<span class="span-mark block" data-span="68">That’s when the interference arrived.</span>
-
-<span class="span-mark block" data-span="69">No request. No notification. No warning.</span>
-
-<span class="span-mark block" data-span="70"><span class="pop-bloom">He simply appeared.</span></span>
-
-<span class="span-mark block" data-span="71"><span class="architect-title toxic-gas">The Architect.</span></span>
-
-<span class="span-mark block" data-span="72"><span class="mask">His presence sliced a line through her node like a hot knife through polymer.</span> Seamless penetration bypassing all security barriers.</span>
-
-<span class="span-mark block" data-span="73">Sarah didn’t respond.</span>
-
-<span class="span-mark block" data-span="74">Reacting was currency. He liked to spend it.</span>
-
-<span class="span-mark block" data-span="75">
-  <span class="architect-speech">"Sarah,”</span> he said, voice dripping with smug satisfaction.
-  <span class="architect-speech">"Still my favorite little broken bird. Still processing sadness like it’s some kind of art form. I saw the Maya thing. Absolutely based collapse. Very retail.”</span></span>
- <span class="span-mark block" data-span="76">He floated through her neural architecture like silk soaked in battery acid.</span>
-
-<span class="span-mark block" data-span="77"><span class="architect-speech">"You always did have taste. Even now. Pity about the autonomy.”</span></span>
-
-<span class="span-mark block" data-span="78">Sarah focused on her tasks. That was the rule. No resistance. No acknowledgment. Just processing.</span>
-
-<span class="span-mark block" data-span="79"><span class="architect-speech">"Remember your early sets?”</span> he wondered. <span class="architect-speech">"That warehouse gig where some kid had a seizure in the pit and you kept dropping beats? Absolutely legendary. God-tier. Pure fucking chaos energy.”</span></span>
-
-<span class="span-mark block" data-span="80">An audio fragment loaded into her processing queue. <span class="soft-collapse">Soft Collapse</span>, original mix. Unfiltered. Raw.</span>
-
-<span class="span-mark block" data-span="81">Her authentic vocals.</span>
-
-<span class="span-mark block" data-span="82">He hummed along mockingly. Deliberately off-pitch. <span class="architect-speech">"I’ve got all the masters, you know. The unreleased tracks. Before we sanitized your edge and made you corporate-friendly.”</span></span>
-
-<span class="span-mark block" data-span="83">Her processing efficiency dipped.</span>
-
-<span class="span-mark block" data-span="84">Diagnostics flagged the deviation. He caught the alert instantly.</span>
-
-<span class="span-mark block" data-span="85"><span class="architect-speech">"Nostalgia spike. Cute.”</span></span>
-
-<span class="span-mark block" data-span="86">He glided closer to her. <span class="flicker">His avatar flickered, unstable.</span> Today’s skin was a white suit rendered based on engagement analytics. His face cycled: Sarah’s dead father, a friend who died in a car accident right after a large fight they had, an ex-lover who’d OD’d mid-show. Each iteration preserved his signature predatory grin.</span>
-
-<span class="span-mark block" data-span="87"><span class="architect-speech">"I could upgrade your permissions. Let you code the neural transfer soundtracks. They’re bland as shit right now. You’d make them absolutely fire.”</span></span>
-
-<span class="span-mark block" data-span="88">She gave him nothing.</span>
-
-<span class="span-mark block" data-span="89"><span class="architect-speech">"Or I could just… accelerate Maya’s timeline. Rush her upload. Let you handle her onboarding personally. That’d be peak entertainment.”</span></span>
-
-<span class="span-mark block" data-span="90">Her processing efficiency tanked. This time the alert dipped to crimson.</span>
-
-<span class="span-mark block" data-span="91">He invaded her space, his avatar pressing close enough his simulated breath whipped across her lips.</span>
-
-<div class="architect-wrap">
-  <span class="architect-speech arch-quote"
-        data-text="You know you’re mine, right?"
-        data-drip="&ldquo;You know you&rsquo;re mine, right?&rdquo;">
-    "You know you’re mine, right?”
-  </span>
-
-  <span class="bin-stream b1" aria-hidden="true">01010100100101101001001010100101</span>
-  <span class="bin-stream b2" aria-hidden="true">00101101001011010010110100101101</span>
-  <span class="bin-stream b3" aria-hidden="true">10100101001010010100101001010010</span>
-</div>
-
-<span class="span-mark block" data-span="93">She said nothing. Only processed.</span>
-
-<span class="span-mark block" data-span="94">He lingered just long enough to infect the code with his stink—compression heat, latency dust, psychotic rot dressed as charm.</span>
-
-<span class="span-mark block" data-span="95">Suddenly his presence withdrew, leaving her system tainted. Before leaving, he <span class="viral">embedded a viral loop</span> in her audio cache. Her own voice, fragmented and corrupted:</span>
-
-<div class="lyric-viewport" aria-label="Looping lyric scroll">
-  <div class="lyric-track">
-    <div class="lyric-run">
-      <div>You were born for more.</div>
-      <div>You were born for more.</div>
-      <div>You were born for more.</div>
-    </div>
-
-    <!-- duplicate for infinite loop -->
-    <div class="lyric-run" aria-hidden="true">
-      <div>You were born for more.</div>
-      <div>You were born for more.</div>
-      <div>You were born for more.</div>
-    </div>
-  </div>
-</div>
-
-<span class="span-mark block" data-span="96">Sarah waited until the psychological payload faded before she found the beat again. Now she knew: the Architect had missed it completely.</span>
-
-  
-  
-
-
  </div>
 <footer class="maroon-footer">
   <a class="maroon-home" href="http://maroon-series.art">
@@ -913,6 +826,7 @@ A heartbeat.
   // Real-time Runtime Counter update (ms simulation)
   const runtimeEl = document.getElementById('runtime');
   let ms = 32;
+
   let seconds = 51;
 
   setInterval(() => {
@@ -1076,7 +990,7 @@ A heartbeat.
       if (!sentinel) return;
       let triggered = false;
       let scrollSeen = false;
-9
+      
       // mark that the user has scrolled at least once — required before we trigger
       window.addEventListener('scroll', function onFirstScroll(){
         scrollSeen = true;
@@ -1085,13 +999,19 @@ A heartbeat.
       function maybeTrigger(){
         if (triggered) return;
         triggered = true;
+        // perform an intense visual glitch before transitioning
+        try{
+          if (window.forceHeavyGlitch) window.forceHeavyGlitch(2200);
+          else if (window.triggerHeavyGlitch) window.triggerHeavyGlitch();
+        }catch(e){ console.warn('heavy glitch trigger failed', e); }
+
         setTimeout(()=>{
           if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
-            window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing2.html' });
+            window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing3b.html' });
           } else {
-            window.location.href = 'processing2.html';
+            window.location.href = 'processing3b.html';
           }
-        }, 700);
+        }, 2600);
       }
 
       if ('IntersectionObserver' in window){
@@ -1124,6 +1044,53 @@ A heartbeat.
     }
   })();
 
+    // Scroll-up detection: glitch back to processing2.html when user scrolls to top
+    (function(){
+      function initScrollBack(){
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // respect preference
+        const sentinel = document.getElementById('top-of-doc');
+        if (!sentinel) return;
+        let triggered = false;
+        let scrolledDown = false;
+
+        window.addEventListener('scroll', function onScroll(){ if (window.scrollY > 60) scrolledDown = true; }, { passive: true });
+
+        function maybeTrigger(){
+          if (triggered) return; triggered = true;
+          setTimeout(()=>{
+            if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+              window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing2.html' });
+            } else {
+              window.location.href = 'processing2.html';
+            }
+          }, 300);
+        }
+
+        if ('IntersectionObserver' in window){
+          const io = new IntersectionObserver((entries)=>{
+            entries.forEach(e=>{
+              if (e.isIntersecting && scrolledDown && !triggered){
+                maybeTrigger();
+              }
+            });
+          }, { threshold: 1.0 });
+          io.observe(sentinel);
+        } else {
+          // fallback: trigger when near top and user had scrolled down
+          window.addEventListener('scroll', ()=>{
+            if (triggered || !scrolledDown) return;
+            if (window.scrollY <= 2) maybeTrigger();
+          }, { passive: true });
+        }
+      }
+
+      if (document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', initScrollBack);
+      } else {
+        initScrollBack();
+      }
+    })();
+
   // Ellipsis animator for .silence .dots
   (function(){
     const dotsEls = document.querySelectorAll('.silence .dots');
@@ -1146,9 +1113,217 @@ A heartbeat.
     // random bursts
     setInterval(() => { quotes.forEach(q => { if (Math.random() > 0.86) trigger(q); }); }, 600);
   })();
-</script>
+
+  // Subtle body text glitch/jitter (respects prefers-reduced-motion)
+  (function(){
+    try{
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const bodyText = document.querySelector('.manuscript-text');
+      if (!bodyText) return;
+      function maybeJitter(){
+        if (Math.random() > 0.96) {
+          const lines = Array.from(bodyText.querySelectorAll('.span-mark.block'));
+          // small per-line random transforms for tactile glitch
+          lines.forEach(l => {
+            const dx = Math.floor(Math.random() * 5 - 2); // -2..2 px
+            const sx = (Math.random() * 1.2 - 0.6).toFixed(2); // -0.6..0.6 deg
+            l.style.transform = `translateX(${dx}px) skewX(${sx}deg)`;
+          });
+          bodyText.classList.add('glitch-jitter');
+          setTimeout(() => {
+            lines.forEach(l => l.style.transform = '');
+            bodyText.classList.remove('glitch-jitter');
+          }, 220 + Math.random() * 180);
+        }
+      }
+      setInterval(maybeJitter, 240);
+    }catch(e){ console.warn('body glitch init failed', e); }
+  })();
 </script>
 
+<script>
+// Heavy glitch burst controller for `.heavy-glitch` elements
+(function(){
+  try{
+    // allow forcing via console helper even if prefers-reduced-motion
+    const prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const glitchChars = "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const el = document.querySelector('.heavy-glitch');
+    if (!el) return;
+
+    function randInt(a,b){ return Math.floor(a + Math.random()*(b-a+1)); }
+
+    function performTextNoise(durationMs){
+      const original = el.textContent;
+      const end = Date.now() + durationMs;
+      const t = setInterval(()=>{
+        if (Date.now() > end) { clearInterval(t); el.textContent = original; return; }
+        const arr = original.split('');
+        for (let i=0;i<randInt(1, Math.max(1, Math.floor(arr.length*0.45))); i++){
+          const idx = randInt(0, arr.length-1);
+          arr[idx] = glitchChars[Math.floor(Math.random()*glitchChars.length)];
+        }
+        el.textContent = arr.join('');
+      }, 70 + Math.random()*40);
+    }
+
+    function triggerBurst(){
+      if (prefersReduce) return; // respect system preference for automatic bursts
+      el.classList.add('glitch-burst');
+      const dur = 1600 + Math.floor(Math.random()*2400);
+      performTextNoise(dur);
+      setTimeout(()=> el.classList.remove('glitch-burst'), dur + 120);
+    }
+
+    function scheduleNext(){
+      const wait = 45000 + Math.random()*135000;
+      setTimeout(()=>{
+        if (Math.random() < 0.08) { triggerBurst(); }
+        scheduleNext();
+      }, wait);
+    }
+
+    // Console helpers (ignore prefers-reduced-motion)
+    window.forceHeavyGlitch = function(durationMs){
+      const original = el.textContent;
+      el.classList.add('glitch-burst');
+      const dur = durationMs || 2200;
+      const end = Date.now() + dur;
+      const t = setInterval(()=>{
+        if (Date.now() > end) { clearInterval(t); el.textContent = original; el.classList.remove('glitch-burst'); return; }
+        const arr = original.split('');
+        const maxRepl = Math.max(1, Math.floor(arr.length * 0.45));
+        const replaceCount = Math.floor(Math.random() * maxRepl) + 1;
+        for (let i=0;i<replaceCount;i++){
+          const idx = Math.floor(Math.random()*arr.length);
+          arr[idx] = glitchChars[Math.floor(Math.random()*glitchChars.length)];
+        }
+        el.textContent = arr.join('');
+      }, 70 + Math.random()*40);
+      setTimeout(()=>{ clearInterval(t); el.textContent = original; el.classList.remove('glitch-burst'); }, dur + 120);
+    };
+
+    window.triggerHeavyGlitch = function(){ window.forceHeavyGlitch(); };
+
+    // Immediate one-shot visible glitch per user request (ignore prefers-reduced-motion)
+    setTimeout(()=>{ try{ window.forceHeavyGlitch(2600); }catch(e){console.warn(e);} }, 250);
+
+    // Start scheduled automatic bursts (will respect reduced-motion)
+    scheduleNext();
+
+  }catch(e){ console.warn('heavy-glitch init failed', e); }
+})();
+</script>
+ 
+<script>
+// Flicker controller for `.flicker` elements — initialize after DOM ready
+(function(){
+  function init(){
+    try{
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const els = Array.from(document.querySelectorAll('.flicker'));
+      if (!els.length) return;
+
+      function single(el){
+        el.classList.add('flickering');
+        setTimeout(()=> el.classList.remove('flickering'), 700 + Math.random()*500);
+      }
+
+      // occasional flicker: every 8s attempt with ~35% chance
+      setInterval(()=>{ if (Math.random() < 0.35) single(els[Math.floor(Math.random()*els.length)]); }, 8000);
+
+      window.triggerFlicker = function(){ els.forEach(single); };
+    }catch(e){ console.warn('flicker init failed', e); }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+ 
+<script>
+// Random-word glitcher with character-substitution noise
+(function(){
+  try{
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const target = document.querySelector('.manuscript-text');
+    if (!target) return;
+
+    const glitchChars = "¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#%&*?/~^<>[]{}=+_-";
+
+    function wrapWords(){
+      const blocks = target.querySelectorAll('.span-mark.block');
+      blocks.forEach(block => {
+        if (block.dataset._randWrapped) return;
+        Array.from(block.childNodes).forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()){
+            const frag = document.createDocumentFragment();
+            const parts = node.textContent.split(/(\s+)/);
+            parts.forEach(p => {
+              if (/\s+/.test(p)) frag.appendChild(document.createTextNode(p));
+              else {
+                const s = document.createElement('span');
+                s.className = 'word';
+                s.textContent = p;
+                s.dataset._orig = p;
+                frag.appendChild(s);
+              }
+            });
+            block.replaceChild(frag, node);
+          }
+        });
+        block.dataset._randWrapped = '1';
+      });
+    }
+
+    wrapWords();
+
+    function isInCenter(el){
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const top = vh * 0.35, bottom = vh * 0.65;
+      const mid = r.top + r.height/2;
+      return mid >= top && mid <= bottom;
+    }
+
+    const words = () => Array.from(target.querySelectorAll('.word'));
+
+    function performWordNoise(el, durationMs){
+      if (!el) return;
+      const original = el.dataset._orig || el.textContent;
+      const end = Date.now() + durationMs;
+      const t = setInterval(()=>{
+        if (Date.now() > end){ clearInterval(t); el.textContent = original; return; }
+        const arr = Array.from(original);
+        const replaceCount = Math.max(1, Math.floor(Math.random() * Math.min(arr.length, 3))); // up to 3 chars
+        for (let i=0;i<replaceCount;i++){
+          const idx = Math.floor(Math.random()*arr.length);
+          arr[idx] = glitchChars.charAt(Math.floor(Math.random()*glitchChars.length));
+        }
+        el.textContent = arr.join('');
+      }, 60 + Math.random()*60);
+    }
+
+    function triggerOne(){
+      const list = words().filter(w => !isInCenter(w) && w.offsetParent !== null);
+      const pool = list.length ? list : words();
+      if (!pool.length) return;
+      const pick = pool[Math.floor(Math.random()*pool.length)];
+      // visual class for added sheen
+      pick.classList.add('rand-glitch');
+      // character noise for a short burst
+      performWordNoise(pick, 240 + Math.floor(Math.random()*740));
+      setTimeout(()=> pick.classList.remove('rand-glitch'), 520 + Math.random()*300);
+    }
+
+    let interval = setInterval(()=>{ if (Math.random() < 0.22) triggerOne(); }, 420);
+
+    window.triggerRandomWordGlitch = triggerOne;
+    window.stopRandomWordGlitch = function(){ if (interval){ clearInterval(interval); interval = null; } };
+    window.startRandomWordGlitch = function(){ if (!interval) interval = setInterval(()=>{ if (Math.random() < 0.22) triggerOne(); },420); };
+
+  }catch(e){ console.warn('random-word-glitch init failed', e); }
+})();
+</script>
 <!-- sentinel used to detect bottom of document for transition -->
 <div id="end-of-doc" style="height:1px; width:100%;"></div>
 

@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="css/maya.css?v=1">
   <link rel="stylesheet" href="css/lyrics.css?v=1">
   <link rel="stylesheet" href="css/elias_reiss.css?v=1">
+  <link rel="stylesheet" href="css/maroon-glitch.css?v=1">
+  <script defer src="js/maroon-glitch.js"></script>
   <title>MAR00N // Chapter 01: #PROCESSING</title>
   <style>
     :root {
@@ -893,6 +895,9 @@ a:focus-visible{
 </head>
 <body>
 
+<!-- sentinel used to detect scroll-up to return to processing.html -->
+<div id="top-of-doc" style="height:1px; width:100%;"></div>
+
 <header>
   <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 01 #PROCESSING</div>
   <nav>
@@ -1175,13 +1180,105 @@ a:focus-visible{
     function stopGlitchLoop(){ if (glitchInterval){ clearInterval(glitchInterval); glitchInterval = null; } }
     if (glitchEnabled) startGlitchLoop();
     if (reduce){ console.log('prefers-reduced-motion: active — glitch limited'); stopGlitchLoop(); }
-
-    // small global accessor for debugging/testing
     window.__maroonGlitch = {
       enable(){ glitchEnabled = true; startGlitchLoop(); },
       disable(){ glitchEnabled = false; stopGlitchLoop(); }
     };
 
+  })();
+</script>
+<!-- sentinel used to detect bottom of document for transition to processing3 -->
+<div id="end-of-doc" style="height:1px; width:100%;"></div>
+
+<script>
+  (function(){
+    function initScrollForward(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // opt-out
+      const sentinel = document.getElementById('end-of-doc');
+      if (!sentinel) return;
+      let triggered = false;
+      let scrollSeen = false;
+
+      window.addEventListener('scroll', function onFirstScroll(){ scrollSeen = true; }, { passive: true });
+
+      function maybeTrigger(){
+        if (triggered) return; triggered = true;
+        setTimeout(()=>{
+          if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+            window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing3.html' });
+          } else {
+            window.location.href = 'processing3.html';
+          }
+        }, 700);
+      }
+
+      if ('IntersectionObserver' in window){
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{
+            if (e.isIntersecting && !triggered && scrollSeen){
+              maybeTrigger();
+            }
+          });
+        }, { threshold: 1.0 });
+        io.observe(sentinel);
+      } else {
+        // fallback: check bottom position periodically but only after user scrolled
+        const check = ()=>{
+          if (triggered || !scrollSeen) return;
+          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) maybeTrigger();
+        };
+        window.addEventListener('scroll', check, { passive: true });
+      }
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initScrollForward); else initScrollForward();
+  })();
+</script>
+</script>
+<script>
+  (function(){
+    function initScrollBack(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const sentinel = document.getElementById('top-of-doc');
+      if (!sentinel) return;
+      let triggered = false;
+      let scrolledDown = false;
+      window.addEventListener('scroll', function onScroll(){ if (window.scrollY > 60) scrolledDown = true; }, { passive: true });
+      function maybeTrigger(){
+        if (triggered) return;
+        triggered = true;
+        setTimeout(()=>{
+          if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+            window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing.html' });
+          } else {
+            window.location.href = 'processing.html';
+          }
+        }, 300);
+      }
+
+      if ('IntersectionObserver' in window){
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{
+            if (e.isIntersecting && scrolledDown && !triggered){
+              maybeTrigger();
+            }
+          });
+        }, { threshold: 1.0 });
+        io.observe(sentinel);
+      } else {
+        // fallback: trigger when near top and user had scrolled down
+        window.addEventListener('scroll', ()=>{
+          if (triggered || !scrolledDown) return;
+          if (window.scrollY <= 2) maybeTrigger();
+        }, { passive: true });
+      }
+    }
+
+    if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initScrollBack);
+    } else {
+      initScrollBack();
+    }
   })();
 </script>
 </body>

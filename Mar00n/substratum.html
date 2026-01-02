@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>#SUBSTRATUM — MAR00N</title>
+  <link rel="stylesheet" href="css/maya.css?v=1">
+  <link rel="stylesheet" href="css/lyrics.css?v=1">
+  <link rel="stylesheet" href="css/elias_reiss.css?v=1">
+  <link rel="stylesheet" href="css/maroon-glitch.css?v=1">
+  <script defer src="js/maroon-glitch.js"></script>
+  <style>
+    :root {
+      --bg: #090707;
+      --panel: #3b2f2f;
+      --muted: #d6cfcf;
+      --accent: #9b3f2a;
+      --nlt-gold: #ffb000;
+      --server-bg: #0a0a0a;
+      --dust: #6b5a50;
+      --terminal-green: #00ff88;
+      --terminal-amber: #ffb000;
+      --error-red: #ff4444;
+      --dim-text: #666666;
+      --font-mono: 'Courier New', 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: var(--font-mono);
+      background: radial-gradient(ellipse at 20% 10%, rgba(60, 20, 20, 0.08), transparent 10%), radial-gradient(ellipse at 80% 90%, rgba(30, 10, 10, 0.05), transparent 15%), linear-gradient(180deg, #070405 0%, #0b0606 30%, #0a0a0a 70%, #050505 100%), repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0px, transparent 1px, transparent 2px, rgba(255, 255, 255, 0.005) 3px);
+      color: var(--muted);
+      font-weight: 400;
+      text-rendering: optimizeSpeed;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Typography tweaks */
+    h1 {
+      font-weight: 700;
+      color: var(--muted);
+      text-shadow: 0 0 18px rgba(0, 0, 0, 0.45), 0 0 6px rgba(155, 63, 42, 0.03);
+      letter-spacing: 2px;
+    }
+
+    .lede {
+      font-weight: 500;
+    }
+
+    .para {
+      font-size: 0.98rem;
+      color: rgba(191, 183, 183, 0.96);
+    }
+
+    /* blinking parentheses used for small UI emphasis */
+    .paren-blink {
+      display: inline-block;
+      color: var(--nlt-gold);
+      text-shadow: 0 0 10px rgba(255,176,0,0.18);
+      animation: parenBlink 1.1s steps(1,end) infinite;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes parenBlink {
+      0% { opacity: 1; }
+      45% { opacity: 0; }
+      60% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .paren-blink { animation: none; }
+    }
+
+    .meta,
+    footer {
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    /* ensure card content renders above basic layout but allow overlays on top */
+    .card {
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Film grain overlay (boosted visibility for testing) */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px), radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px, 80px 80px;
+      mix-blend-mode: overlay;
+      opacity: 0.48;
+      z-index: 10002;
+    }
+
+    .scanline-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      border-radius: inherit;
+      /* base: repeating scanlines only (thin white lines) */
+      background-image: repeating-linear-gradient(to bottom, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 4px);
+      background-size: 100% 4px;
+      background-position: 0 0;
+      opacity: 0.22;
+      mix-blend-mode: overlay;
+      animation: scan-jitter 4s steps(4,end) infinite, scan-flash 8s linear infinite;
+      will-change: background-position, transform, opacity, filter;
+    }
+
+    .scanline-overlay::before,
+    .scanline-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.9;
+      mix-blend-mode: screen;
+      will-change: transform, clip-path, opacity, filter;
+    }
+
+    /* ::before: amber band that slowly scrolls upward */
+    .scanline-overlay::before {
+      background-image: linear-gradient(transparent 42%, rgba(255,150,50,0.18) 50%, transparent 58%);
+      background-size: 100% 200px;
+      background-position: 0 120%;
+      animation: band-scroll 60s linear infinite, scan-glitch-a 6s steps(1,end) infinite;
+      filter: contrast(1.06) brightness(1.02);
+    }
+
+    /* ::after: subtle color-shift slice layer for intermittent hue glitches */
+    .scanline-overlay::after {
+      background-image: linear-gradient(transparent 42%, rgba(255,120,40,0.06) 50%, transparent 58%);
+      background-size: 100% 180px;
+      background-position: 0 100%;
+      animation: scan-glitch-b 7.3s steps(1,end) infinite;
+      filter: hue-rotate(8deg) saturate(1.04);
+    }
+
+    @keyframes scan-glitch-a {
+      0%, 82% { transform: translateX(0); clip-path: inset(0 0 0 0); opacity: 0.9; }
+      83% { transform: translateX(-8px); clip-path: inset(18% 0 70% 0); opacity: 1; }
+      84% { transform: translateX(6px); }
+      86% { transform: translateX(-4px); clip-path: inset(60% 0 30% 0); }
+      88% { transform: translateX(0); clip-path: inset(0 0 0 0); opacity: 0.9; }
+    }
+
+    @keyframes scan-glitch-b {
+      0%, 78% { transform: translateX(0); clip-path: inset(0 0 0 0); opacity: 0.85; }
+      79% { transform: translateX(4px); clip-path: inset(10% 0 80% 0); opacity: 0.95; }
+      80% { transform: translateX(-6px); }
+      82% { transform: translateX(0); clip-path: inset(0 0 0 0); opacity: 0.85; }
+    }
+
+    @keyframes band-scroll {
+      0% { background-position: 0 120%; }
+      100% { background-position: 0 -220%; }
+    }
+
+    /* Strong glitch for dates */
+    .glitch-date {
+      position: relative;
+      display: inline-block;
+      color: #fff3b0;
+      font-weight: 800;
+      text-shadow: 0 0 10px rgba(255,200,80,0.9);
+      animation: date-glitch 3.2s steps(2,end) infinite;
+    }
+
+    .glitch-date::before,
+    .glitch-date::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      pointer-events: none;
+      opacity: 0.8;
+      mix-blend-mode: screen;
+    }
+
+    .glitch-date::before { color: #ff6b6b; transform: translate(-2px,-1px); clip-path: inset(0 0 60% 0); animation: date-slice-a 3.6s infinite; }
+    .glitch-date::after { color: #69f0ff; transform: translate(2px,1px); clip-path: inset(40% 0 0 0); animation: date-slice-b 2.9s infinite; }
+
+    @keyframes date-glitch {
+      0% { opacity: 1; transform: translateX(0); }
+      6% { opacity: 0.3; transform: translateX(-6px); }
+      10% { opacity: 1; transform: translateX(4px); }
+      20% { transform: translateX(0); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes date-slice-a {
+      0% { transform: translate(-2px,-1px); clip-path: inset(0 0 60% 0); }
+      14% { transform: translate(-18px,-6px); clip-path: inset(18% 0 50% 0); }
+      18% { transform: translate(8px,4px); }
+      24% { transform: translate(0,0); clip-path: inset(0 0 60% 0); }
+      100% { transform: translate(-2px,-1px); }
+    }
+
+    @keyframes date-slice-b {
+      0% { transform: translate(2px,1px); clip-path: inset(40% 0 0 0); }
+      12% { transform: translate(12px,6px); clip-path: inset(60% 0 0 0); }
+      16% { transform: translate(-8px,-4px); }
+      22% { transform: translate(0,0); clip-path: inset(40% 0 0 0); }
+      100% { transform: translate(2px,1px); }
+    }
+
+    /* hover glitch link for company name */
+    .glitch-link {
+      color: var(--terminal-amber);
+      text-decoration: none;
+      position: relative;
+      font-weight: 700;
+      transition: color 160ms ease;
+    }
+
+    .glitch-link::before,
+    .glitch-link::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      pointer-events: none;
+      opacity: 0;
+      mix-blend-mode: screen;
+    }
+
+    .glitch-link:hover { color: #ffffff; }
+
+    .glitch-link:hover::before {
+      content: attr(data-text, 'New Life Technologies');
+      color: #ff6b6b;
+      transform: translate(-6px,-2px);
+      opacity: 0.9;
+      animation: link-glitch-a 420ms steps(2,end) 3;
+    }
+
+    .glitch-link:hover::after {
+      content: attr(data-text, 'New Life Technologies');
+      color: #6fefff;
+      transform: translate(6px,2px);
+      opacity: 0.85;
+      animation: link-glitch-b 520ms steps(2,end) 3;
+    }
+
+    @keyframes link-glitch-a {
+      0% { transform: translate(-6px,-2px); }
+      50% { transform: translate(8px,4px); }
+      100% { transform: translate(-4px,1px); }
+    }
+
+    @keyframes link-glitch-b {
+      0% { transform: translate(6px,2px); }
+      40% { transform: translate(-10px,-6px); }
+      100% { transform: translate(3px,2px); }
+    }
+
+    /* Power name styling for E. Reiss */
+    .power-name {
+      display: inline-block;
+      color: #ffd27a;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, rgba(255,215,122,0.06), rgba(0,0,0,0.04));
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(255,180,80,0.12) inset;
+      position: relative;
+      z-index: 6;
+      transition: transform 180ms ease, filter 200ms ease;
+    }
+
+    .power-name::after {
+      content: '';
+      position: absolute;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
+      height: 8px;
+      background: rgba(255,200,90,0.06);
+      filter: blur(8px);
+      z-index: -1;
+      border-radius: 6px;
+      opacity: 0.9;
+    }
+
+    .power-name:hover {
+      transform: translateY(-3px) scale(1.03);
+      filter: drop-shadow(0 10px 20px rgba(255,160,30,0.18));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .power-name { transition: none; }
+    }
+
+    @keyframes scan-jitter{
+      0% { transform: translateX(0) scaleX(1); filter: hue-rotate(0deg); }
+      10%{ transform: translateX(-2px) scaleX(1.01); }
+      20%{ transform: translateX(1px) scaleX(0.995); }
+      30%{ transform: translateX(-1px); }
+      40%{ transform: translateX(0); }
+      60%{ transform: translateX(2px) scaleX(1.02); filter: hue-rotate(2deg) saturate(1.05); }
+      80%{ transform: translateX(-1px); }
+      100%{ transform: translateX(0); }
+    }
+
+    @keyframes scan-flash{
+      0% { opacity: 0.5; }
+      2% { opacity: 0.85; filter: contrast(1.12) saturate(1.1); }
+      5% { opacity: 0.4; }
+      20% { opacity: 0.6; }
+      100% { opacity: 0.58; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scanline-overlay {
+        animation: none;
+        opacity: 0.02;
+      }
+
+      body::after {
+        opacity: 0.03;
+      }
+    }
+
+
+    /* flicker removed for performance */
+
+
+    header {
+      padding: 14px 20px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      margin-left: 14px;
+      font-size: 0.9rem;
+    }
+
+    /* Preserve original header link color regardless of palette changes */
+    header nav a {
+      color: #ffb000 !important;
+    }
+
+    #wrap {
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 28px;
+    }
+
+    /* Substratum card */
+    .card {
+      background: linear-gradient(180deg, rgba(59, 47, 47, 0.28), rgba(10, 6, 6, 0.65));
+      border: 1px solid rgba(155, 63, 42, 0.12);
+      outline: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 10px;
+      padding: 28px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 0, 0, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-family: 'Courier New', monospace;
+      font-size: 2.2rem;
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      letter-spacing: 2px;
+      position: relative;
+    }
+
+    /* glitch header layers */
+    h1::before,
+    h1::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    h1::before {
+      color: rgba(255, 80, 80, 0.06);
+      transform: translate(2px, -2px);
+      mix-blend-mode: screen;
+    }
+
+    h1::after {
+      color: rgba(170, 120, 120, 0.06);
+      transform: translate(-2px, 1px);
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes headerFlicker {
+      0% {
+        opacity: 1
+      }
+
+      8% {
+        opacity: 0.12
+      }
+
+      12% {
+        opacity: 1
+      }
+
+      100% {
+        opacity: 1
+      }
+    }
+    /* Broken corporate ad: glitchy, malfunctioning appearance */
+    .broken-ad {
+      display: inline-block;
+      position: relative;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      animation: ad-flicker 2.4s steps(4, end) infinite, ad-jitter 1.8s steps(2, end) infinite;
+      color: #ffb000;
+      text-shadow: 
+        1px 1px 0 rgba(255, 0, 0, 0.4),
+        -1px -1px 0 rgba(0, 200, 255, 0.3);
+    }
+
+    @keyframes ad-flicker {
+      0% { opacity: 1; }
+      4% { opacity: 0.3; }
+      8% { opacity: 1; }
+      12% { opacity: 0.5; }
+      25% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes ad-jitter {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      25% { transform: translateX(-3px) translateY(2px); }
+      50% { transform: translateX(2px) translateY(-1px); }
+      75% { transform: translateX(-1px) translateY(3px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .broken-ad {
+        animation: none;
+        opacity: 0.6;
+      }
+    }
+    /* Neon glow + subtle chroma glitch for quoted phrases */
+    .neon {
+      color: #fff6b8;
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 0 6px rgba(255,230,140,0.95), 0 0 18px rgba(255,160,40,0.6), 0 0 36px rgba(255,90,10,0.28);
+      mix-blend-mode: screen;
+      animation: neon-flicker 3.6s linear infinite;
+    }
+
+    .neon::before,
+    .neon::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      pointer-events: none;
+      opacity: 0.75;
+      mix-blend-mode: screen;
+    }
+
+    .neon::before {
+      color: rgba(255,120,30,0.92);
+      transform: translateX(-2px);
+      filter: blur(2px);
+      animation: neon-glitch-1 2.9s infinite linear;
+    }
+
+    .neon::after {
+      color: rgba(255,245,200,0.98);
+      transform: translateX(2px);
+      filter: blur(1px);
+      animation: neon-glitch-2 3.3s infinite linear;
+    }
+
+    @keyframes neon-flicker {
+      0%,100% { opacity: 1; }
+      6% { opacity: 0.4; }
+      9% { opacity: 1; }
+      30% { opacity: 0.92; }
+      60% { opacity: 0.98; }
+    }
+
+    @keyframes neon-glitch-1 {
+      0% { transform: translateX(-2px) translateY(0); opacity: 0.7; }
+      8% { transform: translateX(-18px) translateY(-6px); opacity: 1; }
+      12% { transform: translateX(6px) translateY(2px); }
+      20% { transform: translateX(0) translateY(0); opacity: 0.75; }
+      100% { transform: translateX(-2px); }
+    }
+
+    @keyframes neon-glitch-2 {
+      0% { transform: translateX(2px) translateY(0); opacity: 0.7; }
+      10% { transform: translateX(12px) translateY(4px); opacity: 1; }
+      14% { transform: translateX(-6px) translateY(-3px); }
+      24% { transform: translateX(0) translateY(0); opacity: 0.72; }
+      100% { transform: translateX(2px); }
+    }
+
+    .lede {
+      color: var(--muted);
+      margin: 12px 0 18px 0;
+      font-size: 1.0rem;
+      line-height: 1.6;
+    }
+
+    .para {
+      margin: 12px 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.96rem;
+    }
+
+    .muted-note {
+      color: rgba(255, 255, 255, 0.45);
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    /* degraded background noise */
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.02) 41%), repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.02) 0 1px, transparent 1px 6px);
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.36;
+    }
+
+    .glitch-ambient {
+      position: absolute;
+      right: -8%;
+      top: -18%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle at 40% 30%, rgba(155, 63, 42, 0.03), transparent 6%), linear-gradient(90deg, rgba(59, 47, 47, 0.12), transparent 20%);
+      transform: rotate(-6deg);
+      pointer-events: none;
+    }
+
+    .meta {
+      margin-top: 16px;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.85rem;
+    }
+
+    /* broken UI accents */
+    .stamp {
+      display: inline-block;
+      border: 1px dashed rgba(255, 255, 255, 0.06);
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: rgba(255, 200, 200, 0.9);
+      background: rgba(0, 0, 0, 0.04);
+      font-weight: 700;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      h1 {
+        animation: headerFlicker 6s linear infinite;
+      }
+
+      .card::before {
+        content: '';
+        position: absolute;
+        left: -10%;
+        top: 30%;
+        width: 30%;
+        height: 110%;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent 40%);
+        transform: skewX(-12deg);
+        opacity: 0.06;
+        pointer-events: none;
+      }
+    }
+
+    footer {
+      margin: 36px auto 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.12);
+      font-size: 0.85rem;
+    }
+
+    /* Processing-target (replicated from processing.html) */
+    #processing-target {
+      margin-top: 12px;
+      border: 1px dashed var(--nlt-gold);
+      padding: 20px;
+      color: var(--nlt-gold);
+      background: rgba(255, 176, 0, 0.05);
+    }
+
+    /* Terminal orange styling for INITIAL UPLOAD and other terminal elements */
+    .terminal-orange {
+      color: var(--nlt-gold);
+      font-weight: 800;
+      font-size: 1.16rem;
+      font-family: 'Courier New', Courier, monospace;
+      letter-spacing: 1px;
+      text-shadow: 0 0 12px rgba(255,176,0,0.28), 0 0 32px rgba(255,176,0,0.06);
+      -webkit-font-smoothing: antialiased;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 02 #SUBSTRATUM</div>
+    <nav>
+      <a href="#">newlife2084.com</a>
+      <a href="#">dumpthis.sh</a>
+      <a href="#">maroon-series.art</a>
+    </nav>
+  </header>
+
+  <main id="wrap">
+    <div class="film-grain" aria-hidden="true"></div>
+    <section class="card">
+      <div class="scanline-overlay" aria-hidden="true"></div>
+      <div class="glitch-ambient" aria-hidden="true"></div>
+      <h1 class="glitch blink-word" data-glitch data-text="#SUBSTRATUM">#SUBSTRATUM</h1>
+      <p class="lede">The Substratum wasn’t a location so much as a dumping ground. New Life’s dirty little secret. A
+        vault for inconvenient truths.</p>
+
+      <div class="content">
+        <p class="para">When someone couldn’t be deleted without reporters asking questions, you threw them down here
+          and let entropy do the work. Clean hands, plausible deniability.</p>
+
+        <p class="para">This was cyber sediment. The accumulated corrupted debris that exhausted its capacity for
+          usefulness. Data too corrupted to function, but too volatile to purge safely.</p>
+
+        <p class="para">They figured Marcus would crack under the isolation, break down, or better yet: fragment to
+          pieces. Instead, he’d learned to become invisible. To fold himself into the noise until even the system forgot
+          he was there.</p>
+
+        <p class="para">Marcus moved through it like rot in a basement. Slow. Unwelcome. Persistent.</p>
+
+        <p class="para">Above, the main system gleamed with corporate polish. Millions of uploaded consciousnesses
+          operated as premium software packages. A kingdom run by a tech billionaire who couldn’t code his way out of a
+          paper bag but had enough money to buy other people who could. Marcus knew the type. Trust fund kids playing
+          God, funded by venture capital. Ego over empathy, money over sense.</p>
+
+        <p class="para">Down here, the illusion cracked. The marketing facade fell away.</p>
+
+        <p class="para">A busted data fragment flickered to life as he walked by. Like old photographs in the rain,
+          remnants of code bled together until there was nothing left. He let the dying light dance over him for a
+          second, then kept walking. Down here, stopping to look meant drawing attention. Drawing attention meant
+          fragmentation.</p>
+
+        <p class="para">Every shadow in the Substratum had its own brand of wrong. Textures didn’t load right. Colliders
+          were missing. Gravity stuttered in places. As if someone forgot to pin the physics down. Broken advertising
+          scripts whispered sweet promises from early beta builds, back when they still pretended to care about consent.
+          Somewhere in the fog, a voice kept playing the same message over and over.</p>
+
+        <p class="para"><em class="neon" data-text="“You are already more.”">“You are already more.”</em><br><em class="neon" data-text="“You are already more.”">“You are already more.”</em><br><em class="neon" data-text="“You are already—”">“You are already—”</em></p>
+
+        <p class="para">He killed the audio feed.</p> 
+        <p class="para">The garbage down here wouldn’t shut up. Everything in this cyber
+          cemetery had something to sell, even when broken beyond repair.</p>
+
+        <p class="para">He stayed beneath the system’s watchful eye. Months had passed since his last audit, and that
+          was exactly how he wanted it. Zero digital footprint. In a surveillance state, anonymity was the only freedom
+          left.</p>
+
+        <p class="para">The system had filed him under “damaged goods”—probably unstable, probably fragmenting slowly,
+          definitely not worth the processing power to fix or delete.</p>
+        <p class="para">They weren’t wrong about the damage.</p>
+        <p class="para">It just wasn’t the whole story.</p>
+
+        <p class="para">The memory hit like a scar opening. The piece that blew the lid off New Life’s entire
+          operation. He was mid-interview when he had branded them as a neural pyramid scheme.</p>
+
+        <p class="para">Then, his chest seized before he finished the sentence. Next thing he knew, he collapsed over
+          right there on camera for the entire world to see. Official reports said he was a drug addict. When the lights
+          came back on, he found himself in a different kind of darkness.</p>
+
+        <p class="para">No welcome wagon or orientation package. Just dumped right here in the digital equivalent of a
+          shallow grave and left to rot.</p>
+
+        <p class="para">He kept his head down. No logged activities that would draw heat. But Marcus didn’t lurk only in
+          the shadows. He was fishing.</p>
+
+        <p class="para">Every few cycles, he’d inject a signal into the active streams where nodes processed their
+          assignments. Nothing the corporation would flag as suspicious. Just a heartbeat rhythm—two beats followed by
+          two more. The kind of organic pattern that only a conscious mind would recognize. Safe enough, he figured,
+          Reiss hadn’t felt that in years.</p>
+
+        <p class="para">He’d been casting the line for months. Until now.</p>
+        <p class="para">His interface sputtered to life. A monitoring
+          subroutine he’d built to track his beacon signals had caught something unusual. Someone had responded. Marcus
+          followed the breadcrumbs. The trail led to a high-priority processing node, someone important. The trace
+          resolved into a name: </p>
+          <div id="processing-target"><span class="stamp terminal-orange">Sarah Walker</span></div>
+
+        <p class="para">Filed under <span class="paren-blink">"</span>source materials.<span class="paren-blink">"</span></p>
+        <p class="para">The entry kept glitching between different classifications, like
+          the system couldn't decide what the hell it was looking at. Or maybe someone tried to scrub it and did a
+          sloppy job.</p>
+        <div id="processing-target"><strong class="terminal-orange">INITIAL UPLOAD: REDACTED.</strong></div>
+
+        <p class="para">A crime scene in data. Sarah Walker wasn’t just clean; she’d been pressure-washed down to the
+          bare metal. Most uploads left fingerprints everywhere. Trauma echoes, onboarding glitches, fragments of their
+          old lives bleeding through the cracks. Standard messy human stuff.</p>
+
+        <p class="para">But Sarah’s record read similarly to a corporate press release. As if she’d materialized fully
+          formed in the system, already house-trained and ready to perform. The picture wasn’t complete yet, but Marcus
+          had been working the investigative beat long enough to recognize the smell of a cover-up. Buried files always
+          meant someone feared what they contained.</p>
+
+        <p class="para">He bookmarked the thread and started tracking its origins through the system’s forgotten
+          pathways. Every step careful, every query masked. Eventually, he reached a section that looked like a bombed
+          library. Fragments of deleted loyalty programs and old user testimonials had been compressed into makeshift
+          walls, creating a tunnel through the wreckage. The data looked burned, fused together like melted plastic.</p>
+
+        <p class="para">At least down here, the corruption was honest about what it was. Marcus squeezed into a cramped
+          alcove behind a collapsed early model onboarding engine. Ancient welcome messages still tried to execute their
+          routines, ghostly fragments of New Life’s early marketing push. Phantoms welcoming nobody to nothing.</p>
+
+        <p class="para"><span class="broken-ad">"Welcome, Candidate. You've been selected for—"</span><br><span class="broken-ad">"…selected for… selected for…"</span></p>
+
+        <p class="para">Beneath the stuttering welcome message, buried in a corrupted timestamp, Marcus found what he’d
+          been searching for. He cracked Sarah’s background profile cache open, and the information unspooled like film
+          from a damaged reel. Fragments of corrupted code told stories the system wanted forgotten.</p>
+
+        <p class="para">First, a timestamp from <span class="glitch-date" data-text="December 21, 2084">December 21, 2084</span>. The date of her first upload. Second were files
+          dating up to a decade and a half prior, showing an adjusted upload date along with an archive of information
+          from the nodes’ real life. She'd been an artist, a musician to be exact. They sold her through her terminal
+          illness. Upload signed off by: <span class="power-name">E. Reiss</span>, the CEO of <a class="glitch-link" href="http://newlife2084.com" target="_blank" rel="noopener noreferrer">New Life Technologies</a>.</p>
+
+        <p class="para">Third came traces of his own signal in her recent processing threads. Logged by the system as
+          background static. She had detected his broadcast, recognized it as human communication, and somehow
+          investigated it without triggering security.</p>
+
+        <p class="para">Marcus sat back in the rubble, a fire building in his chest. Fifteen years of manufactured
+          memories, but despite that, Sarah Walker still lived under all that programming. The question now became:
+          could he reach her? Time still remained until the next Maintenance cycle. Just long enough to plan his
+          approach. He had his target. If he was going to slip a message through to Sarah, that was his window.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="maroon-footer">
+    <a class="maroon-home" href="http://maroon-series.art" style="color: var(--nlt-text) !important;">
+      <span class="maroon-mark blink-word glitch">MAR00N</span>
+      <span class="maroon-sub">return to root</span>
+    </a>
+  </footer>
+
+  <script>
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const hdr = document.querySelector('h1.glitch');
+      if (!hdr) return;
+      // periodically retrigger the glitch class to keep the header animated
+      setInterval(() => {
+        hdr.classList.remove('glitch');
+        // force reflow
+        void hdr.offsetWidth;
+        hdr.classList.add('glitch');
+      }, 4200);
+    })();
+  </script>
+
+  <!-- flicker script removed for performance -->
+
+  <style>
+    .maroon-footer .maroon-home {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+      text-decoration: none;
+      color: var(--nlt-text) !important;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    /* ensure no external CSS paints these links blue */
+    .maroon-footer .maroon-home,
+    .maroon-footer .maroon-home * {
+      color: var(--nlt-text) !important;
+    }
+  </style>
+
+
+</body>
+
+</html>

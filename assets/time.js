@@ -2,49 +2,28 @@
 (function () {
   // user timezone per your site context
   const TZ = "America/New_York";
-  const OFFSET_YEARS = 60;
+  // Force display year to 2084 while using the system's month/day/time
+  const FORCED_YEAR = 2084;
 
   function pad(n) { return n.toString().padStart(2, "0"); }
 
-  // Format like: Sat Sep 28 00:31:02 EDT 2085
+  // Format date only like: Tue Dec 30 2084
   function formatFutureDate(d) {
-    // weekday, month, day
     const weekday = d.toLocaleString("en-US", { weekday: "short", timeZone: TZ });
     const month = d.toLocaleString("en-US", { month: "short", timeZone: TZ });
-    const day = pad(d.getUTCDate()); // fallback
-    // Use toLocaleString to get time components in TZ
-    const parts = d.toLocaleString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZone: TZ
-    }).replace(/\u200E/g, ""); // strip weird LTR marks
-    // Year and timezone name
-    const year = d.toLocaleString("en-US", { year: "numeric", timeZone: TZ });
-    const tzName = d.toLocaleTimeString("en-US", { timeZone: TZ, timeZoneName: "short" }).split(" ").pop();
-    // Build "Sat Sep 28 00:31:02 EDT 2085"
-    // Extract day-of-month from original localized string for correctness:
     const dayNum = d.toLocaleString("en-US", { day: "2-digit", timeZone: TZ });
-    return `${weekday} ${month} ${dayNum} ${parts} ${tzName} ${year}`;
-  }
-
-  function nowPlusYears(years) {
-    const base = new Date();
-    // create target date at same moment + years
-    const target = new Date(base.getTime());
-    target.setFullYear(target.getFullYear() + years);
-    return target;
+    const year = String(FORCED_YEAR);
+    return `${weekday} ${month} ${dayNum} ${year}`;
   }
 
   function updateClock() {
     const el = document.getElementById("future-clock");
     if (!el) { clearInterval(interval); return; }
-    const future = nowPlusYears(OFFSET_YEARS);
-    el.textContent = formatFutureDate(future);
+    const now = new Date();
+    el.textContent = formatFutureDate(now);
   }
 
-  // start
+  // start — date-only display; update once per minute to catch day changes
   updateClock();
-  const interval = setInterval(updateClock, 1000);
+  const interval = setInterval(updateClock, 60 * 1000);
 })();

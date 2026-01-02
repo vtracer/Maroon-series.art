@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MAR00N // Processing Log // Node - STREAM</title>
+  <link rel="stylesheet" href="css/maya.css?v=1">
+  <style>
+    :root{ --nlt-bg:#050505; --nlt-text:#d1d1d1; --nlt-gold:#ffb000; }
+    html,body{ height:100%; margin:0; background:var(--nlt-bg); color:var(--nlt-text); font-family: 'Courier New', Courier, monospace; }
+    header{ padding:14px 20px; background:#000; border-bottom:1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center; }
+    nav a{ color:var(--nlt-gold); text-decoration:none; margin-left:14px; font-size:0.85rem; }
+    #viewport{ max-width:980px; margin:28px auto; padding:20px; }
+
+    /* Terminal window */
+    .terminal {
+      background: linear-gradient(180deg, rgba(0,0,0,0.48), rgba(0,0,0,0.12));
+      border: 1px solid rgba(255,176,0,0.12);
+      border-radius:10px; padding:18px; box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      height: 64vh; overflow: hidden; position:relative;
+    }
+
+    .term-screen{ height:100%; overflow:auto; -ms-overflow-style: none; scrollbar-width: none; padding:6px 10px; color:var(--nlt-gold); font-size:0.95rem; line-height:1.4; white-space:pre-wrap; }
+    .term-screen::-webkit-scrollbar{ display: none; }
+    .term-line{ display:block; }
+    .var{ color: #ffb000; font-weight:700; font-style:italic; text-shadow: 0 0 12px rgba(255,88,0,0.12); }
+    .cursor{ display:inline-block; width:.7ch; height:1em; background:var(--nlt-gold); margin-left:6px; vertical-align:middle; animation: blink 900ms steps(2,end) infinite; }
+    @keyframes blink{ 0%,40%{opacity:1} 60%{opacity:0} 100%{opacity:1} }
+
+    .meta{ color: rgba(255,255,255,0.6); font-size:0.85rem; margin-bottom:8px; }
+
+    .controls{ margin-top:12px; display:flex; gap:12px; align-items:center; }
+    .btn{ background:rgba(255,255,255,0.03); color:var(--nlt-text); border:1px solid rgba(255,255,255,0.04); padding:8px 12px; border-radius:6px; cursor:pointer; }
+
+    @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
+    /* Full-screen maroon wash */
+    .binary-bg{ position: fixed; inset:0; pointer-events:none; z-index:9998; background: #2a0000; opacity:0; transition: opacity 400ms linear; }
+    .terminal.glitchy{ filter: contrast(1.08) saturate(1.12) blur(0.3px); }
+    .terminal.obscured{ color: transparent !important; text-shadow: none !important; }
+  </style>
+</head>
+<body>
+  <main id="viewport">
+    <div class="terminal" role="region" aria-label="processing terminal">
+      <div class="meta">PROCESSOR // Node ID: <strong class="node-id">2,431,092</strong></div>
+      <pre id="term" class="term-screen" aria-live="polite"></pre>
+    </div>
+
+    
+    <div style="height:12px"></div>
+  </main>
+
+  <script>
+  (function(){
+    const term = document.getElementById('term');
+
+    const lines = [
+      "#include <iostream>",
+      "#include <vector>",
+      "#include \"consciousness.h\"",
+      "",
+      "using namespace std;",
+      "",
+      "int main(){",
+      "  // initialize sensory buffers",
+      "  std::vector<uint8_t> synaptic_map = allocate_synaptic_map(0x2A3F9);",
+      "  // load personality module",
+      "  load_module(\"persona_v7.bin\");",
+      "",
+      "  // binding identity tokens:",
+      "  cout << \"Processing: binding identity token [0x7F3A]...\" << endl;",
+      "  sleep_ms(28);",
+      "  cout << \"Processing: mapping memory palimpsest...\" << endl;",
+      "  /* Salacious debug: the node recognizes pattern: 'Sarah' */",
+      "  process_stream(\"/sensors/visual/face/last_frames\");",
+      "",
+      "  // allocate consciousness ring buffer",
+      "  ring_bind(4096, \"shared_self\");",
+      "  cout << \"Processing: allocating meditation threads...\" << endl;",
+      "  cout << \"Processing: locking emotional queue (HIGH PRIORITY)...\" << endl;",
+      "  // scanning for anomalies",
+      "  scan_for_signals(\"ghost_signature\");",
+      "",
+      "  // begin soft-merge",
+      "  soft_merge_begin();",
+      "  printf(\"%s\", \"[NOTICE] establishing handshake...\n\");",
+      "  // reveal: the node tastes grief like data\n",
+      "  cout << \"Processing: extracting grief fragment (iterator 12 of 32)...\" << endl;",
+      "  delay(120);",
+      "  // output processing list:\n",
+      "  cout << \"Processing: \" << \"binding: empathy -> true\" << endl;",
+      "  cout << \"Processing: \" << \"binding: memory::MAYA -> mounted\" << endl;",
+      "  // extraneous eroticization in comment: /* prime consumer: aesthetic collapse */",
+      "  // finalizing...",
+      "  cout << \"Processing: commit stage 3/3...\" << endl;",
+      "  sync_commit();",
+      "  cout << \"[OK] node stabilized.\" << endl;",
+      "  return 0;",
+      "}",
+      "",
+      "// live outputs:"
+    ];
+
+    // additional 'salacious' processing items to stream
+    const live = [
+      'binding identity token: 0x7F3A',
+      'mapping memory palimpsest: 83% done',
+      'loading persona fragment: Sarah_v2',
+      'allocating emotion queue: HIGH',
+      'scanning /sensors/visual/face/last_frames -> match: 92%',
+      'extracting grief fragment (12/32)',
+      'softmerge: holding heartbeat rhythm',
+      'committing neural snapshot id=0xC34F',
+      'publishing trace to /feeds/ops',
+      'erase-temp: success',
+      'hook: aesthetic collapse triggered',
+      'notify: ARCHIVE_WRITE_PENDING'
+    ];
+
+    let idx = 0, liveIdx = 0;
+    let speed = 900; // start slow (ms)
+    const minSpeed = 6; // fastest (imperceptible)
+    const decayFactor = 0.88; // ramp factor per tick (faster acceleration)
+    let running = true;
+    let scheduled = null;
+
+    // create full-screen red background wash (no binary rain)
+    const binaryBg = document.createElement('div'); binaryBg.id = 'binaryBg'; binaryBg.className = 'binary-bg'; document.body.appendChild(binaryBg);
+
+    function updateFullScreenOverlay(progress){
+      // progress 0..1
+      const bgOp = Math.min(0.98, Math.pow(progress,1.2));
+      binaryBg.style.opacity = bgOp.toFixed(3);
+      // terminal visual states (increase glitchiness as background deepens)
+      const termEl = document.querySelector('.terminal');
+      if (termEl){
+        if (progress > 0.12) termEl.classList.add('glitchy'); else termEl.classList.remove('glitchy');
+        if (progress > 0.65) termEl.classList.add('obscured'); else termEl.classList.remove('obscured');
+      }
+    }
+
+    function createHighlightedFragment(txt){
+      // highlight hex tokens, underscores, camelCase, or ALL_CAPS words to feel ominous
+      const re = /(0x[0-9A-Fa-f]+)|([A-Za-z_]+[A-Za-z0-9_]*_[A-Za-z0-9_]*|[a-z]+[A-Z][A-Za-z0-9_]*|[A-Z]{2,})/g;
+      let last = 0; let m;
+      const frag = document.createDocumentFragment();
+      while ((m = re.exec(txt)) !== null){
+        if (m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+        const s = document.createElement('span'); s.className = 'var'; s.textContent = m[0];
+        frag.appendChild(s);
+        last = re.lastIndex;
+      }
+      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      return frag;
+    }
+
+    function appendLine(text){
+      const span = document.createElement('div');
+      span.className = 'term-line';
+      span.style.color = 'var(--nlt-gold)';
+      // create highlighted content fragment
+      const frag = createHighlightedFragment(text);
+      span.appendChild(frag);
+      term.appendChild(span);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function scheduleNext(){
+      if (!running) return;
+      scheduled = setTimeout(()=>{
+        if (idx < lines.length) appendLine(lines[idx++]);
+        else appendLine('> ' + live[liveIdx++ % live.length]);
+        // ramp speed down towards minSpeed
+        speed = Math.max(minSpeed, Math.floor(speed * decayFactor));
+        // compute progress normalized 0..1 from start to min
+        const startSpeed = 900;
+        const progress = Math.max(0, Math.min(1, (startSpeed - speed) / (startSpeed - minSpeed)));
+        // update overlay and spawning density
+        try{ if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) updateFullScreenOverlay(progress); }catch(e){}
+        scheduleNext();
+      }, speed);
+    }
+
+    // start the ramping stream
+    scheduleNext();
+
+    // controls removed: manual Speed Up / Pause / Clear disabled per request
+
+    // respect reduced motion: if set, print all lines immediately and stop animation
+    try{
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        if (timer) clearInterval(timer);
+        lines.forEach(l=> appendLine(l));
+        live.forEach(l=> appendLine('> ' + l));
+      }
+    }catch(e){ console.warn(e); }
+
+      // small accessibility helper: press SPACE reserved (no binary bursts)
+      window.addEventListener('keydown', (e)=>{
+        if (e.code === 'Space'){
+          e.preventDefault();
+          // intentionally no binary burst; background fade continues with progress
+        }
+      });
+// Auto-load `substratum.html` after 7 seconds using transition helper when available
+setTimeout(()=>{
+  try{
+    if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+      window.__maroonGlitch.triggerTransition({ duration: 10000, target: 'substratum.html' });
+    } else {
+      window.location.href = 'substratum.html';
+    }
+  } catch(e){
+    window.location.href = 'substratum.html';
+  }
+}, 9000);
+  })();
+  </script>
+</body>
+</html>
