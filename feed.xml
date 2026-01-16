@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title>maroon-series.art - Patch Notes</title>
+<link>https://maroon-series.art/</link>
+<description>Patch notes for Mar00n series site.</description>
+<lastBuildDate>Fri, 16 Jan 2026 02:44:57 -0000</lastBuildDate>
+<item>
+<title>unknown</title>
+<link>https://maroon-series.art/updates.html#patch-unknown</link>
+<guid>https://maroon-series.art/updates.html#patch-unknown</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[Patch release.]]></description>
+</item>
+<item>
+<title>00.09.02</title>
+<link>https://maroon-series.art/updates.html#patch-00.08.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.08.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Added new features and improvements.]]></description>
+</item>
+<item>
+<title>00.08.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.08.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.08.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Minor layout fixes and accessibility tweaks.
+- context/
+- dump/
+- updates/
+- Maroon/]]></description>
+</item>
+<item>
+<title>unknown</title>
+<link>https://maroon-series.art/updates.html#patch-unknown</link>
+<guid>https://maroon-series.art/updates.html#patch-unknown</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[Patch release.]]></description>
+</item>
+<item>
+<title>00.14.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.14.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.14.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `Mar00n/substratum.html` — chapter 2 upload.]]></description>
+</item>
+<item>
+<title>00.13.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.13.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.13.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `Mar00n/processing3b.html` — chapter 1 break.]]></description>
+</item>
+<item>
+<title>00.12.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.12.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.12.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `Mar00n/processing3.html` — chapter 1 continued.]]></description>
+</item>
+<item>
+<title>00.11.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.11.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.11.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `Mar00n/processing2.html` — chapter 1 continued.]]></description>
+</item>
+<item>
+<title>00.10.03</title>
+<link>https://maroon-series.art/updates.html#patch-00.10.03</link>
+<guid>https://maroon-series.art/updates.html#patch-00.10.03</guid>
+<pubDate>Thu, 15 Jan 2026 00:00:00 -0000</pubDate>
+<description><![CDATA[- Compact terminal-style patchnote template added to `updates.html`.
+- Reduced padding and font sizes for compact display.
+- Clarified duplication instruction in comment above.]]></description>
+</item>
+<item>
+<title>00.10.02</title>
+<link>https://maroon-series.art/updates.html#patch-00.10.02</link>
+<guid>https://maroon-series.art/updates.html#patch-00.10.02</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Applied global styling and font choices across the site.]]></description>
+</item>
+<item>
+<title>00.10.01</title>
+<link>https://maroon-series.art/updates.html#patch-00.10.01</link>
+<guid>https://maroon-series.art/updates.html#patch-00.10.01</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Added site assets: `assets/` JS & CSS files (matrix, menu, cursor, styles).]]></description>
+</item>
+<item>
+<title>00.10.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.10.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.10.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Added `Mar00n/processing*.html` demo pages and styles under `Mar00n/`.]]></description>
+</item>
+<item>
+<title>00.05.22</title>
+<link>https://maroon-series.art/updates.html#patch-00.05.22</link>
+<guid>https://maroon-series.art/updates.html#patch-00.05.22</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Created `updates.html` — central patch notes page.]]></description>
+</item>
+<item>
+<title>00.05.21</title>
+<link>https://maroon-series.art/updates.html#patch-00.05.21</link>
+<guid>https://maroon-series.art/updates.html#patch-00.05.21</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Added `logs.html` — activity and changelogs.]]></description>
+</item>
+<item>
+<title>00.05.20</title>
+<link>https://maroon-series.art/updates.html#patch-00.05.20</link>
+<guid>https://maroon-series.art/updates.html#patch-00.05.20</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `newlife2084.com` — the mask.]]></description>
+</item>
+<item>
+<title>00.05.12</title>
+<link>https://maroon-series.art/updates.html#patch-00.05.12</link>
+<guid>https://maroon-series.art/updates.html#patch-00.05.12</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Added `dump.html` — development notes and experiments.]]></description>
+</item>
+<item>
+<title>00.05.10</title>
+<link>https://maroon-series.art/updates.html#patch-00.05.10</link>
+<guid>https://maroon-series.art/updates.html#patch-00.05.10</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `dumpthis.sh` — narrative instrument.]]></description>
+</item>
+<item>
+<title>00.05.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.05.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.05.00</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Published `Mar00n/prologue.html` — prologue content for the series.]]></description>
+</item>
+<item>
+<title>00.00.12</title>
+<link>https://maroon-series.art/updates.html#patch-00.00.12</link>
+<guid>https://maroon-series.art/updates.html#patch-00.00.12</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Added `about.html` — context and contact info.]]></description>
+</item>
+<item>
+<title>00.00.10</title>
+<link>https://maroon-series.art/updates.html#mlb2-31121650</link>
+<guid>https://maroon-series.art/updates.html#mlb2-31121650</guid>
+<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<description><![CDATA[- Created `index.html` — site root and landing page.]]></description>
+</item>
+</channel>
+</rss>

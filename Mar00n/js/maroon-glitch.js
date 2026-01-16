@@ -272,6 +272,153 @@
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') bindNLLinks(); else document.addEventListener('DOMContentLoaded', bindNLLinks);
+  // --- expose utilities to page scripts ---
+  function emitGas(area, count = 8){
+    if (!area) return;
+    const container = area.querySelector('.toxic-gas') || (function(){
+      const c = document.createElement('div'); c.className = 'toxic-gas'; area.appendChild(c); return c;
+    })();
+    for (let i=0;i<count;i++){
+      const g = document.createElement('div'); g.className = 'gas';
+      // random position
+      g.style.left = (10 + Math.random()*80) + '%';
+      g.style.top = (60 + Math.random()*20) + '%';
+      container.appendChild(g);
+      // trigger rise after a tick
+      requestAnimationFrame(()=>{ g.classList.add('rise'); g.classList.add('gas-pulse'); });
+      // remove when done
+      setTimeout(()=>{ if (g && g.parentNode) g.parentNode.removeChild(g); }, 1400 + Math.random()*800);
+    }
+    // show container briefly
+    container.classList.add('active');
+    setTimeout(()=> container.classList.remove('active'), 1200 + Math.random()*600);
+  }
 
-  window.__maroonGlitch = Object.assign(window.__maroonGlitch || {}, { revealLink, hideReveal });
+  function pingFooter(audioMuted){
+    try{
+      const f = document.getElementById('pageFooter') || document.querySelector('.maroon-footer');
+      if (!f) return;
+      f.classList.add('footer-alert');
+      f.classList.add('crowd-pulse');
+      setTimeout(()=> f.classList.remove('footer-alert'), 1600);
+      setTimeout(()=> f.classList.remove('crowd-pulse'), 1000);
+      // minimal WebAudio ping (no external asset required)
+      if (!audioMuted && (window.AudioContext || window.webkitAudioContext)){
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new Ctx();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 720; g.gain.value = 0.0001; // lower, punchier ping
+        o.connect(g); g.connect(ctx.destination);
+        const now = ctx.currentTime;
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.08, now + 0.01);
+        o.start(now);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+        o.stop(now + 0.24);
+        setTimeout(()=>{ try{ ctx.close(); }catch(e){} }, 400);
+      }
+    }catch(e){ console.warn('pingFooter failed', e); }
+  }
+
+  function triggerArchitectIntervention(){
+    // Check if audio should be muted
+    const audioMuted = window.__maroonGlitch._audioMuted;
+    
+    // Entrance: dramatic bell + spotlight + ring ropes, then flash + gas + footer ping
+    entranceSequence(audioMuted).then(()=>{
+      triggerTransition({ duration: 900 });
+      // add marquee glow for impact
+      const m = document.getElementById('marqueeTitle'); if (m) m.classList.add('glow');
+      // small delay then gas + footer ping
+      setTimeout(()=>{
+        const area = document.getElementById('viewport') || document.body;
+        emitGas(area, 12);
+        pingFooter(audioMuted);
+      }, 160);
+      // remove glow after impact
+      setTimeout(()=>{ if (m) m.classList.remove('glow'); }, 1800);
+    });
+  }
+
+  /* Entrance sequence: play bell, raise spotlight and ropes, show announcer banner, then resolve */
+  function entranceSequence(audioMuted){
+    return new Promise((resolve)=>{
+      try{
+        const root = document.documentElement;
+        // show spotlight
+        let sp = document.querySelector('.arena-spotlight');
+        if (!sp){ sp = document.createElement('div'); sp.className = 'arena-spotlight'; document.body.appendChild(sp); }
+        sp.classList.add('on');
+
+        // add ring ropes overlay
+        let ropes = document.querySelector('.ring-ropes');
+        if (!ropes){
+          ropes = document.createElement('div'); ropes.className = 'ring-ropes';
+          for (let i=0;i<3;i++){ const r = document.createElement('div'); r.className = 'rope'; ropes.appendChild(r); }
+          document.body.appendChild(ropes);
+        }
+        // animate ropes in
+        setTimeout(()=> ropes.classList.add('active'), 80);
+
+        // show announcer banner
+        let banner = document.querySelector('.announce-banner');
+        if (!banner){ banner = document.createElement('div'); banner.className = 'announce-banner'; banner.textContent = 'PRESENTING: THE ARCHITECT'; document.body.appendChild(banner); }
+        banner.classList.add('show');
+
+        // bell visual + sound
+        const spark = document.createElement('div'); spark.className = 'bell-spark'; spark.style.left = '50%'; spark.style.top = '12%'; document.body.appendChild(spark);
+        requestAnimationFrame(()=> spark.classList.add('ring'));
+        if (!audioMuted) playBell();
+
+        // crowd swell
+        setTimeout(()=>{ if (!audioMuted) playCrowd(0.9); }, 120);
+
+        // remove banner and ropes after short display (longer for drama)
+        setTimeout(()=>{ banner.classList.remove('show'); ropes.classList.remove('active'); spark.parentNode && spark.parentNode.removeChild(spark); sp.classList.remove('on'); resolve(); }, 1200);
+      }catch(e){ resolve(); }
+    });
+  }
+
+  /* play a short bell using WebAudio */
+  function playBell(){
+    try{
+      if (!(window.AudioContext || window.webkitAudioContext)) return;
+      const Ctx = window.AudioContext || window.webkitAudioContext; const ctx = new Ctx();
+      const o1 = ctx.createOscillator(); const o2 = ctx.createOscillator(); const g = ctx.createGain();
+      o1.type = 'sine'; o2.type = 'triangle'; o1.frequency.value = 440; o2.frequency.value = 660;
+      o1.connect(g); o2.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.02);
+      o1.start(); o2.start();
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.9);
+      setTimeout(()=>{ try{ o1.stop(); o2.stop(); ctx.close(); }catch(e){} }, 1100);
+    }catch(e){ /* ignore */ }
+  }
+
+  /* play a quick crowd noise using noise + filter */
+  function playCrowd(intensity=0.7){
+    try{
+      if (!(window.AudioContext || window.webkitAudioContext)) return;
+      const Ctx = window.AudioContext || window.webkitAudioContext; const ctx = new Ctx();
+      const bufferSize = 2 * ctx.sampleRate; const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i=0;i<bufferSize;i++) output[i] = (Math.random()*2-1) * 0.25;
+      const source = ctx.createBufferSource(); source.buffer = noiseBuffer;
+      const band = ctx.createBiquadFilter(); band.type = 'bandpass'; band.frequency.value = 1000; band.Q.value = 0.8;
+      const g = ctx.createGain(); g.gain.value = 0.0001;
+      source.connect(band); band.connect(g); g.connect(ctx.destination);
+      source.start();
+      g.gain.exponentialRampToValueAtTime(0.12 * intensity, ctx.currentTime + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.9);
+      setTimeout(()=>{ try{ source.stop(); ctx.close(); }catch(e){} }, 1100);
+    }catch(e){ /* ignore */ }
+  }
+
+  // expose APIs and internal helpers for pages
+  window.__maroonGlitch = Object.assign(window.__maroonGlitch || {}, {
+    revealLink, hideReveal, emitGas, pingFooter, triggerArchitectIntervention,
+    // expose doTextGlitch for page scripts that want to call it directly
+    doTextGlitch
+  });
 })();
