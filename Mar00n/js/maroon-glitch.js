@@ -58,7 +58,8 @@
   // small global accessor for debugging/testing
   window.__maroonGlitch = {
     enable(){ glitchEnabled = true; startGlitchLoop(); },
-    disable(){ glitchEnabled = false; stopGlitchLoop(); }
+    disable(){ glitchEnabled = false; stopGlitchLoop(); },
+    doTextGlitch: doTextGlitch
   };
 
   // optional: sample arch-quote periodic class toggle (non-destructive)
@@ -361,10 +362,7 @@
         // animate ropes in
         setTimeout(()=> ropes.classList.add('active'), 80);
 
-        // show announcer banner
-        let banner = document.querySelector('.announce-banner');
-        if (!banner){ banner = document.createElement('div'); banner.className = 'announce-banner'; banner.textContent = 'PRESENTING: THE ARCHITECT'; document.body.appendChild(banner); }
-        banner.classList.add('show');
+        // announcer banner suppressed
 
         // bell visual + sound
         const spark = document.createElement('div'); spark.className = 'bell-spark'; spark.style.left = '50%'; spark.style.top = '12%'; document.body.appendChild(spark);

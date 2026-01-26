@@ -1,0 +1,836 @@
+﻿:root{}
+
+/* Centering and blink-word behaviour for headings */
+:root{}
+
+/* Centering and blink-word behaviour for headings */
+h1.blink-word { display: block !important; width: 100%; text-align: center !important; }
+
+/* Keep glitch transforms centered and apply to inline-block spans */
+.glitch { display: inline-block; transform-origin: center center; }
+
+/* small glitch animation used by JS when toggling class */
+.glitch { animation: glitch-anim 5s infinite; }
+
+@keyframes glitch-anim {
+  0% { opacity: 1; transform: translate(0); }
+  1% { opacity: 0.8; transform: translate(-2px, 2px); }
+  2% { opacity: 1; transform: translate(0); }
+  100% { opacity: 1; }
+}
+
+/* Blinking sign animation for `blink-word` */
+.blink-word { display: inline-block; animation: signBlink 2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+
+@keyframes signBlink {
+  0% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+  45% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+  48% { opacity: 0.2; text-shadow: 0 0 2px rgba(0, 255, 150, 0.15); }
+  50% { opacity: 0.85; text-shadow: 0 0 6px rgba(0, 255, 150, 0.4); }
+  52% { opacity: 0.15; text-shadow: 0 0 1px rgba(0, 255, 150, 0.1); }
+  54% { opacity: 0.9; text-shadow: 0 0 7px rgba(0, 255, 150, 0.5); }
+  56% { opacity: 0.25; text-shadow: 0 0 2px rgba(0, 255, 150, 0.2); }
+  58% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+  100% { opacity: 1; text-shadow: 0 0 8px rgba(0, 255, 150, 0.6); }
+}
+
+/* Overlay used by JS to render temporary garbled text without affecting layout */
+.maroon-glitch-overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  white-space: nowrap;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+  font: inherit;
+  color: inherit;
+}
+
+/* Full-screen transition glitch overlay */
+.maroon-fullscreen-glitch{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02), rgba(0,0,0,0)), linear-gradient(90deg, rgba(255,0,150,0.02), rgba(0,255,150,0.02));
+  mix-blend-mode: screen;
+  animation: fullGlitch 120ms steps(2) infinite;
+}
+
+@keyframes fullGlitch {
+  0% { filter: none; opacity: 0.06; transform: translateY(0); }
+  25% { filter: hue-rotate(8deg) contrast(1.2) saturate(1.3); opacity: 0.12; transform: translateY(-2px); }
+  50% { filter: hue-rotate(-6deg) contrast(1.35) saturate(1.5) blur(.2px); opacity: 0.22; transform: translateY(1px); }
+  75% { filter: hue-rotate(14deg) contrast(1.5) saturate(1.6); opacity: 0.18; transform: translateY(-1px); }
+  100% { filter: none; opacity: 0.04; transform: translateY(0); }
+}
+
+/* intense flash used briefly */
+.maroon-fullscreen-glitch.flash { animation: fullGlitchFlash 200ms linear 4; }
+@keyframes fullGlitchFlash { 0%{opacity:0} 20%{opacity:1} 60%{opacity:0.6} 100%{opacity:0} }
+
+/* small scanline overlay to enhance effect */
+.maroon-fullscreen-glitch::after{
+  content: '';
+  position: absolute; left:0; right:0; top:0; bottom:0;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: .6;
+}
+
+/* page-level heavy glitch state (TV glitch + chromatic shake) */
+.maroon-glitching-full-root,
+.maroon-glitching-full {
+  will-change: filter, transform;
+}
+
+:root.maroon-glitching-full,
+.maroon-glitching-full-root {
+  /* subtle color distort + contrast */
+  filter: contrast(1.25) saturate(1.2) hue-rotate(2deg);
+}
+
+/* quick page shake / skew to feel like a CRT jumping */
+.maroon-glitching-full-root .glitch,
+.maroon-glitching-full .glitch{
+  text-shadow: 2px 0 0 rgba(255,0,150,0.35), -2px 0 0 rgba(0,255,150,0.25), 0 0 8px rgba(255,255,255,0.6);
+}
+
+@keyframes maroon-page-jitter {
+  0% { transform: translate(0,0) skewX(0); }
+  20% { transform: translate(-6px,2px) skewX(-2deg); }
+  40% { transform: translate(5px,-2px) skewX(1.5deg); }
+  60% { transform: translate(-3px,1px) skewX(-1deg); }
+  80% { transform: translate(4px,-1px) skewX(1deg); }
+ 100% { transform: translate(0,0) skewX(0); }
+}
+
+/* applied to a wrapper when full glitch runs */
+.maroon-glitch-wrap {
+  animation: maroon-page-jitter 80ms steps(1) infinite;
+}
+
+/* noise canvas overlay (drawn by JS) */
+.maroon-noise-canvas{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99998;
+  mix-blend-mode: screen;
+}
+.nl-reveal-overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: inline-block;
+  pointer-events: none;
+  color: rgba(255,176,0,0.98);
+  mix-blend-mode: screen;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity .12s ease, transform .12s ease;
+  transform: translateY(0);
+  font: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+}
+.nl-reveal-overlay.nl-revealed{ opacity: 1; }
+
+/* Chapter 03: marquee / maintenance styles */
+.marquee{ display:block; font-size:3.6rem; letter-spacing:6px; text-align:center; margin:1.2rem 0; position:relative; }
+.marquee .char{ display:inline-block; will-change:transform,opacity; }
+
+/* Reduce excessive spacing for single-word marquee titles (page-specific override) */
+#marqueeTitle{
+  display:inline-block; /* shrink-to-fit so the heading doesn't span full width */
+  letter-spacing:0.06em; /* much tighter spacing for single-word titles */
+  font-size:3.8rem; /* slightly larger while keeping proportion */
+  max-width:90%;
+  white-space:nowrap;
+}
+.marquee.heavy-glitch{ text-shadow: 2px 0 6px rgba(255,0,150,0.45), -2px 0 6px rgba(0,255,150,0.25); }
+.marquee .char{ display:inline-block; will-change:transform,opacity; }
+
+/* scanline mask (uses an external SVG asset as mask-image if supported) */
+.scanline-mask{ mask-image: url('../assets/scanline.svg'); -webkit-mask-image: url('../assets/scanline.svg'); mask-repeat: repeat; -webkit-mask-repeat: repeat; }
+
+.maintenance-ticker{ display:block; text-align:center; color:rgba(255,240,200,0.9); font-family:monospace; margin-bottom:1rem; opacity:0; transition:opacity .18s ease; letter-spacing:2px; }
+.maintenance-ticker.visible{ opacity:1; }
+
+/* toxic gas emitter used during Architect intervention */
+.toxic-gas{ position:absolute; inset:0; pointer-events:none; mix-blend-mode: screen; opacity:0; transition:opacity .2s ease; }
+.toxic-gas.active{ opacity:0.82; background: linear-gradient(180deg, rgba(0,255,120,0.06), rgba(0,120,60,0.08)); backdrop-filter: blur(2px); }
+.toxic-gas .gas{ position:absolute; width:18px; height:18px; border-radius:50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7), rgba(0,255,140,0.25)); box-shadow: 0 0 12px rgba(0,255,140,0.18); opacity:0.0; transform:translateY(8px) scale(.6); transition: transform .9s cubic-bezier(.2,.6,.2,1), opacity .9s ease; }
+.toxic-gas .gas.rise{ opacity:0.9; transform:translateY(-160px) scale(1.2); }
+
+/* footer alert state */
+.maroon-footer.footer-alert{ box-shadow: 0 -8px 24px rgba(0,0,0,0.6) inset; background: linear-gradient(180deg, rgba(10,10,10,0.95), rgba(0,0,0,0.85)); border-top: 1px solid rgba(255,255,255,0.02); }
+.maroon-footer.footer-alert .maroon-mark{ text-shadow: 0 0 8px rgba(0,255,140,0.45); }
+
+/* small particle helper used by JS */
+.gas-pulse{ animation: gasPulse 900ms ease-out forwards; }
+@keyframes gasPulse{ 0%{opacity:0; transform:translateY(6px) scale(.6)} 50%{opacity:0.9; transform:translateY(-40px) scale(1.05)} 100%{opacity:0; transform:translateY(-140px) scale(1.3)} }
+
+/* accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .marquee, .marquee .char, .glitch, .maroon-fullscreen-glitch { animation: none !important; }
+  .gas, .gas-pulse { transition: none !important; }
+}
+
+/* manuscript / chapter copy improvements */
+.manuscript-text{ color: #e6e6e6; }
+.manuscript-text .chapter-copy{ font-size:1.02rem; line-height:1.9; color: #dcdcdc; font-weight:400; letter-spacing:0.2px; }
+.manuscript-text .chapter-copy p{ margin: 0 0 1.2rem 0; max-width: 54ch; margin-left: auto; margin-right: auto; text-wrap:balance; }
+.manuscript-text .chapter-copy p.center{ text-align:center; }
+.manuscript-text .chapter-copy .alert{ color: var(--amber); background: rgba(255,176,0,0.03); padding:6px 10px; border-radius:4px; display:inline-block; }
+
+/* subtle drop cap for opening paragraph */
+.manuscript-text .chapter-copy p:first-of-type::first-letter{ float:left; font-size:3.2rem; line-height:1; padding-right:8px; padding-top:4px; color:var(--amber); font-weight:800; }
+
+/* emphasized quoted block */
+.manuscript-text .chapter-copy blockquote{ border-left:3px solid rgba(255,176,0,0.12); padding-left:16px; margin: 1rem auto; max-width:56ch; color:#f3f0e8; font-style: italic; }
+
+/* slightly brighter body for reading in dark background */
+@media (min-width: 980px){
+  .manuscript-text .chapter-copy{ font-size:1.1rem; }
+}
+
+/* emphasized first word styling */
+.manuscript-text .chapter-copy p .first-word{ display:inline-block; color:var(--amber); font-weight:800; letter-spacing:1px; padding-right:0.45rem; text-transform:none; }
+.manuscript-text .chapter-copy p .first-word.glitch{ text-shadow: 0 0 10px rgba(255,176,0,0.18), 0 0 6px rgba(0,255,140,0.06); }
+
+/* --- Church service x WWE: theatrical stage + crowd motifs --- */
+.arena-stage{ position:relative; padding:48px 0 80px 0; background: radial-gradient(1200px 300px at 50% 0%, rgba(255,220,120,0.02), transparent 20%), linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.12)); }
+.arena-spotlight{ position:absolute; left:50%; top:6%; width:55vw; height:60vh; transform:translateX(-50%); pointer-events:none; mix-blend-mode:screen; z-index:2; background: radial-gradient(ellipse at center, rgba(255,240,200,0.06), rgba(0,0,0,0)); filter: blur(14px); opacity:0; transition:opacity .35s ease; }
+.arena-spotlight.on{ opacity:1; }
+
+/* four spotlight zones (from narrative: Four spotlight zones. Always four.) */
+.four-zones{ position:fixed; inset:0; pointer-events:none; z-index:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:0; }
+.four-zones .zone{ position:relative; opacity:0; transition:opacity .6s ease; }
+.four-zones .zone.active{ opacity:0.04; }
+.zone-1{ border-right:1px solid rgba(255,176,0,0.08); border-bottom:1px solid rgba(0,255,120,0.06); background:radial-gradient(ellipse at 20% 20%, rgba(255,176,0,0.02), transparent); }
+.zone-2{ border-left:1px solid rgba(0,255,120,0.06); border-bottom:1px solid rgba(255,0,150,0.05); background:radial-gradient(ellipse at 80% 20%, rgba(0,255,120,0.01), transparent); }
+.zone-3{ border-right:1px solid rgba(255,0,150,0.05); border-top:1px solid rgba(255,176,0,0.08); background:radial-gradient(ellipse at 20% 80%, rgba(255,176,0,0.01), transparent); }
+.zone-4{ border-left:1px solid rgba(255,176,0,0.08); border-top:1px solid rgba(0,255,120,0.06); background:radial-gradient(ellipse at 80% 80%, rgba(0,255,120,0.02), transparent); }
+
+/* metrics / attention board display */
+.attention-board{ position:fixed; top:60px; right:20px; background: rgba(0,0,0,0.7); border:1px solid rgba(0,255,120,0.2); padding:12px 16px; font-family:var(--font-mono); font-size:0.75rem; letter-spacing:1px; color:rgba(0,255,120,0.9); z-index:9990; max-width:160px; box-shadow: 0 0 12px rgba(0,255,120,0.08); opacity:0; transition:opacity .35s ease; }
+.attention-board.visible{ opacity:1; }
+.attention-board .metric{ display:block; margin:4px 0; border-bottom:1px solid rgba(0,255,120,0.1); padding-bottom:4px; }
+.attention-board .metric-label{ color:rgba(255,176,0,0.7); display:inline-block; width:50%; }
+.attention-board .metric-value{ color:rgba(0,255,120,0.9); font-weight:800; text-align:right; display:inline-block; width:45%; }
+
+/* platform grid background */
+.viewport-grid{ position:fixed; inset:0; pointer-events:none; z-index:0; background-image: linear-gradient(0deg, rgba(0,255,120,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,176,0,0.008) 1px, transparent 1px); background-size:40px 40px; opacity:0.6; }
+
+/* streaming status indicator */
+.stream-status{ position:fixed; top:20px; left:20px; display:flex; gap:8px; align-items:center; z-index:9990; font-family:var(--font-mono); font-size:0.75rem; letter-spacing:1px; }
+.stream-status .live-dot{ width:8px; height:8px; border-radius:50%; background:rgba(255,0,60,0.8); animation:livePulse 1.2s ease-in-out infinite; box-shadow:0 0 8px rgba(255,0,60,0.4); }
+@keyframes livePulse{ 0%{opacity:1} 50%{opacity:0.5} 100%{opacity:1} }
+.stream-status .status-text{ color:rgba(255,0,60,0.8); text-transform:uppercase; font-weight:800; }
+
+/* Animated metrics */
+.metric-value{ animation: metricTick 3s ease-in-out infinite; }
+@keyframes metricTick{ 0%{opacity:1} 40%{opacity:0.6} 50%{opacity:1} 100%{opacity:1} }
+
+/* Creator node avatars (floating particles) */
+.creator-nodes{ position:fixed; inset:0; pointer-events:none; z-index:2; }
+.node{ position:absolute; width:6px; height:6px; border-radius:50%; background:rgba(0,255,120,0.4); box-shadow:0 0 6px rgba(0,255,120,0.3); opacity:0; }
+.node.active{ opacity:0.8; animation:nodeFloat 4s ease-in-out infinite; }
+@keyframes nodeFloat{ 0%{transform:translateY(0) translateX(0); opacity:0.3} 50%{transform:translateY(-30px) translateX(6px); opacity:0.8} 100%{transform:translateY(0) translateX(0); opacity:0.3} }
+.node.high-tier{ background:rgba(255,200,80,0.5); box-shadow:0 0 8px rgba(255,200,80,0.4); width:8px; height:8px; }
+
+/* Zone labels */
+.zone-label{ position:absolute; pointer-events:none; font-family:var(--font-mono); font-size:0.7rem; letter-spacing:1px; opacity:0; transition:opacity .5s ease; }
+.zone-label.visible{ opacity:0.6; }
+.zone-1 .zone-label{ color:rgba(255,176,0,0.5); top:8%; left:12%; text-align:center; max-width:100px; }
+.zone-2 .zone-label{ color:rgba(0,255,120,0.5); top:8%; right:12%; text-align:center; max-width:100px; }
+.zone-3 .zone-label{ color:rgba(255,0,150,0.5); bottom:8%; left:12%; text-align:center; max-width:100px; }
+.zone-4 .zone-label{ color:rgba(255,176,0,0.5); bottom:8%; right:12%; text-align:center; max-width:100px; }
+
+/* Architect's gaze effect */
+.architect-gaze{ position:fixed; left:50%; top:50%; width:200px; height:200px; transform:translate(-50%,-50%); pointer-events:none; z-index:3; opacity:0; transition:opacity .35s ease; }
+.architect-gaze.active{ opacity:0.8; }
+.architect-gaze::before{ content:''; position:absolute; inset:0; background:radial-gradient(circle, rgba(255,200,80,0.15), transparent 70%); filter:blur(18px); }
+.architect-gaze::after{ content:''; position:absolute; inset:10%; border:2px solid rgba(255,200,80,0.25); border-radius:50%; animation:gazeRing 2s ease-in-out infinite; }
+@keyframes gazeRing{ 0%{transform:scale(1); opacity:0.8} 50%{transform:scale(1.2); opacity:0.4} 100%{transform:scale(1); opacity:0.8} }
+
+/* Ray's modal (stark white wireframe aesthetic) */
+.ray-modal{ position:fixed; inset:0; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:99999; opacity:0; transition:opacity .4s ease; pointer-events:none; }
+.ray-modal.visible{ opacity:1; pointer-events:auto; }
+.ray-avatar{ width:120px; height:180px; border:2px solid rgba(255,255,255,0.8); background:transparent; position:relative; }
+.ray-avatar::before, .ray-avatar::after{ content:''; position:absolute; background:rgba(255,255,255,0.8); }
+.ray-avatar::before{ width:40px; height:40px; border-radius:50%; top:8px; left:50%; transform:translateX(-50%); }
+.ray-avatar::after{ width:3px; height:80px; left:50%; top:50px; transform:translateX(-50%); }
+.ray-eyes{ position:absolute; width:20px; height:5px; top:25px; left:50%; transform:translateX(-50%); display:flex; gap:8px; }
+.ray-eyes::before, .ray-eyes::after{ content:''; width:3px; height:3px; background:rgba(255,255,255,0.9); border-radius:50%; }
+.ray-text{ position:absolute; bottom:20px; left:50%; transform:translateX(-50%); text-align:center; color:rgba(255,255,255,0.7); font-family:var(--font-mono); font-size:0.8rem; letter-spacing:1px; white-space:nowrap; }
+
+/* control panel removed */
+
+/* Propaganda overlays */
+.propaganda{ position:fixed; font-family:var(--font-mono); font-size:0.85rem; letter-spacing:2px; color:rgba(0,255,120,0.9); background:rgba(0,0,0,0.7); padding:8px 12px; border:1px solid rgba(0,255,120,0.3); pointer-events:none; z-index:4; opacity:0; animation:propagandaPop .5s ease-out forwards; }
+@keyframes propagandaPop{ 0%{opacity:0; transform:scale(.8) translateY(20px)} 100%{opacity:1; transform:scale(1) translateY(0)} }
+.propaganda.glitch{ text-shadow:2px 0 rgba(255,0,150,0.4), -2px 0 rgba(0,255,120,0.4); }
+
+/* Inline text enhancements */
+.toxic-word{ color:rgba(0,255,120,0.9); text-shadow:0 0 8px rgba(0,255,120,0.18); font-weight:600; }
+.glitch-word{ display:inline-block; color:rgba(255,176,0,0.95); text-shadow:1px 0 rgba(255,0,150,0.3), -1px 0 rgba(0,255,120,0.25); animation:wordGlitch 3s ease-in-out infinite; }
+@keyframes wordGlitch{ 0%{text-shadow:1px 0 rgba(255,0,150,0.3), -1px 0 rgba(0,255,120,0.25)} 50%{text-shadow:-1px 0 rgba(0,255,120,0.35), 1px 0 rgba(255,0,150,0.25)} 100%{text-shadow:1px 0 rgba(255,0,150,0.3), -1px 0 rgba(0,255,120,0.25)} }
+
+/* Trauma-chic accessories removed */
+
+/* Pull quote platform notifications */
+.platform-quote{ position:relative; margin:2rem auto; max-width:600px; background:rgba(0,0,0,0.85); border:1px solid rgba(0,255,120,0.25); padding:16px 20px; font-size:1.1rem; color:rgba(255,240,200,0.95); box-shadow:0 4px 20px rgba(0,0,0,0.6), 0 0 12px rgba(0,255,120,0.08); }
+.platform-quote::before{ content:''; position:absolute; top:-6px; left:20px; width:12px; height:12px; background:rgba(0,255,120,0.8); border-radius:50%; box-shadow:0 0 8px rgba(0,255,120,0.5); }
+.platform-quote-metrics{ display:flex; gap:16px; margin-top:10px; font-size:0.75rem; color:rgba(0,255,120,0.7); font-family:var(--font-mono); }
+.platform-quote-metrics span{ display:flex; align-items:center; gap:4px; }
+
+/* Live chat feed */
+.live-chat{ display:none !important; }
+
+/* Attention tracker */
+.attention-tracker{ display:none !important; }
+
+/* Character entrance typography */
+.ray-entrance{ color:rgba(255,255,255,0.95); background:linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size:100% 2px; padding:2px 6px; border:1px solid rgba(255,255,255,0.15); display:inline-block; font-weight:600; }
+.architect-entrance{ color:rgba(255,200,80,0.98); text-shadow:0 0 12px rgba(255,200,80,0.25); font-weight:700; display:inline-block; background:linear-gradient(90deg, rgba(255,200,80,0.05), transparent); padding:2px 6px; }
+
+/* Hover reveals */
+.hover-reveal{ position:relative; cursor:help; border-bottom:1px dotted rgba(0,255,120,0.3); }
+.hover-reveal .reveal-text{ position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.95); border:1px solid rgba(255,0,150,0.4); padding:6px 10px; white-space:nowrap; font-size:0.75rem; color:rgba(255,0,150,0.9); pointer-events:none; opacity:0; transition:opacity .25s ease; z-index:9999; }
+.hover-reveal:hover .reveal-text{ opacity:1; }
+
+/* accessibility */
+.ring-ropes{ position:fixed; left:0; right:0; top:18%; height:0; pointer-events:none; z-index:9997; }
+.ring-ropes .rope{ display:block; height:6px; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,176,0,0.04)); box-shadow: 0 1px 0 rgba(0,0,0,0.45) inset; margin: 10px 0; opacity:0; transition: opacity .28s ease, transform .28s ease; transform: translateY(-6px); }
+.ring-ropes.active .rope{ opacity:1; transform: translateY(0); }
+
+/* announcer banner */
+.announce-banner{ position: fixed; left: 50%; top: 8%; transform: translateX(-50%); z-index: 99999; background: rgba(0,0,0,0.6); padding:12px 18px; border-radius:6px; color:var(--amber); font-weight:800; letter-spacing:4px; display:inline-block; box-shadow: 0 8px 30px rgba(0,0,0,0.6); opacity:0; transition:opacity .25s ease, transform .25s ease; }
+.announce-banner.show{ opacity:1; transform: translateX(-50%) translateY(6px); }
+
+/* Temporary override: make manuscript text plain white and disable green hover reveals */
+.manuscript-text, .manuscript-text * { color: #ffffff !important; text-shadow: none !important; }
+.manuscript-text a { color: #ffffff !important; text-decoration: none !important; }
+
+/* Disable underlined green hover reveals and their popups */
+.hover-reveal { border-bottom: none !important; cursor: default !important; }
+.hover-reveal .reveal-text { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+
+/* Neutralize other green/yellow accent classes used for popups */
+.toxic-word, .glitch-word, .metric-value, .attention-tracker .value, .stream-status .status-text { color: #ffffff !important; text-shadow: none !important; }
+
+/* Flying hearts emitter for .bleeding-hearts */
+.bleeding-hearts{ position: relative; display: inline-block; cursor: pointer; }
+.bleeding-hearts .fleeting-heart{ position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); pointer-events: none; font-size: 1.05rem; color: rgba(255,140,180,0.98) !important; text-shadow: 0 0 10px rgba(255,140,180,0.22); will-change: transform, opacity; }
+.fleeting-heart{ animation: flyHeart var(--d,3600ms) ease-out forwards; }
+@keyframes flyHeart{
+  0%{
+    transform: translate(-50%,-50%) translateX(0px) translateY(0px) scale(0.4);
+    opacity:0;
+  }
+  15%{
+    transform: translate(-50%,-50%) translateX(0px) translateY(0px) scale(1.02);
+    opacity:1;
+  }
+  60%{
+    opacity:0.96;
+  }
+  85%{
+    transform: translate(-50%,-50%) translateX(calc(var(--dx, 0px) * 0.6)) translateY(calc(var(--dy, -120px) * 0.6)) scale(1.04) rotate(calc(var(--rot, -18deg) * 0.6));
+    opacity:0.9;
+  }
+  92%{
+    transform: translate(-50%,-50%) translateX(var(--dx, 0px)) translateY(var(--dy, -160px)) scale(1.28) rotate(var(--rot, -18deg));
+    opacity:0.96;
+  }
+  100%{
+    transform: translate(-50%,-50%) translateX(var(--dx, 0px)) translateY(var(--dy, -200px)) scale(0.5) rotate(var(--rot, -18deg));
+    opacity:0;
+  }
+}
+
+
+/* Hide ephemeral popup chrome that may still be created by JS */
+.propaganda, .announce-banner, .ray-modal, .arena-spotlight, .ring-ropes { display: none !important; }
+
+/* Keep headings legible but white */
+.marquee { color: #ffffff !important; text-shadow: none !important; }
+
+/* Attention Board (inline) — stronger pop + glow, scoped to inline use */
+.attention-board-inline{
+  display:inline-block;
+  font-weight:700;
+  font-size:0.68rem; /* smaller to avoid collisions */
+  line-height:1;
+  vertical-align:baseline;
+  margin: 0 0.35ch; /* small side gap so it doesn't bump letters */
+  color: rgba(255,240,200,0.95);
+  letter-spacing: .08em;
+  transform-origin: center;
+  perspective: 700px;
+  position: relative;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.8);
+  transition: transform .12s ease, box-shadow .12s ease;
+  padding: 0 6px; /* compact padding */
+  border-radius: 4px;
+}
+.attention-board-inline::before{
+  content: attr(class);
+  display:block;
+  position:absolute;
+  left:-9999px; /* hidden duplicate for accessible screen readers not affected */
+}
+
+/* primary pop animation (3D + bounce) */
+.attention-board-inline.pop{
+  animation: attentionPop 920ms cubic-bezier(.2,.9,.25,1) both;
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.95),
+    1px 2px 0 rgba(0,0,0,0.9),
+    3px 6px 0 rgba(0,0,0,0.85),
+    8px 20px 36px rgba(0,0,0,0.6),
+    0 0 48px rgba(255,200,60,0.28);
+  transform: translateZ(36px) scale(1.08);
+}
+
+/* optional boost class for a short luminous flare */
+.attention-board-inline.pop.boost{
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.95),
+    2px 4px 0 rgba(0,0,0,0.9),
+    6px 12px 0 rgba(0,0,0,0.85),
+    12px 36px 56px rgba(0,0,0,0.6),
+    0 0 80px rgba(255,220,80,0.5);
+  transform: translateZ(44px) scale(1.12) rotateX(6deg);
+}
+
+/* expanding glow behind the word to sell impact */
+.attention-board-inline.pop::after{
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,220,80,0.85) 0%, rgba(255,176,0,0.35) 30%, transparent 60%);
+  filter: blur(6px);
+  opacity: 0; z-index: -1; pointer-events: none;
+  animation: attentionGlow 920ms ease-out both;
+}
+
+@keyframes attentionPop{
+  0%{ transform: translateZ(0) scale(.94) rotateX(0); opacity:1; }
+  18%{ transform: translateZ(60px) scale(1.24) rotateX(8deg); }
+  40%{ transform: translateZ(28px) scale(1.14) rotateX(-6deg); }
+  70%{ transform: translateZ(36px) scale(1.18) rotateX(2deg); }
+  100%{ transform: translateZ(30px) scale(1.12) rotateX(0); }
+}
+
+@keyframes attentionGlow{
+  0%{ width:10px; height:10px; opacity:0; filter: blur(6px); }
+  30%{ width:160px; height:60px; opacity:0.9; filter: blur(20px); }
+  70%{ width:220px; height:80px; opacity:0.45; filter: blur(28px); }
+  100%{ width:260px; height:90px; opacity:0; filter: blur(36px); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .attention-board-inline.pop{ animation: none; transform: none; }
+}
+
+/* Permanent/persistent popped state (applied when the word should remain popped) */
+.attention-board-inline.persistent{
+  animation: none !important;
+  transform: translateZ(30px) scale(1.12) rotateX(0) !important;
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.95),
+    2px 4px 0 rgba(0,0,0,0.9),
+    6px 12px 0 rgba(0,0,0,0.85),
+    12px 36px 56px rgba(0,0,0,0.6),
+    0 0 80px rgba(255,220,80,0.5);
+}
+.attention-board-inline.persistent::after{
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 260px; height: 90px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,220,80,0.85) 0%, rgba(255,176,0,0.35) 30%, transparent 60%);
+  filter: blur(36px);
+  opacity: 0.28; z-index: -1; pointer-events: none;
+}
+
+/* VR Headset / Oval viewport styling */
+.vr-shell{ position:relative; display:flex; justify-content:center; align-items:center; padding:36px 40px 76px 40px; z-index:2; background: rgba(0,0,0,0.98); }
+/* center screen with side gutters so bezel is visible */
+.vr-viewport{ width: 100%; max-width: 1200px; margin: 0 auto; background: rgba(6,6,6,0.6); padding:40px 48px 140px 48px; position:relative; z-index:3; color:inherit; overflow:visible;
+  /* Rectangular CRT-style screen with rounded corners */
+  -webkit-clip-path: none;
+  clip-path: none;
+  border-radius: 18px;
+  box-shadow: inset 0 18px 60px rgba(0,0,0,0.75), 0 40px 100px rgba(0,0,0,0.9);
+  border: 10px solid rgba(18,18,18,0.96);
+  backdrop-filter: blur(5px) saturate(1.05);
+}
+
+/* TV-like screen effects: glass reflection, inner bezel, and subtle scanlines */
+.vr-viewport::before{
+  /* glossy glass reflection for rectangular screen */
+  content: '';
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 11;
+  border-radius: 12px;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 6%, rgba(255,255,255,0.0) 14%), linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.0) 24%);
+  mix-blend-mode: screen;
+  filter: blur(1.5px);
+  opacity: 0.95;
+}
+
+.vr-viewport::after{
+  /* inner bezel / vignette for rectangular screen */
+  content: '';
+  position: absolute;
+  left: 12px; right: 12px; top: 12px; bottom: 12px;
+  pointer-events: none;
+  z-index: 8;
+  border-radius: 10px;
+  /* subtle inner bezel + vignette */
+  box-shadow: inset 0 0 0 6px rgba(20,20,20,0.9), inset 0 32px 80px rgba(0,0,0,0.7), inset 0 -20px 40px rgba(0,0,0,0.55);
+  /* inner-edge reflections closer to the screen content */
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.0)), linear-gradient(to top, rgba(255,255,255,0.08), rgba(255,255,255,0.0)), linear-gradient(to right, rgba(255,255,255,0.06), rgba(255,255,255,0.0)), linear-gradient(to left, rgba(255,255,255,0.05), rgba(255,255,255,0.0));
+  background-repeat: no-repeat;
+  background-position: top center, bottom center, left center, right center;
+  background-size: 100% 8px, 100% 6px, 6px 100%, 6px 100%;
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* Ensure only one visible viewport: neutralize outer viewport visuals */
+#viewport{ background: transparent !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; }
+#viewport::before, #viewport::after{ display: none !important; }
+#viewport > .container{ width: 100% !important; max-width: none !important; display:flex; justify-content:center; align-items:flex-start; overflow: visible !important; }
+
+/* hide any other scanline overlays so only our TV scanlines render */
+.scanline-overlay{ display: none !important; }
+.viewport-grid{ display: none !important; }
+
+/* make vr-viewport visually dominant */
+.vr-shell, .vr-viewport{ z-index: 9999 !important; position: relative !important; }
+
+
+/* subtle CRT / TV scanlines */
+.vr-viewport .screen-scanlines{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 7;
+  background-image: repeating-linear-gradient(to bottom, rgba(255,255,255,0.025) 0 1px, rgba(0,0,0,0) 1px 5px);
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+}
+
+/* slight convex distortion to mimic curved screen */
+.vr-viewport .screen-curvature{
+  position: absolute; inset: 0; pointer-events: none; z-index:4; border-radius: inherit;
+  background: radial-gradient(ellipse at 50% 48%, rgba(255,255,255,0.02), transparent 40%);
+  mix-blend-mode: overlay; filter: blur(0.8px); opacity:0.7;
+}
+
+/* Vector screen mode: monochrome vector phosphor look */
+.vr-viewport.vector-screen{
+  background-color: #020202;
+  color: var(--vector-phosphor);
+}
+.vr-viewport.vector-screen .manuscript-text{
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: auto;
+  color: var(--vector-phosphor);
+  filter: contrast(1.2) saturate(1.1);
+}
+.vr-viewport.vector-screen .manuscript-text .chapter-copy p,
+.vr-viewport.vector-screen .manuscript-text .marquee,
+.vr-viewport.vector-screen .manuscript-text h1 { 
+  color: #7CFF9A;
+  text-shadow: 0 0 8px rgba(124,255,154,0.12), 0 0 1px rgba(124,255,154,0.6);
+  -webkit-text-stroke: 0.18px rgba(0,0,0,0.55);
+  letter-spacing: 0.02em;
+}
+
+/* Tighter, high-contrast paragraphs to look drawn by vectors */
+.vr-viewport.vector-screen .chapter-copy p{ 
+  font-weight: 400;
+  line-height: 1.45;
+  opacity: 0.95;
+}
+
+/* Adjust scanlines for vector look: sparse and colored */
+.vr-viewport.vector-screen .screen-scanlines{
+  background-image: repeating-linear-gradient(to bottom, rgba(var(--vector-phosphor-rgb),0.03) 0 1px, rgba(0,0,0,0) 1px 6px);
+  mix-blend-mode: screen;
+  opacity: var(--scanline-opacity);
+}
+
+/* Faint perspective grid that recedes toward a horizon */
+.vr-viewport.vector-screen .screen-grid{
+  position: absolute;
+  inset: 0;
+  z-index: 6; /* behind scanlines (7) but above curvature (4) */
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: var(--vector-grid-opacity);
+  background-image:
+    linear-gradient(rgba(var(--vector-phosphor-rgb),0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--vector-phosphor-rgb),0.06) 1px, transparent 1px);
+  background-size: var(--vector-grid-step) var(--vector-grid-step), var(--vector-grid-step) var(--vector-grid-step);
+  background-repeat: repeat;
+  transform-origin: center bottom;
+  transform: perspective(var(--grid-perspective)) rotateX(var(--grid-tilt)) translateY(var(--grid-offset));
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 60%);
+  mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 60%);
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .vr-viewport.vector-screen .screen-grid{ transform: none; }
+}
+
+/* Subtle horizontal wobble + sharper glyphs to emulate vector phosphor */
+.vr-viewport.vector-screen .manuscript-text{ 
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Optional small jitter on headings for authentic analog wobble (very subtle) */
+.vr-viewport.vector-screen .marquee{ 
+  animation: vectorWobble 3500ms ease-in-out infinite;
+}
+@keyframes vectorWobble{
+  0%{ transform: translateX(0) translateY(0); }
+  50%{ transform: translateX(0.6px) translateY(-0.3px); }
+  100%{ transform: translateX(0) translateY(0); }
+}
+
+/* Outer bezel with subtle edge reflections */
+.vr-shell::before{
+  content: '';
+  position: absolute;
+  left: 0; top: -20px; right: 0;
+  transform: none;
+  width: 100%;
+  max-width: none;
+  height: calc(100% + 40px);
+  border-radius: 28px;
+  border: 18px solid rgba(10,10,10,0.98);
+  /* bezel edge reflections: top, bottom, left, right + live-dot radial */
+  background-image:
+    radial-gradient(circle at 36px 22px, rgba(255,80,80,0.34), rgba(255,80,80,0.0) 18%),
+    linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.0)),
+    linear-gradient(to top, rgba(255,255,255,0.05), rgba(255,255,255,0.0)),
+    linear-gradient(to right, rgba(255,255,255,0.06), rgba(255,255,255,0.0)),
+    linear-gradient(to left, rgba(255,255,255,0.045), rgba(255,255,255,0.0));
+  background-repeat: no-repeat;
+  background-position: left 24px top 20px, top center, bottom center, left center, right center;
+  background-size: 80px 80px, 100% 18px, 100% 12px, 12px 100%, 12px 100%;
+  mix-blend-mode: screen;
+  opacity: 0.42;
+  /* strong inset highlights so reflections appear over the dark border */
+  box-shadow:
+    inset 0 12px 18px rgba(255,255,255,0.04), /* top highlight */
+    inset 0 -8px 16px rgba(255,255,255,0.03), /* bottom highlight */
+    inset 10px 0 18px rgba(255,255,255,0.03), /* left highlight */
+    inset -10px 0 18px rgba(255,255,255,0.02), /* right highlight */
+    0 36px 120px rgba(0,0,0,0.95), 0 14px 38px rgba(0,0,0,0.7) inset;
+  pointer-events: none;
+  z-index: 10002;
+}
+
+/* When the JS bezel is active, hide the static CSS bezel pseudo-element to avoid duplicate frames */
+.vr-shell.js-bezel-active::before{
+  display: none !important;
+}
+
+/* Top strap accent */
+.vr-shell::after{
+  content: '';
+  position: absolute;
+  left: 50%; top: 8%;
+  transform: translateX(-50%);
+  width: 48%; height: 8px; background: rgba(0,0,0,0.7); border-radius: 8px; z-index:4; box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* Make manuscript text fit nicely within the oval */
+.vr-viewport .manuscript-text{ padding: 6px 2px; max-width:120ch; margin:0 auto; }
+.vr-viewport .manuscript-text .chapter-copy p{ max-width: 80ch; margin-left:auto; margin-right:auto; }
+
+/* ensure heading and marquee are centered inside the viewport */
+.vr-viewport .marquee{ text-align:center; margin-left:auto; margin-right:auto; display:block; }
+
+/* mirrored faint reflection for marquee heading */
+#marqueeTitle{ position: relative; display:inline-block; }
+#marqueeTitle::before{
+  /* strong visible mirror placed directly above the heading */
+  content: attr(data-text);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%) translateY(-6px);
+  transform-origin: center bottom;
+  color: rgba(255,255,255,0.95);
+  opacity: 0.30;
+  filter: blur(0.6px) saturate(0.95);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: inherit;
+  font-size: inherit;
+  z-index: 20; /* above bezel reflections */
+}
+#marqueeTitle::after{
+  content: attr(data-text);
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%) translateY(6px) scaleY(-1);
+  transform-origin: center top;
+  color: rgba(255,255,255,0.9);
+  opacity: 0.15;
+  filter: blur(0.8px) saturate(0.9);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: inherit;
+  font-size: inherit;
+  z-index: 6; /* sit above inner bezel reflections */
+}
+
+@media (max-width:920px){
+  #marqueeTitle::after{ transform: translateX(-50%) translateY(4px) scaleY(-1); opacity: 0.08; filter: blur(0.6px); }
+}
+
+/* Text reflections on bezel edges for 3D glass effect */
+.vr-shell{ position:relative; }
+
+/* Bezel reflections handled by bezel-reflections.js */
+
+/* Fade bezel glows toward the outer bezel edge so they don't have hard edges */
+.bezel-glow-container{
+  /* Combine a center radial falloff with side fades so glows disappear smoothly at edges */
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%),
+                       linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 8%, rgba(0,0,0,1) 92%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%),
+              linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 8%, rgba(0,0,0,1) 92%, rgba(0,0,0,0) 100%);
+  -webkit-mask-composite: intersect;
+  mask-composite: intersect;
+}
+
+
+
+
+
+
+
+
+/* position LIVE indicator inside the TV frame */
+.vr-viewport .stream-status{ position: absolute; left: 22px; top: 18px; z-index: 20; display:flex; gap:8px; align-items:center; font-family:var(--font-mono); font-size:0.82rem; letter-spacing:1px; }
+.vr-viewport .stream-status .live-dot{ width:10px; height:10px; border-radius:50%; background:rgba(255,0,60,0.95); box-shadow:0 0 8px rgba(255,0,60,0.45); }
+.vr-viewport .stream-status .status-text{ color: #ffd88a; font-weight:800; text-transform:uppercase; }
+
+/* hide the original fixed stream-status if present elsewhere */
+.stream-status{ position: static !important; }
+
+/* Glitched spotlight for the 'Maintenance Square.' line */
+.maintenance-spotlight{
+  position: relative;
+  display: inline-block;
+  color: var(--vector-phosphor);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0.08em;
+  font-size: 1.02rem;
+  line-height: 1.1;
+  z-index: 20;
+  isolation: isolate;
+}
+.maintenance-spotlight::before,
+.maintenance-spotlight::after{
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.maintenance-spotlight::before{
+  color: rgba(255,0,80,0.9);
+  mix-blend-mode: screen;
+  transform: translateX(-2px);
+  filter: blur(0.45px);
+  z-index: 21;
+  animation: glitchA 1800ms infinite linear;
+}
+.maintenance-spotlight::after{
+  color: rgba(0,220,200,0.85);
+  mix-blend-mode: screen;
+  transform: translateX(2px);
+  filter: blur(0.6px);
+  z-index: 19;
+  animation: glitchB 2000ms infinite linear;
+}
+.maintenance-spotlight{ animation: spotlightFlicker 2600ms infinite linear; }
+
+@keyframes glitchA{
+  0%{ transform: translateX(-2px) translateY(0); clip-path: inset(0 0 60% 0); }
+  20%{ transform: translateX(6px) translateY(-2px); clip-path: inset(12% 0 40% 0); }
+  40%{ transform: translateX(-3px) translateY(1px); clip-path: inset(0 0 50% 0); }
+  60%{ transform: translateX(4px) translateY(-1px); clip-path: inset(22% 0 10% 0); }
+  80%{ transform: translateX(-1px) translateY(0); clip-path: inset(8% 0 44% 0); }
+  100%{ transform: translateX(-2px) translateY(0); clip-path: inset(0 0 60% 0); }
+}
+@keyframes glitchB{
+  0%{ transform: translateX(2px) translateY(0); clip-path: inset(40% 0 0 0); }
+  25%{ transform: translateX(-5px) translateY(2px); clip-path: inset(10% 0 30% 0); }
+  50%{ transform: translateX(3px) translateY(0); clip-path: inset(28% 0 2% 0); }
+  75%{ transform: translateX(-2px) translateY(1px); clip-path: inset(6% 0 46% 0); }
+  100%{ transform: translateX(2px) translateY(0); clip-path: inset(40% 0 0 0); }
+}
+@keyframes spotlightFlicker{
+  0%{ opacity: 0.96; filter: saturate(1) brightness(1); }
+  30%{ opacity: 1; filter: saturate(1.12) brightness(1.06); }
+  60%{ opacity: 0.92; filter: saturate(0.98) brightness(0.98); }
+  100%{ opacity: 0.96; filter: saturate(1) brightness(1); }
+}
+
+
+@media (max-width:920px){
+  .vr-viewport{ width:92%; padding:28px 20px 76px 20px; -webkit-clip-path: none; clip-path: none; border-radius:14px; }
+  .vr-shell::before{ width: 110%; height: 86%; border-radius: 20px; }
+  .vr-shell::after{ width: 72%; }
+  .marquee{ font-size:2.6rem; }
+}
+
+@media (max-width:560px){
+  .vr-viewport{ -webkit-clip-path: none; clip-path: none; padding:18px 12px 56px 12px; border-radius:12px; }
+  .vr-shell{ padding:8px; }
+  .vr-shell::before{ transform: translateY(-6%); border-radius:14px; }
+  .vr-shell::after{ transform: translateY(6%); }
+}
+
+/* bell spark visual */
+.bell-spark{ position: absolute; width: 14px; height:14px; border-radius:50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,240,1), rgba(255,200,60,0.8)); box-shadow: 0 0 14px rgba(255,200,60,0.35); pointer-events:none; opacity:0; transform:scale(.4); transition:opacity .18s ease, transform .28s ease; }
+.bell-spark.ring{ opacity:1; transform:scale(1.1); }
+
+/* crowd pulse for footer when pinged */
+.maroon-footer.crowd-pulse{ animation: crowdPulse 900ms ease-out 1; }
+@keyframes crowdPulse{ 0%{ transform: translateY(0); box-shadow: 0 -4px 18px rgba(0,0,0,0.6) inset; } 30%{ transform: translateY(-4px); } 60%{ transform: translateY(0); } 100%{ transform: translateY(0); } }
+
+/* text treatment: ecclesiastical headline + wrestling impact */
+.marquee{ font-size:4.2rem; letter-spacing:0.42em; color: #ffd88a; text-shadow: 0 0 30px rgba(255,176,0,0.28), 0 6px 18px rgba(0,0,0,0.55); }
+.marquee.glow{ text-shadow: 0 0 40px rgba(255,200,80,0.38), 0 8px 22px rgba(0,0,0,0.6); }
+
+
+
+

@@ -4,7 +4,27 @@
 <title>maroon-series.art - Patch Notes</title>
 <link>https://maroon-series.art/</link>
 <description>Patch notes for Mar00n series site.</description>
-<lastBuildDate>Fri, 16 Jan 2026 02:44:57 -0000</lastBuildDate>
+<lastBuildDate>Sun, 26 Jan 2026 00:00:00 -0000</lastBuildDate>
+<item>
+<title>00.15.00 - Chapter 03</title>
+<link>https://maroon-series.art/updates.html#patch-00.15.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.15.00</guid>
+<pubDate>Sun, 26 Jan 2026 00:00:00 -0000</pubDate>
+<description><![CDATA[NEW:
+- Published Chapter 03 (`Mar00n/maintenance/`) — 5 progressive iterations with supporting assets.
+- Added `maintenance.html`, `maintenance2.html`, `maintenance3.html`, `maintenance4.html`, `maintenance5.html` — chapter content iterations.
+- Added `Mar00n/maintenance/glbl.css` — global styling with vector/phosphor theme, amber color scheme, CRT effects.
+- Added `Mar00n/maintenance/js/bezel-reflections.js` — CRT bezel light spill effect simulation (387 lines).
+- Added `Mar00n/maintenance/css/` subfolder with `maroon-glitch.css` and `substratum.css` supporting stylesheets.
+
+IMPROVE:
+- Iterative development through 5 progressive versions of maintenance chapter.
+- Enhanced CRT/phosphor visual effects with amber terminal aesthetic and bezel glow animations.
+
+FIX:
+- Created backup of original `substratumb.html` before replacement.
+- Organized maintenance chapter files into dedicated subfolder structure.]]></description>
+</item>
 <item>
 <title>unknown</title>
 <link>https://maroon-series.art/updates.html#patch-unknown</link>

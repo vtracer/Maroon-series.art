@@ -790,6 +790,64 @@
     })();
   </script>
 
+  <script>
+  // Scroll-to-bottom detection: glitch out HARD and load substratumb.html
+  (function(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    
+    let triggered = false;
+    
+    window.addEventListener('scroll', function(){
+      if (triggered) return;
+      
+      const scrollPos = window.innerHeight + window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      
+      // trigger when user reaches the very bottom (within 10px)
+      if (scrollPos >= docHeight - 10){
+        triggered = true;
+        console.debug('[substratum] BOTTOM REACHED — CONTINUOUS GLITCH UNTIL REDIRECT');
+        
+        // Trigger heavy glitch immediately
+        setTimeout(()=>{
+          try{
+            // Add page-level glitch class for immediate visual feedback
+            document.documentElement.classList.add('maroon-glitching-full');
+            
+            // Get all text elements
+            const allText = document.querySelectorAll('.manuscript-text, .manuscript-text *, h1, p, .card, .lede, .para');
+            
+            // Start continuous glitching loop
+            const glitchLoop = setInterval(() => {
+              allText.forEach(el => {
+                if (window.__maroonGlitch && window.__maroonGlitch.doTextGlitch){
+                  window.__maroonGlitch.doTextGlitch(el, 200 + Math.random() * 300);
+                }
+              });
+            }, 120); // glitch every 120ms for relentless chaos
+            
+            // Call the full-screen transition with LONG duration for maximum chaos
+            if (window.__maroonGlitch && typeof window.__maroonGlitch.triggerTransition === 'function'){
+              console.debug('[substratum] FIRING CONTINUOUS GLITCH TRANSITION');
+              window.__maroonGlitch.triggerTransition({ duration: 5500, target: 'substratumb.html' });
+            } else {
+              console.warn('[substratum] glitch API missing — fallback redirect');
+              // Still redirect but with delay
+              setTimeout(() => {
+                clearInterval(glitchLoop);
+                window.location.href = 'substratumb.html';
+              }, 2000);
+            }
+          }catch(e){
+            console.error('[substratum] glitch error:', e);
+            window.location.href = 'substratumb.html';
+          }
+        }, 100);
+      }
+    }, { passive: true });
+  })();
+  </script>
+
   <!-- flicker script removed for performance -->
 
   <style>

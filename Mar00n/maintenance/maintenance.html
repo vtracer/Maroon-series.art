@@ -1,0 +1,511 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MAR00N // Chapter 03 // MAINTENANCE</title>
+  <link rel="stylesheet" href="css/maroon-glitch.css">
+  <link rel="stylesheet" href="glbl.css">
+  <link rel="stylesheet" href="css/substratum.css">
+  <style>
+    .alert {
+      color: rgba(255,176,0,0.96);
+      font-size: 1.2rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: inline-block;
+      padding: 0.25em 0.6em;
+      border-radius: 6px;
+      text-shadow: 0 0 10px rgba(255,176,0,0.7), 0 1px 0 rgba(0,0,0,0.25);
+      box-shadow: 0 0 28px rgba(255,176,0,0.18), inset 0 -2px 8px rgba(0,0,0,0.08);
+      background: linear-gradient(180deg, rgba(255,245,200,0.05), rgba(255,230,120,0.02));
+    }
+    @media (max-width:640px){
+      .alert{ font-size:2rem; }
+    }
+    :root {
+      --alert-glow-color: rgba(255,176,0,0.96);
+      --alert-glow-soft: rgba(255,176,0,0.16);
+    }
+
+    .alert {
+      text-shadow: 0 0 6px rgba(255,176,0,0.6), 0 0 18px rgba(255,176,0,0.12);
+      transition: color .12s ease;
+    }
+
+    @keyframes alertBlinkGlow {
+      0% {
+        opacity: 1;
+        text-shadow: 0 0 8px var(--alert-glow-color), 0 0 22px var(--alert-glow-color), 0 0 42px var(--alert-glow-soft);
+        filter: drop-shadow(0 0 10px var(--alert-glow-color));
+        transform: scale(1);
+      }
+      35% {
+        opacity: 0;
+        text-shadow: none;
+        filter: none;
+        transform: scale(0.995);
+      }
+      100% {
+        opacity: 1;
+        text-shadow: 0 0 12px var(--alert-glow-color), 0 0 30px var(--alert-glow-color), 0 0 56px var(--alert-glow-soft);
+        filter: drop-shadow(0 0 14px var(--alert-glow-color));
+        transform: scale(1.02);
+      }
+    }
+
+    .maintenance-ticker.visible + .chapter-copy .alert {
+      animation: alertBlinkGlow 1.6s ease-in-out infinite;
+      will-change: opacity, transform, text-shadow;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .maintenance-ticker.visible + .chapter-copy .alert {
+        animation: none !important;
+        opacity: 1;
+        text-shadow: 0 0 10px var(--alert-glow-color), 0 0 22px var(--alert-glow-soft);
+        filter: none;
+      }
+    }
+
+    .manuscript-text .chapter-copy .alert,
+    .maintenance-ticker.visible + .chapter-copy .alert {
+      color: rgba(255,176,0,0.96) !important;
+      -webkit-text-fill-color: rgba(255,176,0,0.96) !important;
+      mix-blend-mode: screen; 
+    }
+    .creator-quote {
+      color: rgba(255,128,64,0.96) !important;
+      -webkit-text-fill-color: rgba(255,128,64,0.96) !important;
+      text-shadow: 0 0 8px rgba(255,128,64,0.14) !important;
+    }
+
+    :root {
+      --marquee-bulb-size: 20px;
+      --marquee-bulb-gap: 10px;
+      --marquee-bulb-core: rgba(255, 248, 220, 0.98);
+      --marquee-bulb-warm: rgba(255, 200, 90, 0.55);
+      --marquee-gold: #ffb000;
+      --marquee-gold-soft: rgba(255,176,0,0.22);
+    }
+
+    .theater-announcement {
+      display: block !important;
+      width: 100% !important;
+      position: relative !important;
+      z-index: 10005 !important;
+      isolation: isolate;
+      transform: translateZ(0);
+      margin: 44px auto 24px !important;
+      padding: 22px 18px !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+      border-radius: 10px !important;
+      overflow: visible !important;
+
+      background:
+        linear-gradient(180deg, #4a0b0b 0%, #0f0202 100%) !important;
+      border: 2px solid rgba(255,176,0,0.85) !important;
+      box-shadow:
+        0 18px 44px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 0 0 3px rgba(0,0,0,0.35),
+        0 0 36px rgba(255,176,0,0.10);
+    }
+
+    .theater-announcement::before,
+    .theater-announcement::after {
+      content: '';
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      height: var(--marquee-bulb-size);
+      background-image:
+        radial-gradient(circle at 50% 50%, var(--marquee-bulb-core) 42%, var(--marquee-bulb-warm) 58%, rgba(0,0,0,0) 66%);
+      background-size: calc(var(--marquee-bulb-size) + var(--marquee-bulb-gap)) var(--marquee-bulb-size);
+      background-repeat: repeat-x;
+      pointer-events: none;
+      opacity: 1;
+      box-shadow: 0 0 18px rgba(255, 200, 90, 0.28);
+    }
+
+    .theater-announcement::before { top: -34px; }
+    .theater-announcement::after  { bottom: -34px; }
+
+    .theater-announcement__inner {
+      display: inline-block !important;
+      color: #ffe2a6 !important;
+      -webkit-text-fill-color: #ffe2a6 !important;
+      font-weight: 900 !important;
+      letter-spacing: 1.2px !important;
+      line-height: 1.35;
+      text-shadow:
+        0 0 10px rgba(255,176,0,0.18),
+        0 0 2px rgba(255, 240, 210, 0.10);
+      background: transparent !important;
+      mix-blend-mode: normal !important;
+      text-transform: none !important;
+      padding: 2px 8px !important;
+    }
+
+    .manuscript-text{ position: relative; }
+
+    .vr-viewport.vector-screen .screen-scanlines{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50 !important;
+      background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.32) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.07), rgba(0, 255, 0, 0.03), rgba(0, 0, 255, 0.07)) !important;
+      background-size: 100% 4px, 3px 100% !important;
+      opacity: 1 !important;
+      mix-blend-mode: normal !important;
+    }
+
+    .vr-viewport.vector-screen .screen-scanlines::before{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.14) 72%,
+        rgba(0, 0, 0, 0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    .vr-viewport.vector-screen .screen-scanlines::after{
+      content: none !important;
+      display: none !important;
+      animation: none !important;
+    }
+
+    .vr-viewport.vector-screen #marqueeTitle::before,
+    .vr-viewport.vector-screen #marqueeTitle::after{
+      content: none !important;
+      display: none !important;
+    }
+
+    .manuscript-text .chapter-copy{ filter: none; }
+
+    .manuscript-text .chapter-copy p,
+    .manuscript-text .chapter-copy li,
+    .manuscript-text .chapter-copy blockquote{
+      text-shadow:
+        0 0 1px rgba(255, 255, 255, 0.08),
+        0.7px 0 rgba(255, 0, 80, 0.10),
+        -0.7px 0 rgba(0, 170, 255, 0.08);
+      filter: contrast(1.02) saturate(1.02);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 03 #MAINTENANCE</div>
+    <nav>
+      <a href="#">newlife2084.com</a>
+      <a href="#">dumpthis.sh</a>
+      <a href="#">maroon-series.art</a>
+    </nav>
+  </header>
+
+  <div class="viewport-grid"></div>
+
+  
+
+  <div class="creator-nodes" id="creatorNodes"></div>
+
+  <div class="architect-gaze" id="architectGaze"></div>
+  <main id="viewport">
+    <div class="container">
+      <div class="vr-shell">
+        <div class="vr-viewport vector-screen">
+          <article class="manuscript-text pov-marcus">
+            <div class="screen-curvature" aria-hidden="true"></div>
+            <div class="screen-scanlines" aria-hidden="true"></div>
+            <div class="screen-grid" aria-hidden="true"></div>
+            <div class="stream-status">
+              <div class="live-dot"></div>
+              <span class="status-text">LIVE</span>
+            </div>
+          <h1 class="glitch blink-word marquee" id="marqueeTitle" data-text="#MAINTENANCE">#MAINTENANCE</h1>
+
+      <section class="chapter-copy">
+        <p><span class="first-word">Marcus</span> watched as the Square materialized like a live stream going viral.
+        Metrics flooded the interface first, then studio lighting, then thousands of curated avatars.
+        It didn't boot up like software. It dropped like the hottest content launch of the cycle, complete with branded overlays and <span class="toxic-word">engagement-optimized</span> soundtracks designed to make every moment feel like peak dopamine.</p>
+
+        <p class="maintenance-spotlight" data-text="Maintenance Square.">Maintenance Square.</p>
+        <p>The name was corporate doublespeak. Nothing got maintained here.</p>
+        <p>This was where virtual influencers performed for likes, shares and algorithmic validation<span class="spark-acc"></span>. The ultimate creator economy where the currency was <span class="toxic-word hover-reveal">suffering<span class="reveal-text">TRAUMA AS CONTENT</span></span> and the content was <span class="glitch-word">compliance</span><span class="corrupt-acc"></span>.
+        And at the center of it all, the <span class="architect-entrance">Architect</span> basked in every moment of worship.</p>
+
+        
+
+        <p>Marcus watched thousands of nodes arranged themselves in designated influencer tiers, avatars dripping with premium aesthetic mods. Designer glitch effects, emotional aura filters, trauma-chic accessories like cracked halos and <span class="bleeding-hearts">bleeding hearts</span>. The latest system-approved trends cycled through their appearances like a digitally augmented fashion week where pain was the only couture.</p>
+
+        <p>The platform spun in the center. Four spotlight zones. Always four.
+        He already knew the routine: at any moment, one node released traumas for engagement, one displayed gratitude porn, one steered a new faux-altruism funnel, and one profited from fake liberation content while calling it inspirational.</p>
+
+        <p>Above it all floated the live Attention Board, a real-time analytics dashboard displaying follower counts, engagement rates and the holy grail of all metrics: <span class="architect-entrance">Architect</span> interaction scores. If he hearted your content, your numbers exploded. If he left a comment, you could go from zero to hero status overnight.
+        But Marcus knew the real truth. It was the ultimate clout-chasing leaderboard, where one notification from the owner might make you the most envied creator in the network.
+        And above it, the <span class="architect-entrance">Architect</span> watched his empire perform. Like a superfan consuming his favorite creators, getting drunk on their desperation for his <span class="toxic-word hover-reveal">validation<span class="reveal-text">CONTROL MECHANISM</span></span> while the revenue from their trauma streamed directly into New Life Technologies accounts.
+        Then came the shift.</p>
+
+        <p>Marcus felt the hairs on his body stand on end. Suddenly, The Square's collective volume collapsed inward. Like silence snapped to grid. Saturation bled out of the UI. Metric panels vanished.</p>
+
+        <p>Then, one line appeared across every interface:</p>
+
+        <p class="center"><strong class="alert" role="status" aria-live="polite" aria-atomic="true">[CONTENT REVIEW IN PROGRESS. PLEASE STAND BY.]</strong></p>
+
+        <p><span class="ray-entrance">Ray</span> materialized.</p>
+        <p>He had zero <span class="toxic-word">aesthetic customization</span>. No <span class="glitch-word">filters</span>. No <span class="toxic-word hover-reveal">brand sponsorship overlays<span class="reveal-text">MONETIZATION LAYER</span></span>. His avatar rendered as a sterile white wireframe, anatomically precise, with eyes that radiated <span class="glitch-word">artificial empathy</span>.
+        He never raised his voice. It was unnecessary.
+        He walked across the <span class="toxic-word">streaming platform</span> in complete silence. Wherever he moved, creators scrambled out of his path. Entire creator collectives ended their <span class="toxic-word hover-reveal">streams<span class="reveal-text">PERFORMANCE CYCLES</span></span> mid-sentence to clear the space.
+        One avatar tried to interruptâ€”an overeager <span class="badge-acc">mid-tier creator</span>, desperate for <span class="toxic-word">attention</span>.
+        <span class="creator-quote">"If I could just get a moment to..."</span>
+        <span class="ray-entrance">Ray's</span> gaze found him.
+        The creator vanished.
+        The audience forgot he'd ever existed.
+        <span class="ray-entrance">Ray</span> settled into a chair. His back straight, hands folded.</p>
+
+        <p>Echoing everywhere all at once, a voice erupted:</p>
+        <p>
+          <span class="theater-announcement">
+            <span class="theater-announcement__inner">"Attention. Synchronization sequence engaged. Founder of Continuity. Visionary of Permanence. Absolute authority over your future. Redirect all focus. Presenting: <span class="architect-entrance">the Architect</span>."</span>
+          </span>
+        </p>
+      </section>
+      </article>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="maroon-footer" id="pageFooter" aria-hidden="true" style="display:none;">
+    <a class="maroon-home" href="/" tabindex="-1">
+      <span class="maroon-mark">MAR00N</span>
+      <span class="maroon-sub">return to root</span>
+    </a>
+  </footer>
+
+  <script src="../js/maroon-glitch.js"></script>
+  <script>
+    (function(){
+      const marquee = document.getElementById('marqueeTitle');
+      const footer = document.getElementById('pageFooter');
+      const ticker = document.getElementById('maintenance-ticker');
+      let audioMuted = false;
+      let reduceMotionActive = false;
+      let contrastActive = false;
+
+      function initCreatorNodes(){
+        const container = document.getElementById('creatorNodes');
+        if (!container) return;
+        const nodeCount = 24;
+        for (let i = 0; i < nodeCount; i++){
+          const node = document.createElement('div');
+          node.className = 'node';
+          if (Math.random() > 0.7) node.classList.add('high-tier');
+          node.style.left = Math.random() * 100 + '%';
+          node.style.top = Math.random() * 100 + '%';
+          node.style.animationDelay = (Math.random() * 2) + 's';
+          container.appendChild(node);
+          setTimeout(()=> node.classList.add('active'), 100 + i*30);
+        }
+      }
+
+      function showZoneLabels(){
+        const labels = document.querySelectorAll('.zone-label');
+        labels.forEach((label, idx)=> setTimeout(()=> label.classList.add('visible'), 200 + idx*100));
+      }
+
+      function triggerArchitectGaze(){
+        const gaze = document.getElementById('architectGaze');
+        if (!gaze) return;
+        gaze.classList.add('active');
+        setTimeout(()=> gaze.classList.remove('active'), 2400);
+      }
+
+      function initAttentionTracker(){
+      }
+
+      function initControlPanel(){
+        const muteBtn = document.getElementById('muteBtn');
+        const motionBtn = document.getElementById('reduceMotionBtn');
+        const contrastBtn = document.getElementById('contrastBtn');
+
+        if (muteBtn){
+          muteBtn.addEventListener('click', ()=>{
+            audioMuted = !audioMuted;
+            muteBtn.classList.toggle('active');
+            window.__maroonGlitch._audioMuted = audioMuted;
+          });
+        }
+
+        if (motionBtn){
+          motionBtn.addEventListener('click', ()=>{
+            reduceMotionActive = !reduceMotionActive;
+            motionBtn.classList.toggle('active');
+            document.documentElement.style.setProperty('--reduce-motion', reduceMotionActive ? '1' : '0');
+          });
+        }
+
+        if (contrastBtn){
+          contrastBtn.addEventListener('click', ()=>{
+            contrastActive = !contrastActive;
+            contrastBtn.classList.toggle('active');
+            document.body.style.filter = contrastActive ? 'contrast(1.4) brightness(1.1)' : 'none';
+          });
+        }
+      }
+
+      function updateMetrics(){
+        const board = document.getElementById('attentionBoard');
+        if (!board) return;
+        const metrics = board.querySelectorAll('.metric-value');
+        setInterval(()=>{
+          metrics.forEach(m => {
+            if (m.textContent.includes('%')){
+              const newVal = (85 + Math.random()*15).toFixed(1);
+              m.textContent = newVal + '%';
+            }
+          });
+        }, 3200);
+      }
+
+      function flickerOnce(){
+        if (window.__maroonGlitch && window.__maroonGlitch.doTextGlitch){
+          window.__maroonGlitch.doTextGlitch(marquee, 260);
+        } else {
+          marquee.classList.add('heavy-glitch');
+          setTimeout(()=> marquee.classList.remove('heavy-glitch'), 400);
+        }
+      }
+
+      function sequence(){
+        // init all visuals first
+        initCreatorNodes();
+        showZoneLabels();
+        updateMetrics();
+        
+        // show attention board
+        const board = document.getElementById('attentionBoard');
+        if (board) board.classList.add('visible');
+        
+        // idle duration
+        const idle = 8000 + Math.random()*4000;
+        setTimeout(()=>{
+          // architect gaze sweep
+          triggerArchitectGaze();
+          
+          // random flicker bursts
+          setTimeout(flickerOnce, 600);
+          setTimeout(flickerOnce, 1400 + Math.random()*800);
+          
+          setTimeout(()=>{
+            // reveal the content-review overlay
+            ticker.classList.add('visible');
+            
+            // after a short pause, Architect intervenes
+            setTimeout(()=>{
+              if (window.__maroonGlitch && window.__maroonGlitch.triggerArchitectIntervention){
+                window.__maroonGlitch.triggerArchitectIntervention();
+              }
+            }, 900 + Math.random()*800);
+          }, 1200);
+        }, idle);
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initAttentionTracker();
+        sequence();
+      } else {
+        window.addEventListener('DOMContentLoaded', ()=>{
+          initAttentionTracker();
+          sequence();
+        });
+      }
+
+      // Channel change on scroll to bottom
+      let scrollTimeout;
+      window.addEventListener('scroll', ()=>{
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(()=>{
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const scrollHeight = document.documentElement.scrollHeight;
+          const clientHeight = document.documentElement.clientHeight;
+          
+          if (scrollTop + clientHeight >= scrollHeight - 5){
+            // Trigger transition to next channel
+            if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+              window.__maroonGlitch.triggerTransition({
+                target: 'maintenance2.html',
+                duration: 2000
+              });
+            } else {
+              window.location.href = 'maintenance2.html';
+            }
+          }
+        }, 100);
+      });
+    })();
+  </script>
+
+  <script>
+    (function(){
+      function spawnHeart(el){
+        const heart = document.createElement('span');
+        heart.className = 'fleeting-heart';
+        heart.textContent = '❤';
+        const dx = Math.floor((Math.random() - 0.5) * 360); // -180..180px
+        const dy = Math.floor((Math.random() - 0.5) * 480); // -240..240px
+        const rot = (Math.random()-0.5) * 70;
+        heart.style.setProperty('--dx', dx + 'px');
+        heart.style.setProperty('--dy', dy + 'px');
+        heart.style.setProperty('--rot', rot + 'deg');
+        const dur = 4000 + Math.floor(Math.random()*6000); // 4000ms - 10000ms
+        heart.style.setProperty('--d', dur + 'ms');
+        const x = 30 + Math.random() * 40;
+        const y = 40 + (Math.random()*30 - 10);
+        heart.style.left = x + '%';
+        heart.style.top = y + '%';
+        el.appendChild(heart);
+        heart.addEventListener('animationend', ()=> heart.remove());
+      }
+
+      function hook(){
+        const els = document.querySelectorAll('.bleeding-hearts');
+        if (!els.length) return;
+        els.forEach(el=>{
+          el.addEventListener('mouseenter', ()=>{
+            for (let i=0;i<8;i++) setTimeout(()=> spawnHeart(el), i*60 + Math.random()*120);
+          });
+          setInterval(()=> spawnHeart(el), 2800 + Math.random()*1800);
+        });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook); else hook();
+    })();
+  </script>
+
+  <script src="js/bezel-reflections.js"></script>
+  <script>
+    (function(){
+      function triggerAttentionInline(){
+        const el = document.querySelector('.attention-board-inline');
+        if (!el) return;
+        el.classList.add('pop','persistent');
+        el.classList.add('boost');
+        setTimeout(()=> el.classList.remove('boost'), 900);
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ()=> setTimeout(triggerAttentionInline, 220)); else setTimeout(triggerAttentionInline, 220);
+    })();
+  </script>
+</body>
+</html>
+
+

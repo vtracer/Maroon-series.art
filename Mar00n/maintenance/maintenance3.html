@@ -1,0 +1,726 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MAR00N // Chapter 03 // MAINTENANCE</title>
+  <link rel="stylesheet" href="css/maroon-glitch.css">
+  <link rel="stylesheet" href="glbl.css">
+  <link rel="stylesheet" href="css/substratum.css">
+  <style>
+    .alert {
+      color: rgba(255,176,0,0.96);
+      font-size: 1.2rem;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: inline-block;
+      padding: 0.25em 0.6em;
+      border-radius: 6px;
+      text-shadow: 0 0 10px rgba(255,176,0,0.7), 0 1px 0 rgba(0,0,0,0.25);
+      box-shadow: 0 0 28px rgba(255,176,0,0.18), inset 0 -2px 8px rgba(0,0,0,0.08);
+      background: linear-gradient(180deg, rgba(255,245,200,0.05), rgba(255,230,120,0.02));
+    }
+    @media (max-width:640px){
+      .alert{ font-size:2rem; }
+    }
+    /* Neon blink + glow for maintenance alert — only active when ticker is visible */
+    :root {
+      --alert-glow-color: rgba(255,176,0,0.96);
+      --alert-glow-soft: rgba(255,176,0,0.16);
+    }
+
+    .alert {
+      text-shadow: 0 0 6px rgba(255,176,0,0.6), 0 0 18px rgba(255,176,0,0.12);
+      transition: color .12s ease;
+    }
+
+    @keyframes alertBlinkGlow {
+      0% {
+        opacity: 1;
+        text-shadow: 0 0 8px var(--alert-glow-color), 0 0 22px var(--alert-glow-color), 0 0 42px var(--alert-glow-soft);
+        filter: drop-shadow(0 0 10px var(--alert-glow-color));
+        transform: scale(1);
+      }
+      35% {
+        opacity: 0;
+        text-shadow: none;
+        filter: none;
+        transform: scale(0.995);
+      }
+      100% {
+        opacity: 1;
+        text-shadow: 0 0 12px var(--alert-glow-color), 0 0 30px var(--alert-glow-color), 0 0 56px var(--alert-glow-soft);
+        filter: drop-shadow(0 0 14px var(--alert-glow-color));
+        transform: scale(1.02);
+      }
+    }
+
+    /* Apply glow + blink when the ticker is visible. The selector targets the existing structure
+       where #maintenance-ticker is immediately before the .chapter-copy section. */
+    .maintenance-ticker.visible + .chapter-copy .alert {
+      animation: alertBlinkGlow 1.6s ease-in-out infinite;
+      will-change: opacity, transform, text-shadow;
+    }
+
+    /* Respect users who prefer reduced motion: disable animation but keep a subtle static glow. */
+    @media (prefers-reduced-motion: reduce) {
+      .maintenance-ticker.visible + .chapter-copy .alert {
+        animation: none !important;
+        opacity: 1;
+        text-shadow: 0 0 10px var(--alert-glow-color), 0 0 22px var(--alert-glow-soft);
+        filter: none;
+      }
+    }
+
+    /* Force the alert color/fill to match processing gold even if other styles override it. */
+    .manuscript-text .chapter-copy .alert,
+    .maintenance-ticker.visible + .chapter-copy .alert {
+      color: rgba(255,176,0,0.96) !important;
+      -webkit-text-fill-color: rgba(255,176,0,0.96) !important;
+      mix-blend-mode: screen; /* keep glow vivid on dark backgrounds */
+    }
+    /* Creator interruption quote style */
+    .creator-quote {
+      color: rgba(255,128,64,0.96) !important;
+      -webkit-text-fill-color: rgba(255,128,64,0.96) !important;
+      text-shadow: 0 0 8px rgba(255,128,64,0.14) !important;
+    }
+
+    /* Grand theater marquee (static text) with decorative bulbs */
+    :root { --marquee-bulb-size: 22px; --marquee-bulb-gap: 12px; --marquee-bulb-color: rgba(255,255,255,0.98); }
+
+    .theater-announcement {
+      display: block !important;
+      width: 100% !important;
+      position: relative !important;
+      margin-top: 42px !important; /* increased vertical gap from surrounding text */
+      margin-bottom: 22px !important; /* keep space below the marquee */
+      padding: 20px 18px !important; /* add vertical padding so bulbs don't touch */
+      text-align: center !important;
+      box-sizing: border-box !important;
+      background: linear-gradient(180deg,#ffffff 0%, #f7f7f7 100%) !important; /* soft lit bar */
+      border-radius: 6px !important;
+      overflow: visible !important;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12) inset, 0 8px 30px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.06) !important;
+    }
+
+    /* bulbs as repeating radial-gradient on pseudo-elements */
+    .theater-announcement::before,
+    .theater-announcement::after {
+      content: '';
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      height: calc(var(--marquee-bulb-size));
+      background-image: radial-gradient(circle at 50% 50%, var(--marquee-bulb-color) 45%, rgba(0,0,0,0) 46%);
+      background-size: calc(var(--marquee-bulb-size) + var(--marquee-bulb-gap)) calc(var(--marquee-bulb-size));
+      background-repeat: repeat-x;
+      /* white bulb glow */
+      filter: drop-shadow(0 0 12px rgba(255,255,255,0.9));
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 1;
+    }
+
+    /* bring bulbs closer to the bar */
+    /* move bulbs further away from the bar so they don't touch */
+    .theater-announcement::before { top: -38px; }
+    .theater-announcement::after  { bottom: -38px; }
+
+    /* slight randomized flicker for bulbs */
+    @keyframes bulbFlicker {
+      0% { opacity: 0.95; filter: drop-shadow(0 0 6px rgba(255,215,0,0.3)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 14px rgba(255,215,0,0.5)); }
+      100% { opacity: 0.96; filter: drop-shadow(0 0 8px rgba(255,215,0,0.35)); }
+    }
+
+    .theater-announcement::before,
+    .theater-announcement::after { animation: bulbFlicker 2.6s ease-in-out infinite; }
+
+    /* inner text (static center) with strong glow */
+    .theater-announcement__inner {
+      display: inline-block !important;
+      color: #111 !important; /* black text on white bar */
+      -webkit-text-fill-color: #111 !important;
+      font-weight: 900 !important;
+      letter-spacing: 1.4px !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6) !important; /* subtle embossed look */
+      mix-blend-mode: normal !important;
+      text-transform: none !important;
+      padding: 6px 12px !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .theater-announcement::before,
+      .theater-announcement::after { animation: none !important; }
+    }
+    /* --- lyrics viewport copied from processing.html (css/lyrics.css) --- */
+    .lyric-viewport{
+      margin: 14px 0 18px;
+      height: 110px;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid rgba(255,176,0,.22);
+      background: rgba(0,0,0,.38);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      position: relative;
+    }
+
+    .lyric-viewport::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,.05) 0px,
+          rgba(255,255,255,.05) 1px,
+          rgba(0,0,0,0) 4px
+        ),
+        radial-gradient(circle at 20% 15%, rgba(255,176,0,.10), transparent 55%);
+      opacity: .22;
+      mix-blend-mode: overlay;
+    }
+
+    .lyric-track{
+      display: flex;
+      flex-direction: column;
+      will-change: transform;
+      animation: lyricScroll 16s linear infinite;
+    }
+
+    .lyric-run{
+      padding: 14px 14px 16px;
+      display: grid;
+      gap: 10px;
+      color: rgba(234,238,247,.92);
+      font-style: italic;
+      letter-spacing: .4px;
+    }
+
+    .lyric-run > div{
+      padding-left: 10px;
+      border-left: 2px solid rgba(255,176,0,.18);
+    }
+
+    @keyframes lyricScroll{
+      from{ transform: translateY(0); }
+      to  { transform: translateY(-50%); }
+    }
+
+    .lyric-track{
+      animation:
+        lyricScroll 16s linear infinite,
+        lyricGlitch 6.5s steps(1, end) infinite;
+    }
+
+    @keyframes lyricGlitch{
+      0%, 86%, 100% { filter: none; }
+      88% { transform: translateY(var(--lyY, 0)) translateX(-1px); filter: contrast(1.05) saturate(1.05); }
+      89% { transform: translateY(var(--lyY, 0)) translateX(2px);  filter: hue-rotate(8deg); }
+      90% { transform: translateY(var(--lyY, 0)) translateX(0);    filter: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .lyric-track{ animation: none; }
+    }
+    /* Architect speech styling (match processing.html bright blue) */
+    .architect-speech {
+      display: inline-block;
+      position: relative;
+      color: #2fb8ff !important; /* bright blue for Architect text */
+      -webkit-text-fill-color: #2fb8ff !important;
+      font-weight: bold;
+      margin: 0; /* keep speech tightly coupled to its container */
+      padding-bottom: 0;
+      text-shadow: 0 0 8px rgba(47,184,255,0.12) !important;
+      z-index: 3;
+      background: transparent !important;
+      mix-blend-mode: screen;
+    }
+    /* Disable global drop-cap for this page so 'Sarah' starts normal-sized */
+    .manuscript-text.pov-marcus .chapter-copy p:first-of-type::first-letter {
+      float: none !important;
+      font-size: inherit !important;
+      line-height: inherit !important;
+      padding-right: 0 !important;
+      padding-top: 0 !important;
+    }
+    /* Ensure the initial letter is white (override site-wide amber) */
+    .manuscript-text.pov-marcus .chapter-copy p:first-of-type::first-letter {
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+    /* Per-character glitch styling (inline so text flows normally and remains selectable) */
+    .glitch-char{ display:inline; line-height: inherit; transition: transform .18s ease, color .18s ease, filter .18s ease; -webkit-user-select: text; user-select: text; }
+    .glitch-swap{ animation: charGlitch 420ms steps(1) forwards; }
+    @keyframes charGlitch{
+      0% { transform: translateY(0) rotate(0deg) scale(1); filter: none; }
+      30% { transform: translateY(-6px) rotate(-3deg) scale(1.06); filter: blur(.6px) hue-rotate(8deg); }
+      60% { transform: translateY(3px) rotate(2deg) scale(.98); filter: blur(.2px) hue-rotate(-6deg); }
+      100% { transform: translateY(0) rotate(0deg) scale(1); filter: none; }
+    }
+    @media (prefers-reduced-motion: reduce){ .glitch-char, .glitch-swap { animation: none !important; transition: none !important; } }
+
+    /* --- CRT overlay (static): force-visible over maroon-glitch.css vector-screen rules --- */
+    .manuscript-text { position: relative; }
+
+    /* maroon-glitch.css defines .vr-viewport(.vector-screen) .screen-scanlines with very low opacity.
+       Override it here so the effect is actually visible (and matches processing2.html). */
+    .vr-viewport.vector-screen .screen-scanlines{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50 !important;
+      background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.32) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.07), rgba(0, 255, 0, 0.03), rgba(0, 0, 255, 0.07)) !important;
+      background-size: 100% 4px, 3px 100% !important;
+      opacity: 1 !important;
+      mix-blend-mode: normal !important;
+    }
+
+    /* Remove the ghosted/reflected #MAINTENANCE heading (comes from maroon-glitch.css #marqueeTitle::before/::after). */
+    .vr-viewport.vector-screen #marqueeTitle::before,
+    .vr-viewport.vector-screen #marqueeTitle::after{
+      content: none !important;
+      display: none !important;
+    }
+
+    /* CRT vignette and screen curve darkening */
+    .screen-scanlines::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.14) 72%,
+        rgba(0, 0, 0, 0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* No moving scan bar (user request): keep the monitor look static. */
+    .screen-scanlines::after{
+      content: none !important;
+      display: none !important;
+      animation: none !important;
+    }
+
+    /* Phosphor glow effect on text */
+    .manuscript-text .chapter-copy {
+      /* Slight RGB fringing helps the text feel “broken up” like processing.html */
+      text-shadow:
+        0 0 1px rgba(255, 255, 255, 0.08),
+        0.7px 0 rgba(255, 0, 80, 0.10),
+        -0.7px 0 rgba(0, 170, 255, 0.08);
+      filter: contrast(1.02) saturate(1.02);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen-scanlines::after { display:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 03 #MAINTENANCE</div>
+    <nav>
+      <a href="#">newlife2084.com</a>
+      <a href="#">dumpthis.sh</a>
+      <a href="#">maroon-series.art</a>
+    </nav>
+  </header>
+
+  <div class="viewport-grid"></div>
+
+  
+
+  <div class="creator-nodes" id="creatorNodes"></div>
+
+  <div class="architect-gaze" id="architectGaze"></div>
+  <main id="viewport">
+    <div class="container">
+      <div class="vr-shell">
+        <div class="vr-viewport vector-screen">
+          <article class="manuscript-text pov-marcus">
+            <div class="screen-curvature" aria-hidden="true"></div>
+            <div class="screen-scanlines" aria-hidden="true"></div>
+            <div class="screen-grid" aria-hidden="true"></div>
+            <div class="stream-status">
+              <div class="live-dot"></div>
+              <span class="status-text">LIVE</span>
+            </div>
+          <h1 class="glitch blink-word marquee" id="marqueeTitle" data-text="#MAINTENANCE">▌ ▐ ▀ ▄ ▀ ▄ ▀ ▌ ▐</h1>
+
+      <section class="chapter-copy">
+
+        <p>Marcus shouldn’t be this close to the main event.</p>
+
+        <p>His access permissions were trash-tier, flagged two cycles ago for “suspicious engagement patterns.” The system should have blocked him from the premium livestream entirely, but the signal from the substratum lead him right here.</p>
+
+        <p>Maintenance always had security holes, anyway. Too many simultaneous viewers. Too much processing load. The system prioritized streaming quality over security.</p>
+
+        <p>So, Marcus lurked in a low-visibility viewer slot. Just another anonymous face in the massive audience.</p>
+
+        <p>And he witnessed everything.</p>
+
+        <p>Sarah hung above the streaming platform as a living advertisement. Suspended by chrome cables that gleamed like fresh handcuffs. Eyes locked in a dead gaze behind manufactured submission, lips still shaped around words that weren’t hers.</p>
+
+        <p>To the suckers, she looked like salvation.</p>
+
+        <p>To Marcus?</p>
+
+        <p>She looked like what she was—a woman being murdered in slow motion while ten million people applauded.</p>
+
+        <p>The Architect held court below her. <span class="architect-speech">“I didn’t build an empire. I established baseline continuity.”</span></p>
+
+        <p>He let a slight pause linger.</p>
+
+        <p><span class="architect-speech">“You’re welcome.”</span></p>
+
+        <p>The audience swallowed every word.</p>
+
+        <p>But Marcus kept his attention on the real story.</p>
+
+        <p>Sarah’s body hung motionless in those chrome restraints. But something shifted in her expression.</p>
+
+        <p>A microsecond break in the artificial serenity. One moment where the glazed submission cracked. Marcus had spent years reading faces, catching the tells that liars couldn’t hide. He saw it happen in real-time.</p>
+
+        <p>Her gaze locked onto his coordinates. Direct. Aware. A moment of genuine human contact breaking through the corporate-manufactured performance.</p>
+
+        <p>It was proof of life.</p>
+
+        <p>For one frame, Sarah Walker looked right at him, and Marcus saw the real woman trapped behind all that manufactured worship. She was still in there. Still fighting.</p>
+
+        <p>Trapped. Controlled. Displayed like a trophy.</p>
+
+        <p>But not completely broken.</p>
+
+        <p>Marcus had what he needed. Now he had to figure out how to reach her without getting them both sent to oblivion.</p>
+
+        <p>The Architect kept running his mouth. <span class="architect-speech">“You don’t need freedom when you have functionality. You just need to trust the system.”</span></p>
+
+        <p>The nodes went wild.</p>
+
+        <p>Marcus filtered out the noise. He wasn’t waiting for more corporate bullshit. He was calculating his path to the Core.</p>
+      </section>
+      </article>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="maroon-footer" id="pageFooter" aria-hidden="true" style="display:none;">
+    <a class="maroon-home" href="/" tabindex="-1">
+      <span class="maroon-mark">MAR00N</span>
+      <span class="maroon-sub">return to root</span>
+    </a>
+  </footer>
+
+  <script src="../js/maroon-glitch.js"></script>
+  <script>
+    (function(){
+      const marquee = document.getElementById('marqueeTitle');
+      const footer = document.getElementById('pageFooter');
+      const ticker = document.getElementById('maintenance-ticker');
+      let audioMuted = false;
+      let reduceMotionActive = false;
+      let contrastActive = false;
+
+      // === Creator nodes animation ===
+      function initCreatorNodes(){
+        const container = document.getElementById('creatorNodes');
+        if (!container) return;
+        const nodeCount = 24;
+        for (let i = 0; i < nodeCount; i++){
+          const node = document.createElement('div');
+          node.className = 'node';
+          if (Math.random() > 0.7) node.classList.add('high-tier');
+          node.style.left = Math.random() * 100 + '%';
+          node.style.top = Math.random() * 100 + '%';
+          node.style.animationDelay = (Math.random() * 2) + 's';
+          container.appendChild(node);
+          setTimeout(()=> node.classList.add('active'), 100 + i*30);
+        }
+      }
+
+      // === Zone labels reveal ===
+      function showZoneLabels(){
+        const labels = document.querySelectorAll('.zone-label');
+        labels.forEach((label, idx)=> setTimeout(()=> label.classList.add('visible'), 200 + idx*100));
+      }
+
+      // === Architect gaze effect ===
+      function triggerArchitectGaze(){
+        const gaze = document.getElementById('architectGaze');
+        if (!gaze) return;
+        gaze.classList.add('active');
+        setTimeout(()=> gaze.classList.remove('active'), 2400);
+      }
+
+      // === Attention tracker placeholder ===
+      // The real attention tracker was removed; provide a harmless no-op so other scripts can run.
+      function initAttentionTracker(){
+        // placeholder: intentionally empty to avoid runtime errors when referenced
+      }
+
+      
+
+      // === Control panel ===
+      function initControlPanel(){
+        const muteBtn = document.getElementById('muteBtn');
+        const motionBtn = document.getElementById('reduceMotionBtn');
+        const contrastBtn = document.getElementById('contrastBtn');
+
+        if (muteBtn){
+          muteBtn.addEventListener('click', ()=>{
+            audioMuted = !audioMuted;
+            muteBtn.classList.toggle('active');
+            window.__maroonGlitch._audioMuted = audioMuted;
+          });
+        }
+
+        if (motionBtn){
+          motionBtn.addEventListener('click', ()=>{
+            reduceMotionActive = !reduceMotionActive;
+            motionBtn.classList.toggle('active');
+            document.documentElement.style.setProperty('--reduce-motion', reduceMotionActive ? '1' : '0');
+          });
+        }
+
+        if (contrastBtn){
+          contrastBtn.addEventListener('click', ()=>{
+            contrastActive = !contrastActive;
+            contrastBtn.classList.toggle('active');
+            document.body.style.filter = contrastActive ? 'contrast(1.4) brightness(1.1)' : 'none';
+          });
+        }
+      }
+
+      // propaganda removed
+
+      // live chat removed
+
+      // attention tracker removed
+
+      // === Update metrics ===
+      function updateMetrics(){
+        const board = document.getElementById('attentionBoard');
+        if (!board) return;
+        const metrics = board.querySelectorAll('.metric-value');
+        setInterval(()=>{
+          metrics.forEach(m => {
+            if (m.textContent.includes('%')){
+              const newVal = (85 + Math.random()*15).toFixed(1);
+              m.textContent = newVal + '%';
+            }
+          });
+        }, 3200);
+      }
+
+      function flickerOnce(){
+        if (window.__maroonGlitch && window.__maroonGlitch.doTextGlitch){
+          window.__maroonGlitch.doTextGlitch(marquee, 260);
+        } else {
+          marquee.classList.add('heavy-glitch');
+          setTimeout(()=> marquee.classList.remove('heavy-glitch'), 400);
+        }
+      }
+
+      function sequence(){
+        // init all visuals first
+        initCreatorNodes();
+        showZoneLabels();
+        updateMetrics();
+        
+        // show attention board
+        const board = document.getElementById('attentionBoard');
+        if (board) board.classList.add('visible');
+        
+        // idle duration
+        const idle = 8000 + Math.random()*4000;
+        setTimeout(()=>{
+          // architect gaze sweep
+          triggerArchitectGaze();
+          
+          // random flicker bursts
+          setTimeout(flickerOnce, 600);
+          setTimeout(flickerOnce, 1400 + Math.random()*800);
+          
+          setTimeout(()=>{
+            // reveal the content-review overlay
+            ticker.lassList.add('visible');
+            
+            // after a short pause, Architect intervenes
+            setTimeout(()=>{
+              if (window.__maroonGlitch && window.__maroonGlitch.triggerArchitectIntervention){
+                window.__maroonGlitch.triggerArchitectIntervention();
+              }
+            }, 900 + Math.random()*800);
+          }, 1200);
+        }, idle);
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initAttentionTracker();
+        sequence();
+      } else {
+        window.addEventListener('DOMContentLoaded', ()=>{
+          initAttentionTracker();
+          sequence();
+        });
+      }
+
+      // Channel change on scroll to bottom
+      let scrollTimeout;
+      window.addEventListener('scroll', ()=>{
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(()=>{
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const scrollHeight = document.documentElement.scrollHeight;
+          const clientHeight = document.documentElement.clientHeight;
+          
+          if (scrollTop + clientHeight >= scrollHeight - 5){
+            // Trigger transition to next channel
+            if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+              window.__maroonGlitch.triggerTransition({
+                target: 'maintenance4.html',
+                duration: 2000
+              });
+            } else {
+              window.location.href = 'maintenance4.html';
+            }
+          }
+        }, 100);
+      });
+    })();
+  </script>
+
+  <!-- Heart emitter for .bleeding-hearts -->
+  <script>
+    (function(){
+      function spawnHeart(el){
+        const heart = document.createElement('span');
+        heart.className = 'fleeting-heart';
+        heart.textContent = '❤';
+        // random direction: dx, dy (px) — allow any direction
+        const dx = Math.floor((Math.random() - 0.5) * 360); // -180..180px
+        const dy = Math.floor((Math.random() - 0.5) * 480); // -240..240px
+        const rot = (Math.random()-0.5) * 70;
+        heart.style.setProperty('--dx', dx + 'px');
+        heart.style.setProperty('--dy', dy + 'px');
+        heart.style.setProperty('--rot', rot + 'deg');
+        // randomize animation duration so pop timing varies per heart (slower emergence)
+        const dur = 4000 + Math.floor(Math.random()*6000); // 4000ms - 10000ms
+        heart.style.setProperty('--d', dur + 'ms');
+        // randomize start offset within element for natural spread
+        const x = 30 + Math.random() * 40;
+        const y = 40 + (Math.random()*30 - 10);
+        heart.style.left = x + '%';
+        heart.style.top = y + '%';
+        el.appendChild(heart);
+        heart.addEventListener('animationend', ()=> heart.remove());
+      }
+
+      function hook(){
+        const els = document.querySelectorAll('.bleeding-hearts');
+        if (!els.length) return;
+        els.forEach(el=>{
+          el.addEventListener('mouseenter', ()=>{
+            for (let i=0;i<8;i++) setTimeout(()=> spawnHeart(el), i*60 + Math.random()*120);
+          });
+          // gentle periodic hearts with randomized durations
+          setInterval(()=> spawnHeart(el), 2800 + Math.random()*1800);
+        });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook); else hook();
+    })();
+  </script>
+
+  <script src="js/bezel-reflections.js"></script>
+  <script>
+    (function(){
+      function triggerAttentionInline(){
+        const el = document.querySelector('.attention-board-inline');
+        if (!el) return;
+        // make the pop permanent: add popped state and a brief boost flare
+        el.classList.add('pop','persistent');
+        el.classList.add('boost');
+        // remove the brief boost after it settles, but keep 'pop' and 'persistent'
+        setTimeout(()=> el.classList.remove('boost'), 900);
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ()=> setTimeout(triggerAttentionInline, 220)); else setTimeout(triggerAttentionInline, 220);
+    })();
+  </script>
+  <script>
+    (function(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()[]{}<>/\\|?~`-=+';
+      function randChar(){ return pool.charAt(Math.floor(Math.random()*pool.length)); }
+
+      function wrapText(node){
+        for (let child of Array.from(node.childNodes)){
+          if (child.nodeType === 3){ // text node
+            const txt = child.nodeValue;
+            if (!txt.trim()) continue;
+            const frag = document.createDocumentFragment();
+            for (let ch of txt){
+              const span = document.createElement('span');
+              span.className = 'glitch-char';
+              span.textContent = ch;
+              frag.appendChild(span);
+            }
+            node.replaceChild(frag, child);
+          } else if (child.nodeType === 1){
+            // skip certain tags
+            if (['SCRIPT','STYLE','IMG','VIDEO'].includes(child.tagName)) continue;
+            // don't double-wrap existing glitch-char
+            if (child.classList && child.classList.contains('glitch-char')) continue;
+            wrapText(child);
+          }
+        }
+      }
+
+      function glitchOnce(el, duration){
+        if (!el || !el.dataset) return;
+        if (!('orig' in el.dataset)) el.dataset.orig = el.textContent;
+        const original = el.dataset.orig;
+        el.classList.add('glitch-swap');
+        el.textContent = randChar();
+        setTimeout(()=>{ el.textContent = original; el.classList.remove('glitch-swap'); }, duration);
+      }
+
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const container = document.querySelector('.manuscript-text .chapter-copy');
+        if (!container) return;
+        wrapText(container);
+        const chars = Array.from(container.querySelectorAll('.glitch-char'));
+        if (!chars.length) return;
+
+        function randomBurst(){
+          const count = 1 + Math.floor(Math.random()*6);
+          for (let i=0;i<count;i++){
+            const idx = Math.floor(Math.random()*chars.length);
+            const el = chars[idx];
+            // short random duration
+            const dur = 80 + Math.floor(Math.random()*720);
+            glitchOnce(el, dur);
+          }
+        }
+
+        // variable interval with subtle randomness
+        setInterval(randomBurst, 300 + Math.floor(Math.random()*900));
+      });
+    })();
+  </script>
+</body>
+</html>
+
+
