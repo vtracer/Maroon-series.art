@@ -22,7 +22,23 @@
       background: linear-gradient(180deg, rgba(255,245,200,0.05), rgba(255,230,120,0.02));
     }
     @media (max-width:640px){
-      .alert{ font-size:2rem; }
+      .alert{ font-size:1.1rem; }
+      body { font-size: 0.95rem; overflow-x: hidden; }
+      header { padding: 10px 15px; flex-direction: column; gap: 10px; }
+      header nav { flex-wrap: wrap; justify-content: center; }
+      header nav a { margin: 5px 8px; font-size: 0.85rem; }
+      .container { padding: 100px 18px 40px; max-width: 100%; }
+      h1 { font-size: 1.8rem; letter-spacing: 0.08em; margin: 20px 0 30px; white-space: normal; word-wrap: break-word; overflow: visible; }
+      .manuscript-text { font-size: 1rem; line-height: 1.7; max-width: 100%; overflow-x: hidden; }
+      .chapter-copy p { margin-bottom: 1.2em; word-wrap: break-word; }
+      .theater-announcement { margin: 28px auto 18px !important; padding: 16px 14px !important; max-width: calc(100% - 20px); }
+      .theater-announcement::before { top: -26px; left: 8px; right: 8px; }
+      .theater-announcement::after { bottom: -26px; left: 8px; right: 8px; }
+      .theater-announcement__inner { font-size: 0.95rem !important; letter-spacing: 0.8px !important; }
+      .vr-viewport { padding: 20px 15px; max-width: 100%; overflow-x: hidden; }
+      .vr-shell { max-width: 100%; overflow-x: hidden; }
+      .status-text { font-size: 0.75rem; }
+      .glitch, .blink-word, .marquee { white-space: normal; }
     }
     /* Neon blink + glow for maintenance alert — only active when ticker is visible */
     :root {
