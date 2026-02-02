@@ -1,0 +1,16 @@
+# Ignore Visual Studio workspace files
+.vs/
+
+# Node / build artifacts (optional)
+node_modules/
+dist/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Do not upload chapter pages (private/flagged content)
+Mar00n/possession/
+Mar00n/residue/
+# common misspelling
+Mar00n/posession/

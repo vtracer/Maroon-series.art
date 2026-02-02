@@ -9,6 +9,39 @@
   <link rel="stylesheet" href="glbl.css?v=1">
   <link rel="stylesheet" href="css/neo-sentinel.css?v=1">
   <script defer src="js/neo-sentinel.js?v=1"></script>
+  <style>
+    /* Side advertisement poster */
+    .side-ad {
+      position: fixed;
+      top: 120px;
+      right: 20px;
+      z-index: 500;
+      width: 200px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 0, 60, 0.3);
+    }
+
+    .side-ad:hover {
+      transform: scale(1.05);
+      box-shadow: 
+        0 12px 32px rgba(255, 0, 60, 0.6),
+        0 0 20px rgba(255, 0, 60, 0.4);
+      border-color: rgba(255, 0, 60, 0.6);
+    }
+
+    .side-ad img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 1200px) {
+      .side-ad {
+        display: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -81,11 +114,14 @@
     </i>
   </div>
 </div>
-
-    <div class="status"><b>CONTEXT</b> ACTIVE</div>
   </header>
 
   <main class="wrap">
+    <!-- New Life Advertisement Poster -->
+    <a href="https://newlife2084.com" class="side-ad" target="_blank" rel="noopener">
+      <img src="https://newlife2084.com/asset/IMG_0396.png" alt="New Life Technologies" />
+    </a>
+
     <section class="tile" id="openArticle" role="button" tabindex="0" aria-controls="overlay" aria-expanded="false">
       <div class="meta">
         <span class="pill red">FLAGGED</span>
@@ -106,7 +142,7 @@
   <a class="recos-card" href="processing.html">
     <div class="recos-meta">
       <span class="pill amber">ENTRY</span>
-      <span class="pill cyan">NODE ACCESS</span>
+      <span class="pill cyan">POD ACCESS</span>
       <span class="pill">CHAPTER 01</span>
     </div>
 
@@ -118,7 +154,7 @@
   <a class="recos-card" href="substratum.html">
     <div class="recos-meta">
       <span class="pill amber">ENTRY</span>
-      <span class="pill cyan">NODE ACCESS</span>
+      <span class="pill cyan">SUBSTRATE ACCESS</span>
       <span class="pill">CHAPTER 02</span>
     </div>
 
@@ -130,7 +166,7 @@
   <a class="recos-card" href="maintenance/maintenance.html">
     <div class="recos-meta">
       <span class="pill amber">ENTRY</span>
-      <span class="pill cyan">NODE ACCESS</span>
+      <span class="pill cyan">LIVE FEED</span>
       <span class="pill">CHAPTER 03</span>
     </div>
 
@@ -138,6 +174,20 @@
     <p class="recos-dek">System maintenance protocols - restricted area.</p>
     <div class="recos-cta">ENTER →</div>
   </a>
+
+  <!--
+  <a class="recos-card" href="possession/possession.html">
+    <div class="recos-meta">
+      <span class="pill red">FLAGGED</span>
+      <span class="pill cyan">PRIVATE FEED</span>
+      <span class="pill">CHAPTER 04</span>
+    </div>
+
+    <h2 class="recos-title">#POSSESSION</h2>
+    <p class="recos-dek">Private surveillance feed - compliance monitoring active.</p>
+    <div class="recos-cta">ENTER →</div>
+  </a>
+  -->
 </section>
   </main>
 
