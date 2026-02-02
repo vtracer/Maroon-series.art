@@ -19,7 +19,7 @@
       width: 200px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 0, 60, 0.3);
+      border: none;
     }
 
     .side-ad:hover {
@@ -40,6 +40,16 @@
       .side-ad {
         display: none;
       }
+    }
+    /* disabled / greyed CTA for classified card (moved here to avoid leaking into document) */
+    .recos-card.classified .recos-cta.disabled{
+      opacity:0.45;
+      pointer-events:none;
+      cursor:default;
+      color: rgba(234,238,247,0.45);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.04);
+      padding:6px 10px;border-radius:6px;display:inline-block;margin-top:10px;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.8px;
     }
   </style>
 </head>
@@ -175,19 +185,103 @@
     <div class="recos-cta">ENTER →</div>
   </a>
 
-  <!--
-  <a class="recos-card" href="possession/possession.html">
+  <style>
+  /* Full-card glitching effect — match regular recos-card sizing */
+  .recos-card.classified{position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border-radius:14px;border:none;display:block;box-sizing:border-box;padding:14px 14px 12px;margin:0}
+
+  .recos-card.classified .recos-meta{position:relative;z-index:6}
+  .recos-card.classified .recos-title,.recos-card.classified .recos-dek,.recos-card.classified .recos-cta{position:relative;z-index:6}
+
+  /* layered glitch overlays that shift color channels and translate */
+  .recos-card.classified .glitch-overlay{position:absolute;inset:0;z-index:10;pointer-events:none}
+  .recos-card.classified .glitch-layer{position:absolute;inset:0;background:transparent;mix-blend-mode:screen;opacity:0.12;filter:blur(0.6px);z-index:10}
+  .recos-card.classified .glitch-layer.l1{background:linear-gradient(90deg, rgba(255,0,60,0.06), transparent);animation:glitchShift 3s infinite}
+  .recos-card.classified .glitch-layer.l2{background:linear-gradient(90deg, rgba(0,255,214,0.04), transparent);animation:glitchShift 3.2s infinite;animation-delay:0.08s}
+  .recos-card.classified .glitch-layer.l3{background:repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 4px);opacity:0.06;animation:scan 4s linear infinite}
+
+  /* noise / grain flicker */
+  .recos-card.classified .glitch-noise{position:absolute;inset:0;z-index:11;pointer-events:none;background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 6px);opacity:0.04;animation:noiseFlick 0.8s steps(2,end) infinite}
+
+  @keyframes scan{0%{transform:translateY(-30%)}50%{transform:translateY(20%)}100%{transform:translateY(30%)}}
+
+  @keyframes noiseFlick{0%{opacity:0.02}50%{opacity:0.06}100%{opacity:0.02}}
+
+  @keyframes glitchShift{
+    0%,84%{transform:none;opacity:0}
+    86%{transform:translateX(-8%) skewX(-6deg);opacity:1}
+    88%{transform:translateX(6%) skewX(4deg);opacity:1}
+    90%{transform:translateX(-4%) skewX(-2deg);opacity:1}
+    94%{transform:none;opacity:0}
+    100%{transform:none;opacity:0}
+  }
+
+  /* fast slice displacements covering the whole card */
+  .recos-card.classified .slice{position:absolute;left:0;right:0;height:14px;background:rgba(255,255,255,0.02);mix-blend-mode:screen;opacity:0;z-index:11}
+  .recos-card.classified .slice.s1{top:18%}
+  .recos-card.classified .slice.s2{top:44%}
+  .recos-card.classified .slice.s3{top:68%}
+  .recos-card.classified .slice{animation:glitchSlice 3s infinite}
+
+  @keyframes glitchSlice{
+    0%,74%{opacity:0;transform:translateX(0)}
+    76%{opacity:0.18;transform:translateX(-18%)}
+    78%{opacity:0.12;transform:translateX(14%)}
+    80%{opacity:0.14;transform:translateX(-8%)}
+    84%{opacity:0.06;transform:translateX(4%)}
+    100%{opacity:0;transform:translateX(0)}
+  }
+
+  /* glitch title reveal (more aggressive) */
+  .glitch-title{position:relative;color:transparent;z-index:6}
+  .glitch-title::after{content:'#POSSESSION';position:absolute;left:0;top:0;color:#ff4d4d;opacity:0;letter-spacing:1px;font-weight:800;animation:glitchReveal 3.6s steps(1,end) infinite}
+  .glitch-title::before{content:'#POSSESSION';position:absolute;left:1px;top:0;color:#00ffd6;opacity:0;mix-blend-mode:screen;animation:glitchReveal 3.6s steps(1,end) infinite;animation-delay:0.12s}
+
+  @keyframes glitchReveal{
+    0%,70%{opacity:0}
+    72%{opacity:1;transform:translateX(-6px) skewX(-4deg)}
+    74%{opacity:0}
+    76%{opacity:1;transform:translateX(6px) skewX(4deg)}
+    78%{opacity:0}
+    100%{opacity:0}
+  }
+
+  /* the frame is now part of the glitch overlay so it glitches with the card */
+  /* single glitching frame that matches other cards */
+  .recos-card.classified .glitch-border{position:absolute;inset:0;border-radius:14px;pointer-events:none;z-index:30;border:1px solid rgba(255,255,255,0.12);box-shadow:0 0 10px rgba(255,77,77,0.06) inset;mix-blend-mode:overlay;animation:frameGlitch 3.2s infinite}
+
+  .recos-card.classified{padding:14px 14px 12px;margin:0;box-sizing:border-box;border-radius:14px;background:rgba(255,255,255,0.02)}
+
+  @keyframes frameGlitch{
+    0%,84%{opacity:0.9;transform:none}
+    86%{opacity:1;transform:translateX(-3px) skewX(-1deg)}
+    88%{opacity:1;transform:translateX(3px) skewX(1deg)}
+    90%{opacity:0.6;transform:translateX(-1px)}
+    100%{opacity:0.9;transform:none}
+  }
+  </style>
+
+  <a class="recos-card classified" href="#" aria-label="Classified — Chapter 04" onclick="event.preventDefault();">
+    <div class="glitch-overlay" aria-hidden="true">
+      <div class="glitch-border" aria-hidden="true"></div>
+      <div class="glitch-layer l1"></div>
+      <div class="glitch-layer l2"></div>
+      <div class="glitch-layer l3"></div>
+      <div class="glitch-noise"></div>
+      <div class="slice s1"></div>
+      <div class="slice s2"></div>
+      <div class="slice s3"></div>
+    </div>
+
     <div class="recos-meta">
-      <span class="pill red">FLAGGED</span>
-      <span class="pill cyan">PRIVATE FEED</span>
+      <span class="pill red">RESTRICTED</span>
+      <span class="pill cyan">CLASSIFIED</span>
       <span class="pill">CHAPTER 04</span>
     </div>
 
-    <h2 class="recos-title">#POSSESSION</h2>
-    <p class="recos-dek">Private surveillance feed - compliance monitoring active.</p>
-    <div class="recos-cta">ENTER →</div>
+    <h2 class="recos-title glitch-title">#POSSESSION</h2>
+    <p class="recos-dek">[REDACTED — ACCESS DENIED]</p>
+    <div class="recos-cta disabled" aria-disabled="true">RESTRICTED</div>
   </a>
-  -->
 </section>
   </main>
 
