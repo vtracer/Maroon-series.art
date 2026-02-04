@@ -1,0 +1,43 @@
+/* maintenanceb: red grid fall transition */
+html,body{height:100%;}
+body.maintenanceb{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0202;color:#ffd8d8;overflow:hidden}
+.mb-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:24px;box-sizing:border-box}
+.message{font-weight:700;letter-spacing:0.16em;font-size:1.15rem;z-index:40;transform:translateZ(0);opacity:0}
+.message .dot{opacity:0}
+.grid-layer{position:fixed;inset:0;z-index:10;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,40,40,0.045) 0 1px, transparent 1px 18px), repeating-linear-gradient(90deg, rgba(255,40,40,0.045) 0 1px, transparent 1px 18px);background-size:100% 18px,18px 100%;mix-blend-mode:screen;transform:translateZ(0);opacity:0}
+.falling-copy{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;font-size:5rem;color:#ff4b4b;opacity:0;transform:translateY(-18%);filter:drop-shadow(0 16px 48px rgba(0,0,0,0.7));will-change:transform,opacity}
+
+/* long heavy fall with a hard thud/settle */
+@keyframes fall-thud-in {
+  0% { opacity:0; transform:translateY(-30%) scale(0.985) rotate(-0.8deg); }
+  62% { opacity:1; transform:translateY(6%) scale(1.02) rotate(0.6deg); }
+  82% { transform:translateY(-3%) scale(0.995) rotate(-0.25deg); }
+  100% { transform:translateY(0) scale(1) rotate(0); }
+}
+
+@keyframes fall-out { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(12%) scale(0.98)} }
+@keyframes grid-fade {from{opacity:0} to{opacity:1}}
+
+.enter .message{animation:fall-thud-in 1600ms cubic-bezier(.2,1.2,.22,1) forwards}
+.enter .grid-layer{animation:grid-fade 900ms ease forwards}
+.enter .falling-copy{animation:fall-thud-in 1600ms cubic-bezier(.2,1.2,.22,1) 120ms forwards}
+
+.exit .message{animation:fall-out 750ms cubic-bezier(.2,.9,.2,1) forwards}
+.exit .falling-copy{animation:fall-out 750ms cubic-bezier(.2,.9,.2,1) 40ms forwards}
+.exit .grid-layer{animation:grid-fade 420ms ease reverse forwards}
+
+.continue-visually-hidden{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+@media (prefers-reduced-motion: reduce){
+  .enter .message,.enter .falling-copy,.enter .grid-layer,.exit .message,.exit .falling-copy{animation:none !important;opacity:1;transform:none}
+}
+
+/* subtle impact pulse (thud shadow) applied at end of entrance */
+@keyframes impact-shadow {
+  0% { box-shadow: 0 18px 48px rgba(0,0,0,0.65); }
+  60% { box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
+  100% { box-shadow: 0 18px 48px rgba(0,0,0,0.6); }
+}
+.enter .falling-copy{animation-name: fall-thud-in;}
+.enter .falling-copy .impactable,
+.enter .message{animation: impact-shadow 400ms ease 1200ms forwards}

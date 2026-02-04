@@ -456,14 +456,14 @@
           const clientHeight = document.documentElement.clientHeight;
           
           if (scrollTop + clientHeight >= scrollHeight - 5){
-            // Trigger transition to next channel
+            // Trigger transition to next channel (now: maintenanceb)
             if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
               window.__maroonGlitch.triggerTransition({
-                target: 'maintenance2.html',
+                target: 'maintenanceb.html',
                 duration: 2000
               });
             } else {
-              window.location.href = 'maintenance2.html';
+              window.location.href = 'maintenanceb.html';
             }
           }
         }, 100);

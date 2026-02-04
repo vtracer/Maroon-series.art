@@ -233,8 +233,8 @@
 
   /* glitch title reveal (more aggressive) */
   .glitch-title{position:relative;color:transparent;z-index:6}
-  .glitch-title::after{content:'#POSSESSION';position:absolute;left:0;top:0;color:#ff4d4d;opacity:0;letter-spacing:1px;font-weight:800;animation:glitchReveal 3.6s steps(1,end) infinite}
-  .glitch-title::before{content:'#POSSESSION';position:absolute;left:1px;top:0;color:#00ffd6;opacity:0;mix-blend-mode:screen;animation:glitchReveal 3.6s steps(1,end) infinite;animation-delay:0.12s}
+  .glitch-title::after{content:'#RESIDUE';position:absolute;left:0;top:0;color:#ff4d4d;opacity:0;letter-spacing:1px;font-weight:800;animation:glitchReveal 3.6s steps(1,end) infinite}
+  .glitch-title::before{content:'#RESIDUE';position:absolute;left:1px;top:0;color:#00ffd6;opacity:0;mix-blend-mode:screen;animation:glitchReveal 3.6s steps(1,end) infinite;animation-delay:0.12s}
 
   @keyframes glitchReveal{
     0%,70%{opacity:0}
@@ -260,7 +260,19 @@
   }
   </style>
 
-  <a class="recos-card classified" href="#" aria-label="Classified — Chapter 04" onclick="event.preventDefault();">
+  <a class="recos-card" href="possession/possession.html">
+    <div class="recos-meta">
+      <span class="pill red">FLAGGED</span>
+      <span class="pill cyan">PRIVATE FEED</span>
+      <span class="pill">CHAPTER 04</span>
+    </div>
+
+    <h2 class="recos-title">#POSSESSION</h2>
+    <p class="recos-dek">Private surveillance feed - compliance monitoring active.</p>
+    <div class="recos-cta">ENTER →</div>
+  </a>
+
+  <a class="recos-card classified" href="#" aria-label="Classified — Chapter 05" onclick="event.preventDefault();">
     <div class="glitch-overlay" aria-hidden="true">
       <div class="glitch-border" aria-hidden="true"></div>
       <div class="glitch-layer l1"></div>
@@ -275,10 +287,10 @@
     <div class="recos-meta">
       <span class="pill red">RESTRICTED</span>
       <span class="pill cyan">CLASSIFIED</span>
-      <span class="pill">CHAPTER 04</span>
+      <span class="pill">CHAPTER 05</span>
     </div>
 
-    <h2 class="recos-title glitch-title">#POSSESSION</h2>
+    <h2 class="recos-title glitch-title">#RESIDUE</h2>
     <p class="recos-dek">[REDACTED — ACCESS DENIED]</p>
     <div class="recos-cta disabled" aria-disabled="true">RESTRICTED</div>
   </a>
