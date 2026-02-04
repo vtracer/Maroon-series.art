@@ -10,7 +10,5 @@ Thumbs.db
 .DS_Store
 
 # Do not upload chapter pages (private/flagged content)
-Mar00n/possession/
 Mar00n/residue/
-# common misspelling
-Mar00n/posession/
+

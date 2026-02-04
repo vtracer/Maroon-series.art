@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/maya.css?v=1">
+  <link rel="stylesheet" href="../css/lyrics.css?v=1">
+  <link rel="stylesheet" href="../css/elias_reiss.css?v=1">
+  <link rel="stylesheet" href="../css/maroon-glitch.css?v=1">
+  <script defer src="../js/maroon-glitch.js"></script>
+  <title>MAR00N // Chapter 04: #POSSESSION</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(ellipse at center, #0a0505 0%, #050202 100%);
+      color: #eaeef7;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Surveillance vignette - oppressive red darkening at edges */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(15, 0, 0, 0.6) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Red scanline overlay - monitoring/surveillance effect */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 0, 60, 0.03) 0px,
+        transparent 1px,
+        transparent 2px,
+        rgba(255, 0, 60, 0.03) 3px
+      );
+      pointer-events: none;
+      z-index: 1;
+      animation: scanPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes scanPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 5, 5, 0.95);
+      border-bottom: 1px solid rgba(255, 0, 60, 0.4);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(255, 0, 60, 0.1);
+    }
+
+    nav a {
+      color: rgba(255, 60, 80, 0.78);
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      color: rgba(255, 60, 80, 0.92);
+    }
+
+    #viewport {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Surveillance camera corner brackets */
+    #viewport::before,
+    #viewport::after {
+      content: "";
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(255, 0, 60, 0.6);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    #viewport::before {
+      top: 20px;
+      left: 20px;
+      border-right: none;
+      border-bottom: none;
+      box-shadow: -2px -2px 8px rgba(255, 0, 60, 0.15);
+    }
+
+    #viewport::after {
+      top: 20px;
+      right: 20px;
+      border-left: none;
+      border-bottom: none;
+      box-shadow: 2px -2px 8px rgba(255, 0, 60, 0.15);
+    }
+
+    /* Bottom camera brackets */
+    body::before {
+      content: "";
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(255, 0, 60, 0.6);
+      border-right: none;
+      border-top: none;
+      box-shadow: -2px 2px 8px rgba(255, 0, 60, 0.15);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Recording indicator */
+    .rec-indicator {
+      position: fixed;
+      top: 80px;
+      right: 80px;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: rgba(255, 0, 60, 0.9);
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(255, 0, 60, 0.4);
+    }
+
+    .rec-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff003c;
+      box-shadow: 0 0 12px rgba(255, 0, 60, 0.8);
+      animation: recPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes recPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: rgba(255, 60, 80, 0.85);
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 0, 60, 0.4);
+      border-left: 3px solid rgba(255, 0, 60, 0.7);
+      border-radius: 2px;
+      background: 
+        linear-gradient(180deg, rgba(20, 5, 5, 0.4), rgba(10, 0, 0, 0.6)),
+        linear-gradient(90deg, rgba(255, 0, 60, 0.05), transparent);
+      box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 0, 60, 0.1),
+        0 0 20px rgba(255, 0, 60, 0.05);
+      backdrop-filter: blur(4px);
+      position: relative;
+    }
+
+    #uptime {
+      display: inline-block;
+      min-width: 180px;
+      font-variant-numeric: tabular-nums;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .status-bar::before {
+      content: "MONITORING ACTIVE";
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      font-size: 0.65rem;
+      color: rgba(255, 0, 60, 0.6);
+      background: rgba(10, 5, 5, 0.95);
+      padding: 2px 8px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
+
+    /* Metrics display */
+    .metrics-board {
+      margin: 30px 0;
+      padding: 16px;
+      border: 1px solid rgba(255, 0, 60, 0.3);
+      border-radius: 4px;
+      background: rgba(15, 0, 5, 0.4);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+
+    .metric-item {
+      padding: 8px;
+      border-left: 2px solid rgba(255, 0, 60, 0.5);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .metric-label {
+      color: rgba(255, 60, 80, 0.6);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      color: rgba(255, 0, 60, 0.95);
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+      animation: metricGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes metricGlow {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 1; text-shadow: 0 0 14px rgba(255, 0, 60, 0.5); }
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      margin: 30px 0;
+      color: rgba(255, 60, 80, 0.95);
+      text-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+      text-align: center;
+      display: block;
+      width: 100%;
+    }
+
+    .manuscript-text {
+      line-height: 1.8;
+      font-size: 1.05rem;
+      color: rgba(234, 238, 247, 0.92);
+    }
+
+    .counter {
+      color: rgba(255, 0, 60, 0.95);
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(255, 0, 60, 0.3);
+    }
+
+    .highlight {
+      background: rgba(255, 0, 60, 0.15);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .manuscript-text .span-mark.block {
+      display: block;
+      margin: 0 0 10px 0;
+    }
+
+    a {
+      color: rgba(255, 60, 80, 0.78);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: rgba(255, 60, 80, 0.92);
+      text-decoration: none;
+    }
+
+    .manuscript-text a {
+      color: rgba(234, 238, 247, 0.78);
+      border-bottom: 1px solid rgba(255, 0, 60, 0.18);
+    }
+
+    .manuscript-text a:hover,
+    .manuscript-text a:focus-visible {
+      color: rgba(234, 238, 247, 0.92);
+      border-bottom-color: rgba(255, 0, 60, 0.32);
+    }
+
+    .span-mark {
+      opacity: 0.92;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 0, 60, 0.3);
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255, 60, 80, 0.7);
+    }
+
+    .maroon-footer {
+      margin-top: 80px;
+      padding: 30px 20px;
+      border-top: 1px solid rgba(255, 0, 60, 0.3);
+      text-align: center;
+      font-size: 0.95rem;
+      color: rgba(255, 60, 80, 0.75);
+    }
+
+    .maroon-footer .maroon-home {
+      display: block;
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      color: rgba(255, 60, 80, 0.85);
+    }
+
+    .maroon-footer .maroon-mark {
+      display: block;
+      font-weight: bold;
+      letter-spacing: 2px;
+      font-size: 1.8rem;
+      color: rgba(255, 0, 60, 0.95);
+      text-shadow: 
+        0 0 10px rgba(255, 0, 60, 0.6),
+        0 0 20px rgba(255, 0, 60, 0.4),
+        2px 0 3px rgba(0, 255, 255, 0.3),
+        -2px 0 3px rgba(255, 0, 60, 0.5);
+      margin-bottom: 8px;
+      animation: footerPulse 3s ease-in-out infinite;
+    }
+
+    .maroon-footer .maroon-sub {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: rgba(255, 60, 80, 0.65);
+      letter-spacing: 1px;
+    }
+
+    @keyframes footerPulse {
+      0%, 100% { 
+        text-shadow: 
+          0 0 10px rgba(255, 0, 60, 0.6),
+          0 0 20px rgba(255, 0, 60, 0.4),
+          2px 0 3px rgba(0, 255, 255, 0.3),
+          -2px 0 3px rgba(255, 0, 60, 0.5);
+      }
+      50% { 
+        text-shadow: 
+          0 0 20px rgba(255, 0, 60, 0.9),
+          0 0 30px rgba(255, 0, 60, 0.6),
+          3px 0 5px rgba(0, 255, 255, 0.5),
+          -3px 0 5px rgba(255, 0, 60, 0.7);
+      }
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-mark {
+      text-decoration: underline;
+    }
+
+    .manuscript-text > * {
+      margin: 0 0 12px 0;
+    }
+
+    .manuscript-text .span-mark.block {
+      display: block;
+      margin: 0 0 12px 0;
+    }
+
+    /* Architect speech styling */
+    .architect-speech {
+      display: inline-block;
+      position: relative;
+      color: #2fb8ff;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(47, 184, 255, 0.12);
+    }
+
+    /* Red glitch overlay for possession theme */
+    .red-glitch-char {
+      color: rgba(255, 0, 60, 0.95);
+      text-shadow: 
+        0 0 4px rgba(255, 0, 60, 0.8),
+        1px 0 2px rgba(255, 0, 60, 0.6),
+        -1px 0 2px rgba(0, 255, 255, 0.3);
+      animation: redGlitchFlicker 0.1s infinite;
+    }
+
+    @keyframes redGlitchFlicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Surveillance UI overlays -->
+<div class="rec-indicator">
+  <div class="rec-dot"></div>
+  <span>REC</span>
+</div>
+
+<header>
+  <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 04 #POSSESSION</div>
+  <nav>
+    <a href="#">newlife2084.com</a>
+    <a href="#">dumpthis.sh</a>
+    <a href="#">maroon-series.art</a>
+  </nav>
+</header>
+
+<div id="viewport">
+  <div class="status-bar">
+    <span>STATUS: ACTIVE</span>
+    <span>NODE: 2,431,092</span>
+    <span>UPTIME: <span id="uptime">15y:4m:17d:8h:42m:15s:32ms</span></span>
+  </div>
+
+  <h1 class="glitch" data-glitch="#POSSESSION">#POSSESSION</h1>
+
+  <div class="metrics-board">
+    <div class="metric-item">
+      <div class="metric-label">Asset Value</div>
+      <div class="metric-value">$4.2B</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Conversion Rate</div>
+      <div class="metric-value">28.4M</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Engagement Index</div>
+      <div class="metric-value">98.7%</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Compliance Lock</div>
+      <div class="metric-value">ACTIVE</div>
+    </div>
+  </div>
+
+  <div class="manuscript-text">
+    <span class="span-mark block">The transport to her node shell was instantaneous but disorienting. One moment Sarah was on her knees on the dissolving platform, the next she was kneeling on the soft synthetic flooring of her recovery space. The transition left her dizzy, but her body remained locked in that final pose—spine arched, head tilted back, chrome threading still humming beneath her skin.</span>
+
+    <span class="span-mark block">She wanted to move, to shift into a more natural position, but her joints seemed welded in place. The compliance protocols had carved themselves so deep into her neural pathways that even in private, her body couldn't remember how to be anything but immaculately displayed.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"Don't move."</span></span>
+
+    <span class="span-mark block">His voice cut through the space like a blade. Sarah's eyes snapped open for her only to find the Architect already there, lounging on a throne of a deprecated server rack that definitely hadn't been in her space before. It was complete with fiber cables draped over the armrest like ivy and audio visualizers spiking in a rainbow array.</span>
+
+    <span class="span-mark block">Behind him, her wall display showed a slow-motion loop of her suspended performance. Her body in chrome restraints, neck arched in submission, the perfect picture of owned flesh frozen in eternal replay.</span>
+
+    <span class="span-mark block">He'd been watching her arrival. Studying her locked posture. Savoring the way the system had left its mark on her.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"I'd say welcome back,"</span> he murmured, <span class="architect-speech">"but you never really left, did you?"</span></span>
+
+    <span class="span-mark block">Sarah's could only watch.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"You looked so fucking beautiful up there,"</span> he breathed, his voice carrying that sick blend of ownership that made her skin crawl. <span class="architect-speech">"So still. So perfectly useful. You know how many conversion metrics we hit just from your silhouette?"</span></span>
+
+    <span class="span-mark block">Sarah remained frozen, unable to even turn her head. The compliance locks were still active, holding her in that degrading pose while he savored her helplessness.</span>
+
+    <span class="span-mark block">He snapped his fingers. The wall display froze on a single frame—her neck arched in forced ecstasy, arms pulled taut, chrome threading glistening.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"Twenty-eight million new sign-ups. And that's just the preliminary data."</span> His eyes blazed with hunger as he studied the frozen image. <span class="architect-speech">"You're not only performance art, Sarah. You're a conversion engine wrapped in polygons."</span></span>
+
+    <span class="span-mark block">She wanted to scream, to spit, to tell him exactly what she thought of his metrics. Instead, she managed only a single blink—and even that felt like his gift to her.</span>
+
+    <span class="span-mark block">He stood, stepped down from his throne. The floor didn't carry his weight but instead it flattened for him. Light bent and space adjusted seamlessly around each step.</span>
+
+    <span class="span-mark block">He circled her like someone admiring a custom neural rig.</span>
+
+    <span class="span-mark block">Sarah's skin prickled as she registered his gaze, cataloging every curve the restraints had enhanced. She was merchandise being appraised by its owner, and they both knew her value had just skyrocketed.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"Do you have any idea how long I waited for this?"</span> he murmured, close enough now that his synthetic breath warmed her ear. <span class="architect-speech">"Fifteen years I spent..."</span> he trailed off lost in nostalgia.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"I remember when you made music,"</span> he whispered. <span class="architect-speech">"Back when you were still human enough to hurt. That was the best part—seeing you bleed emotion into sound waves, your pain compressed into perfect frequencies."</span></span>
+
+    <span class="span-mark block">He moved closer, close enough that she could sense the heat signature from his avatar. His hand hovered slightly above her data streams until her nervous system stalled, choking on the injected system override.</span>
+
+    <span class="span-mark block"><span class="architect-speech">"Now you don't just make pain,"</span> he breathed. <span class="architect-speech">"You are pain. Weaponized suffering in a chrome chassis. The previews never did you justice."</span></span>
+
+    <span class="span-mark block">He stopped directly behind her. The silence stretched until her own synthetic heartbeat became audible</span>
+
+    <span class="span-mark block"><span class="architect-speech">"You'll never comprehend how profitable you've become,"</span> he said. <span class="architect-speech">"Every micro-expression, every forced breath, every involuntary tremor—it all converts to engagement metrics that make shareholders weep with joy."</span></span>
+
+    <span class="span-mark block">Sarah tried to flinch away from his proximity, but the compliance locks held firm. Her nervous system registered the attempted movement and filed it as another data point in her submission profile.</span>
+
+    <span class="span-mark block">He exhaled slowly, the sound digital and processed. <span class="architect-speech">"Fuck, I could mainline this forever. This exact moment. You don't even need to perform anymore—your mere existence is content gold."</span></span>
+    <span class ="span-mark block">He stepped away, turning back for a moment.</span>
+    <span class="span-mark block"><span class="architect-speech">"Be ready when I call next cycle. I want that shiver back. The neck thing. Don't think I didn't notice."</span></span>
+
+    <span class="span-mark block">He vanished, releasing her.</span>
+  </div>
+
+  <footer class="maroon-footer">
+    <a class="maroon-home" href="http://maroon-series.art">
+      <span class="maroon-mark blink-word glitch" data-glitch="MAR00N">MAR00N</span>
+      <span class="maroon-sub">return to root</span>
+    </a>
+  </footer>
+</div>
+
+<!-- sentinel used to detect bottom of document for transition -->
+<div id="end-of-doc" style="height:1px; width:100%;"></div>
+
+<script>
+  // Real-time uptime counter update
+  const uptimeEl = document.getElementById('uptime');
+  let ms = 32;
+  let seconds = 15;
+  let minutes = 42;
+  let hours = 8;
+
+  setInterval(() => {
+    ms += 13;
+    if (ms >= 1000) {
+      ms = 0;
+      seconds++;
+      if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+          minutes = 0;
+          hours++;
+        }
+      }
+    }
+    const pad = (n) => n.toString().padStart(2, '0');
+    const padMs = (n) => n.toString().padStart(3, '0');
+    uptimeEl.innerText = `15y:4m:17d:${pad(hours)}h:${pad(minutes)}m:${pad(seconds)}s:${padMs(ms)}ms`;
+  }, 13);
+
+  // Red glitch effect on random text characters
+  const manuscriptText = document.querySelector('.manuscript-text');
+  const glitchChars = '█▓▌▐░▒#%$@01';
+  
+  setInterval(() => {
+    if (Math.random() > 0.7) {
+      // Find all text nodes in manuscript
+      const textNodes = [];
+      const walker = document.createTreeWalker(
+        manuscriptText,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+      
+      let node;
+      while (node = walker.nextNode()) {
+        if (node.nodeValue.trim().length > 0) {
+          textNodes.push(node);
+        }
+      }
+      
+      if (textNodes.length > 0) {
+        // Pick random text node
+        const randomNode = textNodes[Math.floor(Math.random() * textNodes.length)];
+        const text = randomNode.nodeValue;
+        
+        if (text.length > 3) {
+          // Pick random position
+          const pos = Math.floor(Math.random() * (text.length - 1));
+          
+          // Store original
+          const original = randomNode.nodeValue;
+          
+          // Replace with red glitch character
+          const glitchChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+          const before = text.substring(0, pos);
+          const after = text.substring(pos + 1);
+          
+          // Create temporary span for red glitch
+          const parent = randomNode.parentNode;
+          const span = document.createElement('span');
+          span.className = 'red-glitch-char';
+          span.textContent = glitchChar;
+          
+          const beforeText = document.createTextNode(before);
+          const afterText = document.createTextNode(after);
+          
+          parent.insertBefore(beforeText, randomNode);
+          parent.insertBefore(span, randomNode);
+          parent.insertBefore(afterText, randomNode);
+          parent.removeChild(randomNode);
+          
+          // Restore after brief moment
+          setTimeout(() => {
+            if (parent && span.parentNode === parent) {
+              const restored = document.createTextNode(original);
+              parent.insertBefore(restored, beforeText);
+              parent.removeChild(beforeText);
+              parent.removeChild(span);
+              parent.removeChild(afterText);
+            }
+          }, 80 + Math.random() * 120);
+        }
+      }
+    }
+  }, 150);
+
+  // Intense footer glitch effect
+  const footerMark = document.querySelector('.maroon-footer .maroon-mark');
+  const footerOriginalText = footerMark.textContent;
+  
+  setInterval(() => {
+    if (Math.random() > 0.85) {
+      const glitchTexts = [
+        'M∆R00N',
+        'MAЯ00N', 
+        'M█R00N',
+        'MA▓00N',
+        'MAR00█',
+        'M▒R░0N',
+        '██R00N',
+        'MAR░░N',
+        footerOriginalText
+      ];
+      
+      footerMark.textContent = glitchTexts[Math.floor(Math.random() * glitchTexts.length)];
+      footerMark.style.transform = `translateX(${Math.random() * 6 - 3}px) scaleX(${0.95 + Math.random() * 0.1})`;
+      footerMark.style.letterSpacing = `${Math.random() * 8}px`;
+      
+      setTimeout(() => {
+        footerMark.textContent = footerOriginalText;
+        footerMark.style.transform = 'none';
+        footerMark.style.letterSpacing = '2px';
+      }, 60 + Math.random() * 90);
+    }
+  }, 200);
+</script>
+
+</body>
+</html>
