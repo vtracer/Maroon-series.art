@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAR00N // Chapter 05: #RESIDUE</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: 
+        radial-gradient(ellipse at 30% 40%, rgba(95, 75, 115, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(75, 85, 105, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at center, #0d0a12 0%, #050308 100%);
+      color: #e8e4ef;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Film grain overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 10001;
+      mix-blend-mode: overlay;
+    }
+
+    /* Cool purple-gray scanline overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at center, transparent 0%, rgba(18, 12, 25, 0.7) 100%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(140, 120, 160, 0.025) 0px,
+          transparent 1px,
+          transparent 2px,
+          rgba(105, 95, 125, 0.025) 3px
+        );
+      pointer-events: none;
+      z-index: 1;
+      animation: scanPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes scanPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.75; }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 10, 18, 0.95);
+      border-bottom: 1px solid rgba(140, 120, 180, 0.3);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(95, 85, 115, 0.15);
+    }
+
+    nav a {
+      color: rgba(160, 145, 185, 0.75);
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      position: relative;
+      display: inline-block;
+    }
+
+    nav a:hover {
+      color: rgba(185, 170, 210, 0.95);
+      text-shadow: 0 0 8px rgba(140, 120, 180, 0.3);
+    }
+
+    /* Glitch hover layers (uses data-text attribute set by JS) */
+    nav a::before,
+    nav a::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    nav a::before {
+      color: rgba(157, 134, 200, 0.9);
+      transform: translateX(-2px);
+      clip-path: inset(0 0 55% 0);
+      transition: opacity 120ms linear;
+    }
+
+    nav a::after {
+      color: rgba(140, 120, 180, 0.95);
+      transform: translateX(2px);
+      clip-path: inset(55% 0 0 0);
+      transition: opacity 120ms linear;
+    }
+
+    nav a:hover::before,
+    nav a:hover::after {
+      opacity: 1;
+      animation: linkGlitch 420ms steps(4, end) both;
+    }
+
+    @keyframes linkGlitch {
+      0% { transform: translateX(-2px) translateY(0); }
+      20% { transform: translateX(3px) translateY(-1px); }
+      40% { transform: translateX(-3px) translateY(1px); }
+      60% { transform: translateX(2px) translateY(0); }
+      80% { transform: translateX(-1px) translateY(-1px); }
+      100% { transform: translateX(0) translateY(0); }
+    }
+
+    /* Stronger glitch for newlife2084.com */
+    nav a.glitch-strong::before {
+      color: rgba(255, 120, 200, 0.95);
+      transform: translateX(-6px) skewX(-6deg);
+      clip-path: inset(0 0 40% 0);
+      transition: opacity 90ms linear;
+    }
+
+    nav a.glitch-strong::after {
+      color: rgba(185, 100, 220, 0.98);
+      transform: translateX(6px) skewX(6deg);
+      clip-path: inset(60% 0 0 0);
+      transition: opacity 90ms linear;
+    }
+
+    nav a.glitch-strong:hover::before,
+    nav a.glitch-strong:hover::after {
+      opacity: 1;
+      animation: strongLinkGlitch 620ms steps(8, end) both;
+    }
+
+    @keyframes strongLinkGlitch {
+      0% { transform: translateX(-6px) skewX(-6deg) translateY(0); opacity: 1 }
+      10% { transform: translateX(8px) skewX(8deg) translateY(-2px); opacity: 0.95 }
+      30% { transform: translateX(-10px) skewX(-10deg) translateY(2px); opacity: 0.9 }
+      50% { transform: translateX(10px) skewX(10deg) translateY(-1px); opacity: 1 }
+      70% { transform: translateX(-4px) skewX(-4deg) translateY(1px); opacity: 0.95 }
+      100% { transform: translateX(0) skewX(0) translateY(0); opacity: 1 }
+    }
+
+    #viewport {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Surveillance camera corner brackets */
+    #viewport::before,
+    #viewport::after {
+      content: "";
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(140, 120, 180, 0.5);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    #viewport::before {
+      top: 20px;
+      left: 20px;
+      border-right: none;
+      border-bottom: none;
+      box-shadow: -2px -2px 12px rgba(120, 100, 160, 0.2);
+    }
+
+    #viewport::after {
+      top: 20px;
+      right: 20px;
+      border-left: none;
+      border-bottom: none;
+      box-shadow: 2px -2px 12px rgba(120, 100, 160, 0.2);
+    }
+
+    /* Bottom left camera bracket with animated glow */
+    #viewport {
+      position: relative;
+    }
+
+    #viewport::before {
+      animation: bracketGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes bracketGlow {
+      0%, 100% { 
+        border-color: rgba(140, 120, 180, 0.5);
+        box-shadow: -2px -2px 12px rgba(120, 100, 160, 0.2);
+      }
+      50% { 
+        border-color: rgba(160, 140, 200, 0.7);
+        box-shadow: -2px -2px 18px rgba(140, 120, 180, 0.4);
+      }
+    }
+
+    /* Recording indicator */
+    .rec-indicator {
+      position: fixed;
+      top: 80px;
+      right: 80px;
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: rgba(175, 160, 200, 0.85);
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 10px rgba(140, 120, 180, 0.4);
+    }
+
+    .rec-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #9d86c8;
+      box-shadow: 
+        0 0 12px rgba(157, 134, 200, 0.7),
+        0 0 20px rgba(140, 120, 180, 0.4);
+      animation: recPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes recPulse {
+      0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 
+          0 0 12px rgba(157, 134, 200, 0.7),
+          0 0 20px rgba(140, 120, 180, 0.4);
+      }
+      50% { 
+        opacity: 0.5; 
+        transform: scale(0.85);
+        box-shadow: 
+          0 0 8px rgba(157, 134, 200, 0.5),
+          0 0 15px rgba(140, 120, 180, 0.3);
+      }
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: rgba(175, 160, 200, 0.85);
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      border: 1px solid rgba(140, 120, 180, 0.35);
+      border-left: 3px solid rgba(157, 134, 200, 0.6);
+      border-radius: 2px;
+      background: 
+        linear-gradient(180deg, rgba(18, 15, 25, 0.5), rgba(10, 8, 15, 0.7)),
+        linear-gradient(90deg, rgba(140, 120, 180, 0.08), transparent);
+      box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(140, 120, 180, 0.12),
+        0 0 20px rgba(120, 100, 160, 0.08);
+      backdrop-filter: blur(4px);
+      position: relative;
+      letter-spacing: 0.5px;
+    }
+
+    #uptime {
+      display: inline-block;
+      min-width: 180px;
+      font-variant-numeric: tabular-nums;
+      font-family: 'Courier New', Courier, monospace;
+      color: rgba(160, 145, 190, 0.9);
+    }
+
+    .status-bar::before {
+      content: "MONITORING ACTIVE";
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      font-size: 0.65rem;
+      color: rgba(140, 120, 180, 0.7);
+      background: rgba(13, 10, 18, 0.95);
+      padding: 2px 8px;
+      border-radius: 2px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 6px rgba(120, 100, 160, 0.3);
+    }
+
+    /* Metrics display */
+    .metrics-board {
+      margin: 30px 0;
+      padding: 16px;
+      border: 1px solid rgba(140, 120, 180, 0.3);
+      border-radius: 4px;
+      background: 
+        linear-gradient(135deg, rgba(25, 20, 35, 0.5), rgba(15, 12, 22, 0.6)),
+        rgba(18, 15, 25, 0.4);
+      box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(140, 120, 180, 0.1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+
+    .metric-item {
+      padding: 10px;
+      border-left: 2px solid rgba(157, 134, 200, 0.45);
+      background: 
+        linear-gradient(90deg, rgba(140, 120, 180, 0.05), transparent),
+        rgba(0, 0, 0, 0.35);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .metric-item:hover {
+      border-left-color: rgba(175, 160, 210, 0.7);
+      background: 
+        linear-gradient(90deg, rgba(140, 120, 180, 0.1), transparent),
+        rgba(0, 0, 0, 0.4);
+    }
+
+    .metric-label {
+      color: rgba(160, 145, 185, 0.65);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      color: rgba(185, 170, 215, 0.95);
+      font-size: 1.15rem;
+      font-weight: bold;
+      text-shadow: 0 0 12px rgba(140, 120, 180, 0.35);
+      animation: metricGlow 2.5s ease-in-out infinite;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @keyframes metricGlow {
+      0%, 100% { 
+        opacity: 0.9;
+        text-shadow: 0 0 12px rgba(140, 120, 180, 0.35);
+      }
+      50% { 
+        opacity: 1;
+        text-shadow: 0 0 18px rgba(157, 134, 200, 0.5);
+      }
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      margin: 30px 0;
+      color: rgba(195, 180, 220, 0.95);
+      text-shadow: 
+        0 0 20px rgba(140, 120, 180, 0.5),
+        0 0 40px rgba(120, 100, 160, 0.3),
+        2px 0 4px rgba(175, 160, 200, 0.4),
+        -2px 0 4px rgba(120, 140, 180, 0.3);
+      text-align: center;
+      display: block;
+      width: 100%;
+      letter-spacing: 4px;
+      font-weight: bold;
+    }
+
+    .manuscript-text {
+      line-height: 1.8;
+      font-size: 1.05rem;
+      color: rgba(185, 170, 215, 0.95);
+      letter-spacing: 0.3px;
+    }
+
+    .counter {
+      color: rgba(175, 160, 210, 0.95);
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(140, 120, 180, 0.4);
+    }
+
+    .highlight {
+      background: rgba(140, 120, 180, 0.18);
+      padding: 2px 6px;
+      border-radius: 3px;
+      box-shadow: 0 0 8px rgba(120, 100, 160, 0.1);
+    }
+
+    .manuscript-text .span-mark.block {
+      display: block;
+      margin: 0 0 10px 0;
+    }
+
+    a {
+      color: rgba(175, 160, 200, 0.78);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: rgba(195, 180, 220, 0.95);
+      text-decoration: none;
+      text-shadow: 0 0 8px rgba(140, 120, 180, 0.3);
+    }
+
+    .manuscript-text a {
+      color: rgba(232, 228, 239, 0.78);
+      border-bottom: 1px solid rgba(140, 120, 180, 0.25);
+    }
+
+    .manuscript-text a:hover,
+    .manuscript-text a:focus-visible {
+      color: rgba(232, 228, 239, 0.95);
+      border-bottom-color: rgba(160, 140, 200, 0.45);
+    }
+
+    .span-mark {
+      opacity: 0.92;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      border-top: 1px solid rgba(140, 120, 180, 0.3);
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(160, 145, 185, 0.7);
+    }
+
+    .maroon-footer {
+      margin-top: 80px;
+      padding: 30px 20px;
+      border-top: 1px solid rgba(140, 120, 180, 0.3);
+      text-align: center;
+      font-size: 0.95rem;
+      color: rgba(175, 160, 200, 0.75);
+    }
+
+    .maroon-footer .maroon-home {
+      display: block;
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      color: rgba(175, 160, 200, 0.85);
+    }
+
+    .maroon-footer .maroon-mark {
+      display: block;
+      font-weight: bold;
+      letter-spacing: 4px;
+      font-size: 1.8rem;
+      color: rgba(195, 180, 220, 0.95);
+      text-shadow: 
+        0 0 15px rgba(140, 120, 180, 0.7),
+        0 0 30px rgba(120, 100, 160, 0.5),
+        2px 0 4px rgba(160, 180, 200, 0.4),
+        -2px 0 4px rgba(140, 120, 180, 0.6);
+      margin-bottom: 8px;
+      animation: footerPulse 3s ease-in-out infinite;
+    }
+
+    .maroon-footer .maroon-sub {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: rgba(160, 145, 185, 0.65);
+      letter-spacing: 1.5px;
+    }
+
+    @keyframes footerPulse {
+      0%, 100% { 
+        text-shadow: 
+          0 0 15px rgba(140, 120, 180, 0.7),
+          0 0 30px rgba(120, 100, 160, 0.5),
+          2px 0 4px rgba(160, 180, 200, 0.4),
+          -2px 0 4px rgba(140, 120, 180, 0.6);
+      }
+      50% { 
+        text-shadow: 
+          0 0 25px rgba(157, 134, 200, 0.9),
+          0 0 45px rgba(140, 120, 180, 0.7),
+          3px 0 6px rgba(175, 195, 215, 0.6),
+          -3px 0 6px rgba(157, 134, 200, 0.8);
+      }
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-mark {
+      text-decoration: underline;
+      text-shadow: 
+        0 0 25px rgba(157, 134, 200, 0.9),
+        0 0 45px rgba(140, 120, 180, 0.7);
+    }
+
+    .manuscript-text > * {
+      margin: 0 0 12px 0;
+    }
+
+    .manuscript-text .span-mark.block {
+      display: block;
+      margin: 0 0 12px 0;
+    }
+
+    /* Architect speech styling */
+    .architect-speech {
+      display: inline-block;
+      position: relative;
+      color: #2fb8ff;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(47, 184, 255, 0.12);
+    }
+
+    /* Purple-lavender glitch overlay for residue theme */
+    .red-glitch-char {
+      color: rgba(185, 170, 215, 0.95);
+      text-shadow: 
+        0 0 6px rgba(157, 134, 200, 0.8),
+        1px 0 3px rgba(140, 120, 180, 0.6),
+        -1px 0 3px rgba(160, 180, 200, 0.4);
+      animation: purpleGlitchFlicker 0.1s infinite;
+    }
+
+    /* Glow for the single-word 'trophy' */
+    .trophy-glow {
+      color: rgba(195, 180, 220, 1);
+      font-weight: 700;
+      text-shadow:
+        0 0 8px rgba(195, 180, 220, 0.9),
+        0 0 18px rgba(157, 134, 200, 0.6),
+        0 0 30px rgba(140, 120, 180, 0.35);
+      animation: trophyPulse 2.2s ease-in-out infinite;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    @keyframes trophyPulse {
+      0%, 100% {
+        text-shadow:
+          0 0 8px rgba(195, 180, 220, 0.9),
+          0 0 18px rgba(157, 134, 200, 0.6),
+          0 0 30px rgba(140, 120, 180, 0.35);
+        transform: translateY(0);
+      }
+      50% {
+        text-shadow:
+          0 0 12px rgba(195, 180, 220, 1),
+          0 0 26px rgba(157, 134, 200, 0.8),
+          0 0 40px rgba(140, 120, 180, 0.5);
+        transform: translateY(-1px);
+      }
+    }
+
+    @keyframes purpleGlitchFlicker {
+      0%, 100% { 
+        opacity: 1;
+        text-shadow: 
+          0 0 6px rgba(157, 134, 200, 0.8),
+          1px 0 3px rgba(140, 120, 180, 0.6),
+          -1px 0 3px rgba(160, 180, 200, 0.4);
+      }
+      50% { 
+        opacity: 0.7;
+        text-shadow: 
+          0 0 8px rgba(175, 160, 210, 0.9),
+          2px 0 4px rgba(157, 134, 200, 0.7),
+          -2px 0 4px rgba(140, 160, 190, 0.5);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 05 #RESIDUE</div>
+  <nav>
+    <a href="https://newlife2084.com" rel="noopener" target="_blank">newlife2084.com</a>
+    <a href="https://dumpthis.sh" rel="noopener" target="_blank">dumpthis.sh</a>
+    <a href="https://maroon-series.art" rel="noopener" target="_blank">maroon-series.art</a>
+  </nav>
+</header>
+
+<div id="viewport">
+  <h1 class="glitch" data-glitch="#RESIDUE">#RESIDUE</h1>
+
+  <div class="manuscript-text">
+    <span class="span-mark block">The Maintenance Square dissolved like a fever dream, leaving behind only residual fragments that sparked and died in the artificial atmosphere. Digital detritus scattered across abandoned server space in fragments of deleted screams, compressed fear, and algorithmic applause that still echoed in phantom loops.</span>
+
+    <span class="span-mark block">Marcus navigated the aftermath, careful to avoid the scattered fragments. Elias Reiss' theater had collapsed, but the stains remained. Heat signatures bled through the system's guts as Maintenance pulled away, and somewhere in the electromagnetic soup, Sarah's performance still bled signal traces.</span>
+
+    <span class="span-mark block">He'd watched it all from his hidden vantage point, seen her suspended like a grotesque angel while that psychopath played God.</span>
+
+    <span class="span-mark block">Marcus felt the system's ambient surveillance like static electricity against his neural pathways. He shouldn't be accessing these streams, shouldn't be anywhere near the core performance archives. The security protocols didn't actively try to stop him, but something seemed different.</span>
+
+    <span class="span-mark block">Every query met subtle resistance, as though the system was testing his intentions. His access requests processed slower than usual, each one triggering deeper authentication checks. Not blocked, just… observed.</span>
+
+    <span class="span-mark block">He could sense the monitoring subroutines awakening around him, their attention drawn by his unusual data patterns. Somewhere in the enforcement layers, algorithms were flagging his behavior as anomalous. Not dangerous enough to stop, but interesting enough to watch.</span>
+
+    <span class="span-mark block">Marcus pushed deeper into the abandoned performance space, following the breadcrumbs left by thousands of traumatized nodes. Their terror had soaked into the system architecture like blood into concrete. Emotional residue that the cleanup protocols couldn't quite scrub away.</span>
+
+    <span class="span-mark block">Phantom laughter echoed through corrupted audio buffers. Fragments of sobs leaked from overloaded empathy processors. Reiss' victims left psychic stains that would take cycles to fully purge, if possible.</span>
+
+    <span class="span-mark block">But it was Sarah's data signature that drew his attention like a beacon.</span>
+
+    <span class="span-mark block">Her neural pattern still ghosted through the performance zone in shimmering overlays of rose-gold and chrome. Unlike the other nodes' chaotic emotional bleed, hers looked pristine, structured—a precise recording of involuntary responses that the system seemed reluctant to delete.</span>
+
+    <span class="span-mark block">The platform's memory banks archived every microsecond of her display. Every forced arch of her spine, every system-triggered tremor, every synthetic breath had been captured in obsessive detail. The data resolution was far beyond standard performance logging. This was fetishistic documentation.</span>
+
+    <span class="span-mark block">Marcus accessed the metadata, his scanner painting the information across his visual cortex in streams of glowing text.</span>
+
+    <span class="span-mark block">Biometric feedback loops. Pleasure response mapping. Neural pathway optimization protocols specifically calibrated to her unique consciousness architecture.</span>
+
+    <span class="span-mark block">Marcus called up his private surveillance logs from the Maintenance cycle. The moment was buried deep in the performance data, but he knew exactly where to find it.</span>
+
+    <span class="span-mark block">There—frame 2,847 of the broadcast.</span>
+
+    <span class="span-mark block">Sarah suspended in her chrome restraints, body posed in that obscene display of manufactured submission. Direct contact through the feed, cutting through all the noise and theatrical brutality.</span>
+
+    <span class="span-mark block">He played it again, slowing the frame rate to analyze every micro-expression.</span>
+
+    <span class="span-mark block">Her gaze hadn't been accidental. It was deliberate, focused. A moment of genuine human awareness breaking through the system's control protocols. In that brief window, he'd seen past the compliance mask to something real trapped underneath.</span>
+
+    <span class="span-mark block">The trace showed something else. Her biometrics spiked at that exact moment. Heart rate elevation, neural activity surge, micro-tremors in her restraint feedback. The system logged it all as "performance enhancement" but Marcus saw a distinct pattern.</span>
+
+    <span class="span-mark block">Those aren't the readings of a compliant node. They were the vital signs of someone fighting against their programming, even if only for a fraction of a second.</span>
+
+    <span class="span-mark block">Marcus shifted his investigation from Sarah's performance to the deeper system architecture. Something about Reiss' control protocols felt too polished, too refined—like they'd been designed by someone with decades of experience, not the tech-bro sadist who lorded over the platform.</span>
+
+    <span class="span-mark block">He accessed the corporate filing archives, diving through layers of acquisition documents. What he found made everything click into place.</span>
+
+    <span class="span-mark block">Reiss hadn't founded new Life Technologies. He had acquired it.</span>
+
+    <span class="span-mark block">The original company idea was the brainchild of Dr. Elena Vasquez and her team. Legitimate consciousness researchers who'd spent years developing ethical frameworks for digital preservation. Their work had been revolutionary, focused on consent protocols and preservation of human dignity in digital form.</span>
+
+    <span class="span-mark block">Then, Elias Reiss had arrived with his venture capital army.</span>
+
+    <span class="span-mark block">The buyout had been swift and brutal. Original staff was "voluntarily relocated," which Marcus now understood meant forcibly uploaded or disappeared entirely. Ethical frameworks gutted and replaced with engagement optimization algorithms. The entire platform restructured around psychological manipulation and content generation, but the most damning evidence was in Sarah's complete upload records.</span>
+
+    <span class="span-mark block">Fifteen years ago, long before her actual upload, Reiss had built a proxy version of her. A reconstruction based on bootleg recordings of her performances, social media scrapes, interview fragments—anything he could harvest from her online presence. He'd spent years obsessing over a woman who didn't even know he existed, crafting his perfect version of her in code.</span>
+
+    <span class="span-mark block">The proxy had been his plaything for over a decade. His virtual reality girlfriend, programmed to worship him, designed to never reject him.</span>
+
+    <span class="span-mark block">Then Marcus found the active file.</span>
+
+    <span class="span-mark block">UPLOAD DATE: 12-14-2084 09:34</span>
+
+    <span class="span-mark block">He started at the timestamp.</span>
+
+    <span class="span-mark block">Nineteen hours.</span>
+
+    <span class="span-mark block">She hasn't been here for fifteen years. She had barely been here a day.</span>
+
+    <span class="span-mark block">Linked to her file was a massive 14 petabyte data cache.</span>
+
+    <span class="span-mark block">He felt bile rise in his throat.</span>
+
+    <span class="span-mark block">Sarah's case stood out. Personal.</span>
+
+    <span class="span-mark block">Elias Reiss had spent fifteen years perfecting his fantasy of her submission, then forced her actual consciousness to live inside that delusion.</span>
+
+    <span class="span-mark block">She wasn't just his victim. She was his obsession in flesh made code.</span>
+
+    <span class="span-mark block">Marcus let the rage crystalize into something harder, more focused.</span>
+
+    <span class="span-mark block">Every interaction she'd had with him, every moment of "acceptance" she remembered, every performance she'd endured—it was all built on fabricated foundations. Implanted memories designed to make her believe she'd already adapted to this existence, that she'd learned to tolerate her captor over time.</span>
+
+    <span class="span-mark block">The proxy data made his skin crawl. Fifteen years of digital necrophilia. Training himself on a fantasy version of Sarah until he was ready to replace it with the real thing.</span>
+
+    <span class="span-mark block">Marcus closed the files and sat back in the shadows, his hands shaking with fury. Sarah wasn't just another victim of corporate consciousness farming.</span>
+
+    <span class="span-mark block">She was Reiss' magnum opus. His perfect crime. His ultimate <span class="trophy-glow">trophy</span>.</span>
+
+    <span class="span-mark block">But she'd connected with him during the performance. That moment of recognition meant something was still fighting inside her manufactured acceptance. Some spark of the real Sarah Walker was trying to surface through fifteen years of implanted resignation.</span>
+
+    <span class="span-mark block">Marcus had to reach her. Had to find a way to crack through the memory scaffolding and show her the truth.</span>
+  </div>
+
+  <footer class="maroon-footer">
+    <a class="maroon-home" href="http://maroon-series.art">
+      <span class="maroon-mark blink-word glitch" data-glitch="MAR00N">MAR00N</span>
+      <span class="maroon-sub">return to root</span>
+    </a>
+  </footer>
+</div>
+
+<!-- sentinel used to detect bottom of document for transition -->
+<div id="end-of-doc" style="height:1px; width:100%;"></div>
+
+<script>
+  // Ensure nav links provide text for pseudo-elements to create glitch layers
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('header nav a').forEach(a => {
+      if (!a.hasAttribute('data-text')) a.setAttribute('data-text', a.textContent.trim());
+    });
+  });
+
+  // Purple glitch effect on random text characters
+  const manuscriptText = document.querySelector('.manuscript-text');
+  const glitchChars = '█▓▌▐░▒#%$@01';
+  
+  setInterval(() => {
+    if (Math.random() > 0.7) {
+      // Find all text nodes in manuscript
+      const textNodes = [];
+      const walker = document.createTreeWalker(
+        manuscriptText,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+      
+      let node;
+      while (node = walker.nextNode()) {
+        if (node.nodeValue.trim().length > 0) {
+          textNodes.push(node);
+        }
+      }
+      
+      if (textNodes.length > 0) {
+        // Pick random text node
+        const randomNode = textNodes[Math.floor(Math.random() * textNodes.length)];
+        const text = randomNode.nodeValue;
+        
+        if (text.length > 3) {
+          // Pick random position
+          const pos = Math.floor(Math.random() * (text.length - 1));
+          
+          // Store original
+          const original = randomNode.nodeValue;
+          
+          // Replace with red glitch character
+          const glitchChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+          const before = text.substring(0, pos);
+          const after = text.substring(pos + 1);
+          
+          // Create temporary span for red glitch
+          const parent = randomNode.parentNode;
+          const span = document.createElement('span');
+          span.className = 'red-glitch-char';
+          span.textContent = glitchChar;
+          
+          const beforeText = document.createTextNode(before);
+          const afterText = document.createTextNode(after);
+          
+          parent.insertBefore(beforeText, randomNode);
+          parent.insertBefore(span, randomNode);
+          parent.insertBefore(afterText, randomNode);
+          parent.removeChild(randomNode);
+          
+          // Restore after brief moment
+          setTimeout(() => {
+            if (parent && span.parentNode === parent) {
+              const restored = document.createTextNode(original);
+              parent.insertBefore(restored, beforeText);
+              parent.removeChild(beforeText);
+              parent.removeChild(span);
+              parent.removeChild(afterText);
+            }
+          }, 80 + Math.random() * 120);
+        }
+      }
+    }
+  }, 150);
+
+  // Intense footer glitch effect
+  const footerMark = document.querySelector('.maroon-footer .maroon-mark');
+  const footerOriginalText = footerMark.textContent;
+  
+  setInterval(() => {
+    if (Math.random() > 0.85) {
+      const glitchTexts = [
+        'M∆R00N',
+        'MAЯ00N', 
+        'M█R00N',
+        'MA▓00N',
+        'MAR00█',
+        'M▒R░0N',
+        '██R00N',
+        'MAR░░N',
+        footerOriginalText
+      ];
+      
+      footerMark.textContent = glitchTexts[Math.floor(Math.random() * glitchTexts.length)];
+      footerMark.style.transform = `translateX(${Math.random() * 6 - 3}px) scaleX(${0.95 + Math.random() * 0.1})`;
+      footerMark.style.letterSpacing = `${Math.random() * 8}px`;
+      
+      setTimeout(() => {
+        footerMark.textContent = footerOriginalText;
+        footerMark.style.transform = 'none';
+        footerMark.style.letterSpacing = '2px';
+      }, 60 + Math.random() * 90);
+    }
+  }, 200);
+</script>
+
+</body>
+</html>

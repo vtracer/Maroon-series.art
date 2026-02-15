@@ -3,7 +3,7 @@
 **NOT LIVE UNTIL THE BOOK IS LIVE**
 
 **What this is**  
-A public dead drop for in-universe fragments tied to *Maroon*
+A public dead drop for in-universe fragments tied to *Mar00n*
 
 **Rules**
 - In-universe only. No real names, no doxxing. Real world public locations are fine.

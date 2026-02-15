@@ -4,85 +4,79 @@
 <title>maroon-series.art - Patch Notes</title>
 <link>https://maroon-series.art/</link>
 <description>Patch notes for Mar00n series site.</description>
-<lastBuildDate>Sun, 26 Jan 2026 00:00:00 -0000</lastBuildDate>
+<lastBuildDate>Sun, 15 Feb 2026 00:09:31 -0000</lastBuildDate>
 <item>
-<title>00.15.00 - Chapter 03</title>
+<title>00.18.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.18.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.18.00</guid>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
+<description><![CDATA[- Published Chapter 05: Residue — accessible via Prologue.
+- Marcus investigates digital remnants and uncovers the truth about Sarah's fabricated memories.
+- Updated Prologue chapter navigation — added #RESIDUE, teased #CONTACT.
+- Enhanced purple-lavender aesthetic with surveillance monitoring theme.
+- Added custom surveillance targeting cursor (red default, cyan hover) to the Neo Sentinel.]]></description>
+</item>
+<item>
+<title>00.17.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.17.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.17.00</guid>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
+<description><![CDATA[- Published Chapter 04: Possession — accessible via Prologue.]]></description>
+</item>
+<item>
+<title>00.16.00</title>
+<link>https://maroon-series.art/updates.html#patch-00.16.00</link>
+<guid>https://maroon-series.art/updates.html#patch-00.16.00</guid>
+<pubDate>Sun, 01 Feb 2026 00:00:00 -0000</pubDate>
+<description><![CDATA[- Updated external mask site newlife2084.com — added founders page.
+- Valentine's Day content/theme added to New Life pages.
+- Added SPNS page (information / demo).
+- Integrated interactive map asset on New Life site.
+- Implemented site-wide hamburger menu for mobile navigation.
+- UX tweaks for mobile navigation and menu animations.
+- Map performance and responsive layout improvements.]]></description>
+</item>
+<item>
+<title>00.15.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.15.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.15.00</guid>
-<pubDate>Sun, 26 Jan 2026 00:00:00 -0000</pubDate>
-<description><![CDATA[NEW:
-- Published Chapter 03 (`Mar00n/maintenance/`) — 5 progressive iterations with supporting assets.
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
+<description><![CDATA[- Published Chapter 03 (`Mar00n/maintenance/`) — 5 progressive iterations with supporting assets.
 - Added `maintenance.html`, `maintenance2.html`, `maintenance3.html`, `maintenance4.html`, `maintenance5.html` — chapter content iterations.
 - Added `Mar00n/maintenance/glbl.css` — global styling with vector/phosphor theme, amber color scheme, CRT effects.
 - Added `Mar00n/maintenance/js/bezel-reflections.js` — CRT bezel light spill effect simulation (387 lines).
 - Added `Mar00n/maintenance/css/` subfolder with `maroon-glitch.css` and `substratum.css` supporting stylesheets.
-
-IMPROVE:
 - Iterative development through 5 progressive versions of maintenance chapter.
 - Enhanced CRT/phosphor visual effects with amber terminal aesthetic and bezel glow animations.
-
-FIX:
 - Created backup of original `substratumb.html` before replacement.
 - Organized maintenance chapter files into dedicated subfolder structure.]]></description>
-</item>
-<item>
-<title>unknown</title>
-<link>https://maroon-series.art/updates.html#patch-unknown</link>
-<guid>https://maroon-series.art/updates.html#patch-unknown</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
-<description><![CDATA[Patch release.]]></description>
-</item>
-<item>
-<title>00.09.02</title>
-<link>https://maroon-series.art/updates.html#patch-00.08.00</link>
-<guid>https://maroon-series.art/updates.html#patch-00.08.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
-<description><![CDATA[- Added new features and improvements.]]></description>
-</item>
-<item>
-<title>00.08.00</title>
-<link>https://maroon-series.art/updates.html#patch-00.08.00</link>
-<guid>https://maroon-series.art/updates.html#patch-00.08.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
-<description><![CDATA[- Minor layout fixes and accessibility tweaks.
-- context/
-- dump/
-- updates/
-- Maroon/]]></description>
-</item>
-<item>
-<title>unknown</title>
-<link>https://maroon-series.art/updates.html#patch-unknown</link>
-<guid>https://maroon-series.art/updates.html#patch-unknown</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
-<description><![CDATA[Patch release.]]></description>
 </item>
 <item>
 <title>00.14.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.14.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.14.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `Mar00n/substratum.html` — chapter 2 upload.]]></description>
 </item>
 <item>
 <title>00.13.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.13.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.13.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `Mar00n/processing3b.html` — chapter 1 break.]]></description>
 </item>
 <item>
 <title>00.12.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.12.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.12.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `Mar00n/processing3.html` — chapter 1 continued.]]></description>
 </item>
 <item>
 <title>00.11.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.11.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.11.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `Mar00n/processing2.html` — chapter 1 continued.]]></description>
 </item>
 <item>
@@ -98,77 +92,77 @@ FIX:
 <title>00.10.02</title>
 <link>https://maroon-series.art/updates.html#patch-00.10.02</link>
 <guid>https://maroon-series.art/updates.html#patch-00.10.02</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Applied global styling and font choices across the site.]]></description>
 </item>
 <item>
 <title>00.10.01</title>
 <link>https://maroon-series.art/updates.html#patch-00.10.01</link>
 <guid>https://maroon-series.art/updates.html#patch-00.10.01</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Added site assets: `assets/` JS & CSS files (matrix, menu, cursor, styles).]]></description>
 </item>
 <item>
 <title>00.10.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.10.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.10.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Added `Mar00n/processing*.html` demo pages and styles under `Mar00n/`.]]></description>
 </item>
 <item>
 <title>00.05.22</title>
 <link>https://maroon-series.art/updates.html#patch-00.05.22</link>
 <guid>https://maroon-series.art/updates.html#patch-00.05.22</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Created `updates.html` — central patch notes page.]]></description>
 </item>
 <item>
 <title>00.05.21</title>
 <link>https://maroon-series.art/updates.html#patch-00.05.21</link>
 <guid>https://maroon-series.art/updates.html#patch-00.05.21</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Added `logs.html` — activity and changelogs.]]></description>
 </item>
 <item>
 <title>00.05.20</title>
 <link>https://maroon-series.art/updates.html#patch-00.05.20</link>
 <guid>https://maroon-series.art/updates.html#patch-00.05.20</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `newlife2084.com` — the mask.]]></description>
 </item>
 <item>
 <title>00.05.12</title>
 <link>https://maroon-series.art/updates.html#patch-00.05.12</link>
 <guid>https://maroon-series.art/updates.html#patch-00.05.12</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Added `dump.html` — development notes and experiments.]]></description>
 </item>
 <item>
 <title>00.05.10</title>
 <link>https://maroon-series.art/updates.html#patch-00.05.10</link>
 <guid>https://maroon-series.art/updates.html#patch-00.05.10</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `dumpthis.sh` — narrative instrument.]]></description>
 </item>
 <item>
 <title>00.05.00</title>
 <link>https://maroon-series.art/updates.html#patch-00.05.00</link>
 <guid>https://maroon-series.art/updates.html#patch-00.05.00</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Published `Mar00n/prologue.html` — prologue content for the series.]]></description>
 </item>
 <item>
 <title>00.00.12</title>
 <link>https://maroon-series.art/updates.html#patch-00.00.12</link>
 <guid>https://maroon-series.art/updates.html#patch-00.00.12</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Added `about.html` — context and contact info.]]></description>
 </item>
 <item>
 <title>00.00.10</title>
 <link>https://maroon-series.art/updates.html#mlb2-31121650</link>
 <guid>https://maroon-series.art/updates.html#mlb2-31121650</guid>
-<pubDate>Fri, 16 Jan 2026 02:44:57 -0000</pubDate>
+<pubDate>Sun, 15 Feb 2026 00:09:31 -0000</pubDate>
 <description><![CDATA[- Created `index.html` — site root and landing page.]]></description>
 </item>
 </channel>
