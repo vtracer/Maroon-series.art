@@ -58,6 +58,36 @@
     
     <!-- Patch entries (newest → oldest) -->
 
+    <div id="patch-00.18.01" class="patch terminal-patch compact" data-expanded="false" style="margin:8px 0;">
+      <div class="term" role="region" aria-label="Patch notes 00.18.01">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="prompt">maroon-series.art:~$ show-patch 00.18.01</div>
+            <div class="header"><strong>[00.18.01]</strong> — <span class="meta">Minor — 2026.02.15</span></div>
+          </div>
+          <div class="collapse" aria-expanded="false" title="Toggle">▸</div>
+        </div>
+        <div class="body">
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div style="min-width:200px">
+              <div style="color:#9aa0a6;font-weight:700;font-size:12px">IMPROVE</div>
+              <ul>
+                <li>Added a surveillance-style portrait of Sarah to <a href="Mar00n/processing.html" style="color:#ff4d4d;text-decoration:underline">Chapter 01</a>, positioned in the pod description.</li>
+                <li>Portrait is centered and styled with desaturation, scanline overlay, and chromatic-glitch layers.</li>
+              </ul>
+            </div>
+            <div style="min-width:200px">
+              <div style="color:#ff4d4d;font-weight:700;font-size:12px">FIX / TWEAK</div>
+              <ul>
+                <li>Added a brief invert-flicker glitch so the image briefly inverts colors then returns.</li>
+                <li>Animations respect `prefers-reduced-motion`.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="patch-00.18.00" class="patch terminal-patch compact" data-expanded="true" style="margin:8px 0;">
       <div class="term" role="region" aria-label="Patch notes 00.18.00">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
@@ -88,6 +118,7 @@
         </div>
       </div>
     </div>
+
 
     <div id="patch-00.17.00" class="patch terminal-patch compact collapsed" data-expanded="false" style="margin:8px 0;">
       <div class="term" role="region" aria-label="Patch notes 00.17.00">
@@ -492,7 +523,7 @@
           });
         });
 
-        // Then expand only the newest patch (first in DOM)
+        // Then expand the newest patch (first in DOM) and the immediate next patch (minor follow-up)
         var firstPatch = document.querySelector('.terminal-patch');
         if(firstPatch){
           firstPatch.classList.remove('collapsed');
@@ -500,6 +531,14 @@
           if(firstBtn){
             firstBtn.textContent = '▾';
             firstBtn.setAttribute('aria-expanded','true');
+          }
+
+          // try to expand the next patch element (use nextElementSibling to skip text nodes)
+          var next = firstPatch.nextElementSibling;
+          if(next && next.classList && next.classList.contains('terminal-patch')){
+            next.classList.remove('collapsed');
+            var nextBtn = next.querySelector('.collapse');
+            if(nextBtn){ nextBtn.textContent = '▾'; nextBtn.setAttribute('aria-expanded','true'); }
           }
         }
       })();
