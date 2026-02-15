@@ -807,6 +807,21 @@
       }, 60 + Math.random() * 90);
     }
   }, 200);
+
+  // Scroll-to-bottom detection for transition to residueb.html
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        window.location.href = 'residueb.html';
+      }
+    }, 100);
+  });
 </script>
 
 </body>

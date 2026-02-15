@@ -47,6 +47,15 @@
       justify-content: space-between;
       align-items: center;
       background: #000;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    body {
+      padding-top: 50px;
     }
 
     nav a {
@@ -1052,7 +1061,7 @@ a:focus-visible{
               maybeTrigger();
             }
           });
-        }, { threshold: 1.0 });
+        }, { threshold: 0.1 });
         io.observe(sentinel);
       } else {
         // fallback: check scroll position periodically but only after user scrolled

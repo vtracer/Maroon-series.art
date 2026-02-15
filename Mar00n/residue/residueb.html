@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Wars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #display-container {
+            text-align: center;
+            width: 90%;
+            max-width: 700px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #current-line {
+            font-size: 20px;
+            font-weight: normal;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 0 0 rgba(255,255,255,0);
+            line-height: 1.6;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-width: 700px;
+        }
+
+        #current-line.growing {
+            animation: textGrow 2.5s ease-out forwards;
+        }
+
+        @keyframes textGrow {
+            0% {
+                font-size: 16px;
+                opacity: 1;
+                text-shadow: 0 0 0 rgba(255,255,255,0);
+                transform: skewX(0deg) translateX(0);
+            }
+            10% {
+                text-shadow: -1px 0 rgba(255,0,60,0.3), 1px 0 rgba(0,255,214,0.3);
+                transform: skewX(-2deg) translateX(-2px);
+            }
+            20% {
+                font-size: 28px;
+                opacity: 1;
+                text-shadow: -2px 0 rgba(255,0,60,0.4), 2px 0 rgba(0,255,214,0.4), 0 0 8px rgba(255,255,255,0.3);
+                transform: skewX(1deg) translateX(1px);
+            }
+            35% {
+                font-size: 42px;
+                opacity: 0.95;
+                text-shadow: -3px -1px rgba(255,0,60,0.5), 3px 1px rgba(0,255,214,0.5);
+                transform: skewX(-3deg) translateX(-3px);
+            }
+            50% {
+                font-size: 56px;
+                opacity: 0.85;
+                color: rgba(255,255,255,0.9);
+                text-shadow: -4px -2px 0 rgba(0,255,214,0.6), 4px 2px 0 rgba(255,0,60,0.6), 0 0 15px rgba(255,255,255,0.2);
+                transform: skewX(2deg) translateX(2px);
+            }
+            65% {
+                font-size: 72px;
+                opacity: 0.6;
+                color: rgba(255,255,255,0.6);
+                text-shadow: -5px -3px 0 rgba(0,255,214,0.5), 5px 3px 0 rgba(255,0,60,0.5), 0 0 20px rgba(255,255,255,0.1);
+                transform: skewX(-4deg) translateX(-4px);
+            }
+            80% {
+                font-size: 85px;
+                opacity: 0.2;
+                color: rgba(255,255,255,0.2);
+                text-shadow: -6px -4px 0 rgba(0,255,214,0.3), 6px 4px 0 rgba(255,0,60,0.3);
+                transform: skewX(3deg) translateX(3px);
+            }
+            100% {
+                font-size: 100px;
+                opacity: 0;
+                color: transparent;
+                text-shadow: 0 0 0 rgba(0,255,214,0), 0 0 0 rgba(255,0,60,0);
+                transform: skewX(0deg) translateX(0);
+            }
+        }
+
+        #final-reveal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        #final-reveal.show {
+            display: flex;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .reveal-name {
+            font-size: 72px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-shadow: 0 0 0 rgba(255,255,255,0);
+        }
+
+        .reveal-name.glitching {
+            animation: revealGlitch 0.6s ease-out forwards;
+        }
+
+        @keyframes revealGlitch {
+            0% {
+                opacity: 1;
+                color: #ffffff;
+                transform: translateX(0) skewX(0deg) translateY(0);
+                text-shadow: 0 0 0 rgba(255,0,60,0);
+            }
+            5% {
+                opacity: 0.95;
+                color: #ffffff;
+                transform: translateX(-8px) skewX(-8deg) translateY(-2px);
+                text-shadow: -4px -1px rgba(255,0,60,0.9), 4px 1px rgba(0,255,214,0.9);
+            }
+            10% {
+                opacity: 0.9;
+                color: #ffffff;
+                transform: translateX(6px) skewX(6deg) translateY(3px);
+                text-shadow: -6px 0 rgba(0,255,214,1), 6px 0 rgba(255,0,60,1);
+            }
+            15% {
+                opacity: 0.85;
+                color: #ffffff;
+                transform: translateX(-10px) skewX(-10deg) translateY(-4px);
+                text-shadow: -5px -2px rgba(255,0,60,1), 5px 2px rgba(0,255,214,1);
+            }
+            20% {
+                opacity: 0.75;
+                color: #ffffff;
+                transform: translateX(8px) skewX(8deg) translateY(2px);
+                text-shadow: -7px -3px rgba(0,255,214,0.9), 7px 3px rgba(255,0,60,0.9);
+            }
+            30% {
+                opacity: 0.6;
+                color: rgba(255,255,255,0.8);
+                transform: translateX(-6px) skewX(-6deg) translateY(-2px) scaleX(0.95);
+                text-shadow: -4px -1px rgba(255,0,60,0.7), 4px 1px rgba(0,255,214,0.7);
+            }
+            40% {
+                opacity: 0.45;
+                color: rgba(255,255,255,0.6);
+                transform: translateX(4px) skewX(4deg) translateY(1px) scaleX(0.92);
+                text-shadow: -3px 0 rgba(0,255,214,0.5), 3px 0 rgba(255,0,60,0.5);
+            }
+            50% {
+                opacity: 0.3;
+                color: rgba(255,255,255,0.4);
+                transform: translateX(-3px) skewX(-3deg) translateY(-1px) scaleX(0.9);
+                text-shadow: -2px -1px rgba(255,0,60,0.3), 2px 1px rgba(0,255,214,0.3);
+            }
+            65% {
+                opacity: 0.15;
+                color: rgba(255,255,255,0.2);
+                transform: translateX(2px) skewX(2deg) translateY(0) scaleX(0.88);
+                text-shadow: -1px 0 rgba(0,255,214,0.1), 1px 0 rgba(255,0,60,0.1);
+            }
+            80% {
+                opacity: 0.05;
+                color: rgba(255,255,255,0.05);
+                transform: translateX(-1px) skewX(-1deg) translateY(0) scaleX(0.85) scaleY(0.95);
+                text-shadow: 0 0 0 rgba(255,0,60,0);
+            }
+            100% {
+                opacity: 0;
+                color: transparent;
+                transform: translateX(0) skewX(0deg) translateY(0) scaleX(0.8) scaleY(0.8);
+                text-shadow: 0 0 0 rgba(255,0,60,0);
+            }
+        }
+
+        .reveal-title {
+            font-size: 36px;
+            letter-spacing: 5px;
+            color: #ffffff;
+            text-shadow: 0 0 0 rgba(255,255,255,0);
+        }
+
+        .reveal-title.glitching {
+            animation: revealGlitch 0.6s ease-out forwards;
+        }
+
+        .reveal-station {
+            font-size: 24px;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow: 0 0 0 rgba(255,255,255,0);
+            margin-top: 20px;
+        }
+
+        .reveal-station.glitching {
+            animation: revealGlitch 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div id="display-container">
+        <div id="current-line"></div>
+    </div>
+
+    <div id="final-reveal">
+        <div class="reveal-name">Cyrus Null</div>
+        <div class="reveal-title">SIGNAL WARS</div>
+        <div class="reveal-station">AM 1045</div>
+    </div>
+
+    <script>
+        const displayContainer = document.getElementById('display-container');
+        const currentLineEl = document.getElementById('current-line');
+        const finalReveal = document.getElementById('final-reveal');
+
+        const lines = [
+            "Beloved, do not take part in any of these\ncomponents of the Coming Signal. They are gateways\nthrough which the System enters the soul.",
+            "",
+            "Eastern mysticism",
+            "Manifestation rituals",
+            "Secret societies",
+            "Esoteric tech collectives",
+            "Luciferian philosophy",
+            "Designer psychedelics",
+            "Synthetic spirituality",
+            "Digital divination",
+            "Algorithmic astrology",
+            "Tarot livestreams",
+            "Augmented reality seances",
+            "Remote viewing networks",
+            "Biohacking cults",
+            "Occult venture capital",
+            "Astral projection forums",
+            "Chaos magic",
+            "Rebirth ceremonies",
+            "Encrypted prophecy channels",
+            "Mythic fandom worship",
+            "Ritual gaming guilds",
+            "Simulation theory evangelism",
+            "Transhumanist doctrine",
+            "Underground raves",
+            "Designer dopamine",
+            "Influencer priesthoods",
+            "The Cult of Optimization",
+            "Black mirror devotion",
+            "Post-truth theology",
+            "The Gospel of the Grid",
+            "Cybernetic resurrection",
+            "Neon-lit apostasy",
+            "CYBERPUNK CULTURE"
+        ];
+
+        let currentIndex = 0;
+        let isProcessing = false;
+
+        function displayNextLine() {
+            if (isProcessing) return;
+            if (currentIndex >= lines.length) {
+                triggerFinalReveal();
+                return;
+            }
+
+            isProcessing = true;
+            const line = lines[currentIndex];
+            
+            // Determine display duration based on line length
+            let baseTime = 600;
+            const charMultiplier = 25; // ms per character
+            let displayTime = Math.max(baseTime, line.length * charMultiplier);
+            
+            if (line.includes("Beloved")) {
+                displayTime += 2000;
+            }
+
+            currentLineEl.textContent = line;
+            currentLineEl.classList.remove('growing');
+            void currentLineEl.offsetWidth; // reflow
+            
+            currentIndex++;
+
+            if (line === "CYBERPUNK CULTURE") {
+                currentLineEl.classList.add('growing');
+                // Wait for grow animation to complete
+                setTimeout(() => {
+                    triggerFinalReveal();
+                }, 2500);
+            } else {
+                // Clear and show next line after display time
+                setTimeout(() => {
+                    currentLineEl.textContent = '';
+                    isProcessing = false;
+                    displayNextLine();
+                }, displayTime);
+            }
+        }
+
+        function triggerFinalReveal() {
+            currentLineEl.textContent = '';
+            finalReveal.classList.add('show');
+            
+            // Glitch both the reveal name and title after 4.5 seconds, before navigating
+            setTimeout(() => {
+                const revealName = document.querySelector('.reveal-name');
+                const revealTitle = document.querySelector('.reveal-title');
+                const revealStation = document.querySelector('.reveal-station');
+                if (revealName) {
+                    revealName.classList.add('glitching');
+                }
+                if (revealTitle) {
+                    revealTitle.classList.add('glitching');
+                }
+                if (revealStation) {
+                    revealStation.classList.add('glitching');
+                }
+            }, 4500);
+            
+            // Navigate after 5 seconds (glitch ends at 5.1s)
+            setTimeout(() => {
+                window.location.href = '../prologue.html';
+            }, 5000);
+        }
+
+        // Start the sequence
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', displayNextLine);
+        } else {
+            displayNextLine();
+        }
+    </script>
+</body>
+</html>

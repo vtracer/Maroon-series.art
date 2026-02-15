@@ -408,6 +408,114 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.8; }
     }
+
+    /* Sticky header and body padding */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10010;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    body {
+      padding-top: 60px;
+    }
+
+    /* Link hover glitch effect (red accent) */
+    a.glitch-hover { position: relative; display: inline-block; }
+    a.glitch-hover::before, a.glitch-hover::after { content: attr(data-text); position: absolute; left:0; top:0; width:100%; pointer-events:none; color: rgba(255,0,60,0.95); opacity:0; mix-blend-mode: screen; z-index:3; }
+    a.glitch-hover::before{ transform: translateX(-1px); text-shadow: -2px 0 rgba(255,0,60,0.5); }
+    a.glitch-hover::after{ transform: translateX(1px); text-shadow: 2px 0 rgba(200,100,150,0.5); }
+    a.glitch-hover:hover::before, a.glitch-hover.hovering::before{ opacity:1; animation: linkGlitch1 360ms steps(2,end); }
+    a.glitch-hover:hover::after, a.glitch-hover.hovering::after{ opacity:1; animation: linkGlitch2 420ms steps(2,end); }
+    @keyframes linkGlitch1{ 0%{ transform: translate(0,-1px) skewX(-2deg);} 50%{ transform: translate(-6px,2px) skewX(6deg);} 100%{ transform: translate(0,-1px) skewX(-2deg);} }
+    @keyframes linkGlitch2{ 0%{ transform: translate(0,1px) skewX(2deg);} 50%{ transform: translate(6px,-2px) skewX(-6deg);} 100%{ transform: translate(0,1px) skewX(2deg);} }
+    @media (prefers-reduced-motion: reduce){ a.glitch-hover::before, a.glitch-hover::after{ opacity:0 !important; animation: none !important; } }
+
+    /* Amber GUI popup for loading next human */
+    .gui-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .gui-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+      background: rgba(0, 0, 0, 0.7);
+    }
+    .gui-popup {
+      background: linear-gradient(135deg, rgba(255, 176, 0, 0.15), rgba(255, 200, 100, 0.08));
+      border: 2px solid rgba(255, 176, 0, 0.8);
+      border-radius: 8px;
+      padding: 40px 60px;
+      max-width: 500px;
+      box-shadow: 
+        0 0 30px rgba(255, 176, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      text-align: center;
+      backdrop-filter: blur(8px);
+      animation: guiPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes guiPopIn {
+      from { transform: scale(0.7) rotateZ(-5deg); opacity: 0; }
+      to { transform: scale(1) rotateZ(0deg); opacity: 1; }
+    }
+    .gui-title {
+      color: rgba(255, 176, 0, 0.95);
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-shadow: 0 0 12px rgba(255, 176, 0, 0.5);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .gui-subtext {
+      color: rgba(255, 176, 0, 0.75);
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+    }
+    .gui-loading-bar {
+      width: 300px;
+      height: 4px;
+      background: rgba(255, 176, 0, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+      margin: 20px auto;
+    }
+    .gui-loading-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255, 176, 0, 0.4), rgba(255, 176, 0, 0.9), rgba(255, 176, 0, 0.4));
+      width: 0%;
+      animation: loadingFill 2s ease-in-out forwards;
+      box-shadow: 0 0 12px rgba(255, 176, 0, 0.6);
+    }
+    @keyframes loadingFill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    .gui-status {
+      color: rgba(255, 176, 0, 0.7);
+      font-size: 0.85rem;
+      margin-top: 20px;
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 <body>
@@ -421,9 +529,9 @@
 <header>
   <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 04 #POSSESSION</div>
   <nav>
-    <a href="#">newlife2084.com</a>
-    <a href="#">dumpthis.sh</a>
-    <a href="#">maroon-series.art</a>
+    <a class="glitch-hover" data-text="newlife2084.com" href="https://newlife2084.com" target="_blank" rel="noopener">newlife2084.com</a>
+    <a class="glitch-hover" data-text="dumpthis.sh" href="https://dumpthis.sh" target="_blank" rel="noopener">dumpthis.sh</a>
+    <a class="glitch-hover" data-text="maroon-series.art" href="https://maroon-series.art" target="_blank" rel="noopener">maroon-series.art</a>
   </nav>
 </header>
 
@@ -515,6 +623,18 @@
       <span class="maroon-sub">return to root</span>
     </a>
   </footer>
+</div>
+
+<!-- GUI Overlay for loading next human -->
+<div class="gui-overlay" id="guiOverlay">
+  <div class="gui-popup">
+    <div class="gui-title">ACQUIRING SUBJECT</div>
+    <div class="gui-subtext">Preparing next human for processing<br/>Processing consciousness matrix...</div>
+    <div class="gui-loading-bar">
+      <div class="gui-loading-fill"></div>
+    </div>
+    <div class="gui-status">TRANSFER IN PROGRESS</div>
+  </div>
 </div>
 
 <!-- sentinel used to detect bottom of document for transition -->
@@ -644,6 +764,45 @@
       }, 60 + Math.random() * 90);
     }
   }, 200);
+</script>
+
+<script>
+  // Initialize glitch-hover effect on header links
+  (function(){
+    const glitchLinks = document.querySelectorAll('a.glitch-hover');
+    glitchLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => { link.classList.add('hovering'); });
+      link.addEventListener('mouseleave', () => { link.classList.remove('hovering'); });
+    });
+  })();
+</script>
+
+<script>
+  // Scroll to bottom detection for transition to possessionb
+  (function(){
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        
+        if (scrollTop + clientHeight >= scrollHeight - 5) {
+          // Trigger GUI popup and transition
+          const guiOverlay = document.getElementById('guiOverlay');
+          if (guiOverlay && !guiOverlay.classList.contains('active')) {
+            guiOverlay.classList.add('active');
+            
+            // Navigate after loading animation completes
+            setTimeout(() => {
+              window.location.href = 'possessionb.html';
+            }, 2500);
+          }
+        }
+      }, 100);
+    });
+  })();
 </script>
 
 </body>

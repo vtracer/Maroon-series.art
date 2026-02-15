@@ -346,6 +346,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    body {
+      padding-top: 54px;
     }
 
     nav a {
@@ -359,6 +368,17 @@
     header nav a {
       color: #ffb000 !important;
     }
+
+    /* Link hover glitch effect (rust/amber accent variant) */
+    a.glitch-hover { position: relative; display: inline-block; }
+    a.glitch-hover::before, a.glitch-hover::after { content: attr(data-text); position: absolute; left:0; top:0; width:100%; pointer-events:none; color: rgba(155,63,42,0.95); opacity:0; mix-blend-mode: screen; z-index:3; }
+    a.glitch-hover::before{ transform: translateX(-1px); text-shadow: -2px 0 rgba(255,176,0,0.5); }
+    a.glitch-hover::after{ transform: translateX(1px); text-shadow: 2px 0 rgba(200,100,50,0.5); }
+    a.glitch-hover:hover::before, a.glitch-hover.hovering::before{ opacity:1; animation: linkGlitch1 360ms steps(2,end); }
+    a.glitch-hover:hover::after, a.glitch-hover.hovering::after{ opacity:1; animation: linkGlitch2 420ms steps(2,end); }
+    @keyframes linkGlitch1{ 0%{ transform: translate(0,-1px) skewX(-2deg);} 50%{ transform: translate(-6px,2px) skewX(6deg);} 100%{ transform: translate(0,-1px) skewX(-2deg);} }
+    @keyframes linkGlitch2{ 0%{ transform: translate(0,1px) skewX(2deg);} 50%{ transform: translate(6px,-2px) skewX(-6deg);} 100%{ transform: translate(0,1px) skewX(2deg);} }
+    @media (prefers-reduced-motion: reduce){ a.glitch-hover::before, a.glitch-hover::after{ opacity:0 !important; animation: none !important; } }
 
     #wrap {
       max-width: 980px;
@@ -636,9 +656,9 @@
   <header>
     <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 02 #SUBSTRATUM</div>
     <nav>
-      <a href="#">newlife2084.com</a>
-      <a href="#">dumpthis.sh</a>
-      <a href="#">maroon-series.art</a>
+      <a class="glitch-hover" data-text="newlife2084.com" href="https://newlife2084.com" target="_blank" rel="noopener">newlife2084.com</a>
+      <a class="glitch-hover" data-text="dumpthis.sh" href="https://dumpthis.sh" target="_blank" rel="noopener">dumpthis.sh</a>
+      <a class="glitch-hover" data-text="maroon-series.art" href="https://maroon-series.art" target="_blank" rel="noopener">maroon-series.art</a>
     </nav>
   </header>
 
@@ -869,6 +889,16 @@
     }
   </style>
 
+  <script>
+    // Initialize glitch-hover effect on header links
+    (function(){
+      const glitchLinks = document.querySelectorAll('a.glitch-hover');
+      glitchLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => { link.classList.add('hovering'); });
+        link.addEventListener('mouseleave', () => { link.classList.remove('hovering'); });
+      });
+    })();
+  </script>
 
 </body>
 

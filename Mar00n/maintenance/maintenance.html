@@ -207,6 +207,46 @@
 
     .manuscript-text .chapter-copy{ filter: none; }
 
+    /* Sticky header and body padding */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10010;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    body {
+      padding-top: 44px;
+    }
+
+    /* Link hover glitch effect (gold accent) */
+    a.glitch-hover { position: relative; display: inline-block; }
+    a.glitch-hover::before, a.glitch-hover::after { content: attr(data-text); position: absolute; left:0; top:0; width:100%; pointer-events:none; color: rgba(255,176,0,0.95); opacity:0; mix-blend-mode: screen; z-index:3; }
+    a.glitch-hover::before{ transform: translateX(-1px); text-shadow: -2px 0 rgba(255,176,0,0.5); }
+    a.glitch-hover::after{ transform: translateX(1px); text-shadow: 2px 0 rgba(200,100,50,0.5); }
+    a.glitch-hover:hover::before, a.glitch-hover.hovering::before{ opacity:1; animation: linkGlitch1 360ms steps(2,end); }
+    a.glitch-hover:hover::after, a.glitch-hover.hovering::after{ opacity:1; animation: linkGlitch2 420ms steps(2,end); }
+    @keyframes linkGlitch1{ 0%{ transform: translate(0,-1px) skewX(-2deg);} 50%{ transform: translate(-6px,2px) skewX(6deg);} 100%{ transform: translate(0,-1px) skewX(-2deg);} }
+    @keyframes linkGlitch2{ 0%{ transform: translate(0,1px) skewX(2deg);} 50%{ transform: translate(6px,-2px) skewX(-6deg);} 100%{ transform: translate(0,1px) skewX(2deg);} }
+    @media (prefers-reduced-motion: reduce){ a.glitch-hover::before, a.glitch-hover::after{ opacity:0 !important; animation: none !important; } }
+
+    /* Scroll indicator inside vr-viewport (gold, simplified) */
+    .scroll-indicator{
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      margin:80px auto 28px;font-size:0.9rem;
+      color: var(--marquee-gold);font-weight:600;letter-spacing:1px;
+      transform:translateY(0);animation:scrollFloat 2200ms cubic-bezier(.2,.9,.2,1) infinite;
+      cursor: default;
+      z-index: 4;
+    }
+    .scroll-indicator__text{font-size:0.9rem}
+    @keyframes scrollFloat{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    .scroll-indicator svg{width:16px;height:16px;display:block;stroke:currentColor;fill:none;stroke-width:2;}
+
     .manuscript-text .chapter-copy p,
     .manuscript-text .chapter-copy li,
     .manuscript-text .chapter-copy blockquote{
@@ -222,9 +262,9 @@
   <header>
     <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 03 #MAINTENANCE</div>
     <nav>
-      <a href="#">newlife2084.com</a>
-      <a href="#">dumpthis.sh</a>
-      <a href="#">maroon-series.art</a>
+      <a class="glitch-hover" data-text="newlife2084.com" href="https://newlife2084.com" target="_blank" rel="noopener">newlife2084.com</a>
+      <a class="glitch-hover" data-text="dumpthis.sh" href="https://dumpthis.sh" target="_blank" rel="noopener">dumpthis.sh</a>
+      <a class="glitch-hover" data-text="maroon-series.art" href="https://maroon-series.art" target="_blank" rel="noopener">maroon-series.art</a>
     </nav>
   </header>
 
@@ -295,6 +335,10 @@
           </span>
         </p>
       </section>
+      <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
+        <div class="scroll-indicator__text">SCROLL</div>
+        <svg viewBox="0 0 24 24"><path d="M12 16l-6-6h12z"/></svg>
+      </div>
       </article>
         </div>
       </div>
@@ -519,6 +563,17 @@
         setTimeout(()=> el.classList.remove('boost'), 900);
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ()=> setTimeout(triggerAttentionInline, 220)); else setTimeout(triggerAttentionInline, 220);
+    })();
+  </script>
+
+  <script>
+    // Initialize glitch-hover effect on header links
+    (function(){
+      const glitchLinks = document.querySelectorAll('a.glitch-hover');
+      glitchLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => { link.classList.add('hovering'); });
+        link.addEventListener('mouseleave', () => { link.classList.remove('hovering'); });
+      });
     })();
   </script>
 </body>

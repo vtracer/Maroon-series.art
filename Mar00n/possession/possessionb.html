@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/maroon-glitch.css?v=1">
+  <title>MAR00N // Chapter 04: #POSSESSION</title>
+  <style>
+    * { margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(ellipse at center, #0a0505 0%, #050202 100%);
+      color: #eaeef7;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Surveillance vignette */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(15, 0, 0, 0.6) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Red scanline overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 0, 60, 0.03) 0px,
+        transparent 1px,
+        transparent 2px,
+        rgba(255, 0, 60, 0.03) 3px
+      );
+      pointer-events: none;
+      z-index: 1;
+      animation: scanPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes scanPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    /* Amber GUI popup for loading next human */
+    .gui-popup {
+      background: linear-gradient(135deg, rgba(255, 176, 0, 0.15), rgba(255, 200, 100, 0.08));
+      border: 2px solid rgba(255, 176, 0, 0.8);
+      border-radius: 8px;
+      padding: 60px 80px;
+      max-width: 600px;
+      box-shadow: 
+        0 0 30px rgba(255, 176, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 60px rgba(255, 176, 0, 0.15);
+      text-align: center;
+      backdrop-filter: blur(8px);
+      animation: guiPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes guiPopIn {
+      from { transform: scale(0.6) rotateZ(-5deg); opacity: 0; }
+      to { transform: scale(1) rotateZ(0deg); opacity: 1; }
+    }
+
+    .gui-title {
+      color: rgba(255, 176, 0, 0.95);
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 0 0 16px rgba(255, 176, 0, 0.6);
+      margin-bottom: 20px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .gui-subtext {
+      color: rgba(255, 176, 0, 0.8);
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      letter-spacing: 1px;
+    }
+
+    .gui-loading {
+      display: inline-block;
+      margin: 30px 0;
+    }
+
+    .gui-loading-bar {
+      width: 350px;
+      height: 6px;
+      background: rgba(255, 176, 0, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 176, 0, 0.3);
+    }
+
+    .gui-loading-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255, 176, 0, 0.4), rgba(255, 176, 0, 0.95), rgba(255, 176, 0, 0.4));
+      width: 0%;
+      animation: loadingFill 3s ease-in-out forwards;
+      box-shadow: 0 0 16px rgba(255, 176, 0, 0.7);
+    }
+
+    @keyframes loadingFill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .gui-status {
+      color: rgba(255, 176, 0, 0.75);
+      font-size: 0.95rem;
+      margin-top: 30px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      animation: statusPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    .gui-metadata {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 176, 0, 0.3);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      font-size: 0.85rem;
+    }
+
+    .metadata-item {
+      color: rgba(255, 176, 0, 0.65);
+      letter-spacing: 0.5px;
+    }
+
+    .metadata-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: rgba(255, 176, 0, 0.5);
+      margin-bottom: 4px;
+    }
+
+    .metadata-value {
+      font-size: 1rem;
+      color: rgba(255, 176, 0, 0.9);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="gui-popup">
+    <div class="gui-title">ACQUISITION SEQUENCE</div>
+    <div class="gui-subtext">
+      Scanning consciousness profile<br/>
+      Initializing subject parameters<br/>
+      Preparing asset for optimization
+    </div>
+    <div class="gui-loading">
+      <div class="gui-loading-bar">
+        <div class="gui-loading-fill"></div>
+      </div>
+    </div>
+    <div class="gui-status">HUMAN PORTFOLIO LOADING...</div>
+
+    <div class="gui-metadata">
+      <div class="metadata-item">
+        <div class="metadata-label">Subject Status</div>
+        <div class="metadata-value">INGESTION</div>
+      </div>
+      <div class="metadata-item">
+        <div class="metadata-label">Configuration</div>
+        <div class="metadata-value">ACTIVE</div>
+      </div>
+      <div class="metadata-item">
+        <div class="metadata-label">Next Chapter</div>
+        <div class="metadata-value">RESIDUE</div>
+      </div>
+      <div class="metadata-item">
+        <div class="metadata-label">Transition</div>
+        <div class="metadata-value">INITIATING</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Auto-navigate to residue.html after loading animation
+  setTimeout(() => {
+    window.location.href = '../residue/residue.html';
+  }, 3500);
+</script>
+
+</body>
+</html>
