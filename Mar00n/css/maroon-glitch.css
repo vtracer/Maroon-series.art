@@ -142,6 +142,20 @@ h1.blink-word { display: block !important; width: 100%; text-align: center !impo
 }
 .nl-reveal-overlay.nl-revealed{ opacity: 1; }
 
+/* Global link-glitch hover styles: ensure all anchors can show pseudo-element glitch */
+a.glitch-hover{ position:relative; display:inline-block; }
+a.glitch-hover::before, a.glitch-hover::after{
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;
+  opacity: 0; mix-blend-mode: screen; transform-origin: left; transition: opacity .18s ease, transform .18s ease;
+}
+a.glitch-hover::before{ color: rgba(139,0,255,0.14); transform: translateX(-6px); }
+a.glitch-hover::after{ color: rgba(0,200,255,0.06); transform: translateX(6px); }
+a.glitch-hover.hovering::before, a.glitch-hover.hovering::after{ opacity: 1; transform: translateX(0); }
+/* push reveal overlay beneath pseudo-elements */
+.nl-reveal-overlay{ z-index: 2; }
+a.glitch-hover::before, a.glitch-hover::after{ z-index: 6; }
+
 /* Chapter 03: marquee / maintenance styles */
 .marquee{ display:block; font-size:3.6rem; letter-spacing:6px; text-align:center; margin:1.2rem 0; position:relative; }
 .marquee.heavy-glitch{ text-shadow: 2px 0 6px rgba(255,0,150,0.45), -2px 0 6px rgba(0,255,150,0.25); }

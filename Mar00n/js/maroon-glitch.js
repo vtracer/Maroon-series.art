@@ -258,18 +258,8 @@
   }
 
   function bindNLLinks(){
-    const selector = 'a.nl-link, a[href*="newlife2084.com"]';
-    const els = Array.from(document.querySelectorAll(selector));
-    if (!els.length) return;
-    els.forEach(el => {
-      el.addEventListener('mouseenter', () => revealLink(el));
-      el.addEventListener('focus', () => revealLink(el));
-      el.addEventListener('mouseleave', () => hideReveal(el));
-      el.addEventListener('blur', () => hideReveal(el));
-      el.addEventListener('touchstart', (e)=>{ e.stopPropagation(); revealLink(el); }, {passive:true});
-      el.addEventListener('touchend', ()=> hideReveal(el));
-      el.addEventListener('touchcancel', ()=> hideReveal(el));
-    });
+    // Disabled: all links now use standard glitch-hover behavior defined in page CSS
+    // Special reveal overlay behavior removed to ensure consistent link glitching across all pages
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') bindNLLinks(); else document.addEventListener('DOMContentLoaded', bindNLLinks);

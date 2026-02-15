@@ -738,6 +738,30 @@ a:focus-visible{
       100% { transform: translateX(0); opacity: 1; text-shadow: none; }
     }
     @media (prefers-reduced-motion: reduce) { .rand-glitch { animation: none !important; } }
+    /* --- Scroll indicator (violet) + link-glitch for processing3 --- */
+    .scroll-indicator{
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      width:140px;height:56px;margin:28px auto;border-radius:999px;
+      color:var(--nlt-violet);background:linear-gradient(90deg, rgba(139,0,255,0.06), rgba(139,0,255,0.02));
+      border:1px solid rgba(139,0,255,0.18);box-shadow:0 6px 22px rgba(139,0,255,0.04);font-weight:700;letter-spacing:2px;
+      transform:translateY(0);animation:scrollFloat 2200ms cubic-bezier(.2,.9,.2,1) infinite;
+      cursor: default;
+      z-index: 4;
+    }
+    .scroll-indicator__text{font-size:0.78rem}
+    @keyframes scrollFloat{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    .scroll-indicator svg{width:20px;height:20px;display:block;stroke:currentColor;fill:none;stroke-width:2;}
+
+    /* Link hover glitch effect (violet-accent variant) */
+    a.glitch-hover { position: relative; display: inline-block; }
+    a.glitch-hover::before, a.glitch-hover::after { content: attr(data-text); position: absolute; left:0; top:0; width:100%; pointer-events:none; color: rgba(139,0,255,0.95); opacity:0; mix-blend-mode: screen; z-index:3; }
+    a.glitch-hover::before{ transform: translateX(-1px); text-shadow: -2px 0 rgba(255,176,0,0.5); }
+    a.glitch-hover::after{ transform: translateX(1px); text-shadow: 2px 0 rgba(0,200,255,0.5); }
+    a.glitch-hover:hover::before, a.glitch-hover.hovering::before{ opacity:1; animation: linkGlitch1 360ms steps(2,end); }
+    a.glitch-hover:hover::after, a.glitch-hover.hovering::after{ opacity:1; animation: linkGlitch2 420ms steps(2,end); }
+    @keyframes linkGlitch1{ 0%{ transform: translate(0,-1px) skewX(-2deg);} 50%{ transform: translate(-6px,2px) skewX(6deg);} 100%{ transform: translate(0,-1px) skewX(-2deg);} }
+    @keyframes linkGlitch2{ 0%{ transform: translate(0,1px) skewX(2deg);} 50%{ transform: translate(6px,-2px) skewX(-6deg);} 100%{ transform: translate(0,1px) skewX(2deg);} }
+    @media (prefers-reduced-motion: reduce){ a.glitch-hover::before, a.glitch-hover::after{ opacity:0 !important; } a.glitch-hover::before, a.glitch-hover::after { animation: none !important; } }
   </style>
 </head>
 <body>
@@ -748,9 +772,9 @@ a:focus-visible{
   <header>
   <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 01 #PROCESSING</div>
   <nav>
-    <a href="#">newlife2084.com</a>
-    <a href="#">dumpthis.sh</a>
-    <a href="#">maroon-series.art</a>
+    <a href="https://newlife2084.com" target="_blank" rel="noopener">newlife2084.com</a>
+    <a href="https://dumpthis.sh" target="_blank" rel="noopener">dumpthis.sh</a>
+    <a href="https://maroon-series.art" target="_blank" rel="noopener">maroon-series.art</a>
   </nav>
 </header>
 
@@ -815,8 +839,14 @@ a:focus-visible{
     <span class="span-mark block" data-span="28">And if they were still alive in this digital hell, Sarah was going to reach them.</span>
   </div>
  </div>
+
+  <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
+    <div class="scroll-indicator__text">SCROLL</div>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
 <footer class="maroon-footer">
-  <a class="maroon-home" href="http://maroon-series.art">
+  <a class="maroon-home" href="https://maroon-series.art" target="_blank" rel="noopener">
     <span class="maroon-mark blink-word glitch">MAR00N</span>
     <span class="maroon-sub">return to root</span>
   </a>
@@ -1325,6 +1355,23 @@ a:focus-visible{
 })();
 </script>
 <!-- sentinel used to detect bottom of document for transition -->
+<script>
+  // Link hover glitch initializer (header + inline)
+  (function(){
+    function makeGlitchable(sel){
+      document.querySelectorAll(sel).forEach(a=>{
+        if (!a) return;
+        a.classList.add('glitch-hover');
+        if (!a.dataset.text) a.dataset.text = a.textContent.trim();
+        a.addEventListener('mouseenter', ()=>{ a.classList.add('hovering'); setTimeout(()=> a.classList.remove('hovering'), 520); });
+        a.addEventListener('focus', ()=>{ a.classList.add('hovering'); setTimeout(()=> a.classList.remove('hovering'), 520); });
+      });
+    }
+    const run = ()=>{ makeGlitchable('nav a'); makeGlitchable('.manuscript-text a'); makeGlitchable('.maroon-home'); };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  })();
+</script>
+
 <div id="end-of-doc" style="height:1px; width:100%;"></div>
 
 </body>
