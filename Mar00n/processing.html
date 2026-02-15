@@ -549,12 +549,47 @@ a:focus-visible{
 @keyframes ellip { 0% { content: ''; } 33% { content: '.'; } 66% { content: '..'; } 100% { content: '...'; } }
 
 /* Architect title - replaced slide with toxic gas effect (no slide-in) */
-.architect-title { display:inline-block; position: relative; }
-.architect-title::after { content:''; position:absolute; left:0; right:0; top:-6px; bottom:-6px; pointer-events:none; box-shadow: 0 0 16px rgba(47,184,255,0.04); border-radius:2px; mix-blend-mode: screen; opacity:.9; }
+.architect-title { 
+  display: inline-block !important; 
+  position: relative !important; 
+  color: #ffb000 !important;
+  font-weight: 700 !important;
+  font-size: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 10 !important;
+  -webkit-font-smoothing: antialiased; 
+}
+
+.architect-title.glow{
+  animation: architectGlow 1600ms ease-in-out infinite;
+}
+
+@keyframes architectGlow{
+  0% { text-shadow: 0 0 10px rgba(255,176,0,0.6); }
+  50% { text-shadow: 0 0 25px rgba(255,176,0,1), 0 0 45px rgba(139,0,255,0.7); }
+  100% { text-shadow: 0 0 10px rgba(255,176,0,0.6); }
+}
 
 /* Toxic green gas floating up from text */
-.toxic-gas { position: relative; display:inline-block; }
-.toxic-gas .gas{ position: absolute; bottom: 6%; pointer-events: none; border-radius: 50%; mix-blend-mode: screen; background: radial-gradient(circle at 35% 35%, rgba(200,255,150,0.95) 0%, rgba(120,230,90,0.6) 40%, rgba(50,180,50,0.25) 65%, rgba(0,0,0,0) 100%); filter: blur(4px); opacity: .95; transform-origin: center; animation: gasRise 2600ms cubic-bezier(.2,.9,.2,1) forwards; }
+.toxic-gas { 
+  position: relative; 
+  display: inline-block; 
+}
+
+.toxic-gas .gas{ 
+  position: absolute; 
+  bottom: 6%; 
+  pointer-events: none; 
+  border-radius: 50%; 
+  mix-blend-mode: screen; 
+  background: radial-gradient(circle at 35% 35%, rgba(200,255,150,0.95) 0%, rgba(120,230,90,0.6) 40%, rgba(50,180,50,0.25) 65%, rgba(0,0,0,0) 100%); 
+  filter: blur(4px); 
+  opacity: .95; 
+  transform-origin: center; 
+  animation: gasRise 2600ms cubic-bezier(.2,.9,.2,1) forwards; 
+  z-index: 1; 
+}
 
 @keyframes gasRise{
   0% { transform: translateY(0) scale(1); opacity: 0.95; filter: blur(3px); }
@@ -607,16 +642,95 @@ a:focus-visible{
 @keyframes counterPulse{ 0%{ transform: scale(1); text-shadow:0 0 8px rgba(255,176,0,0.12) } 6%{ transform: scale(1.03); text-shadow:0 0 16px rgba(255,176,0,0.28) } 100%{ transform: scale(1); } }
 
 /* Force-visible alive state when toggled */
-.alive-star.alive-visible{
+.alive-star.alive-visible {
   color: #ffffff !important;
   -webkit-text-stroke: 1px rgba(255,255,255,0.9) !important;
-  text-stroke: 1px rgba(255,255,255,0.9) !important;
   text-shadow: 0 0 14px rgba(255,255,255,1) !important, 0 0 30px rgba(255,245,220,0.9) !important;
   filter: drop-shadow(0 0 12px rgba(255,240,200,0.65)) !important;
   z-index: 6 !important;
 }
 
-/* Sarah portrait: surveillance + dystopian treatment */
+/* Scroll indicator arrow */
+.scroll-indicator {
+  text-align: center;
+  margin: 60px 0 40px;
+  opacity: 0.85;
+}
+
+.scroll-indicator__content {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.scroll-indicator__text {
+  color: var(--nlt-gold);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255,176,0,0.4);
+}
+
+.scroll-indicator svg {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 8px rgba(255,176,0,0.6));
+  animation: scrollIndicatorBounce 2s ease-in-out infinite;
+}
+
+.scroll-indicator .arrow-path {
+  stroke: var(--nlt-gold);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes scrollIndicatorBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator svg {
+    animation: none !important;
+  }
+}
+
+/* Link hover glitch effect */
+a.glitch-hover { position: relative; display: inline-block; }
+a.glitch-hover::before,
+a.glitch-hover::after{
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+  width: 100%; pointer-events: none; color: var(--nlt-gold);
+  opacity: 0; mix-blend-mode: screen; z-index: 3;
+}
+a.glitch-hover::before{ transform: translateX(-1px); text-shadow: -2px 0 rgba(139,0,255,0.9); }
+a.glitch-hover::after { transform: translateX(1px); text-shadow: 2px 0 rgba(47,184,255,0.9); }
+a.glitch-hover:hover::before, a.glitch-hover.hovering::before{ opacity: 1; animation: linkGlitch1 360ms steps(2,end); }
+a.glitch-hover:hover::after, a.glitch-hover.hovering::after{ opacity: 1; animation: linkGlitch2 420ms steps(2,end); }
+
+@keyframes linkGlitch1{
+  0%{ transform: translate(0,-1px) skewX(-2deg); }
+  50%{ transform: translate(-6px,2px) skewX(6deg); }
+  100%{ transform: translate(0,-1px) skewX(-2deg); }
+}
+@keyframes linkGlitch2{
+  0%{ transform: translate(0,1px) skewX(2deg); }
+  50%{ transform: translate(6px,-2px) skewX(-6deg); }
+  100%{ transform: translate(0,1px) skewX(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  a.glitch-hover::before, a.glitch-hover::after { opacity: 0 !important; }
+}
+
+/* Ensure New Life reveal overlay stays under link glitch visuals */
+.nl-reveal-overlay{ z-index: 1; color: rgba(255,255,255,0.06); }
+
 .sarah-pod-portrait{
   position: relative;
   max-width: 360px;
@@ -716,9 +830,9 @@ a:focus-visible{
   <header>
   <div style="font-weight: bold; letter-spacing: 3px;">MAR00N - CHAPTER 01 #PROCESSING</div>
   <nav>
-    <a href="#">newlife2084.com</a>
-    <a href="#">dumpthis.sh</a>
-    <a href="#">maroon-series.art</a>
+    <a href="https://newlife2084.com" target="_blank" rel="noopener">newlife2084.com</a>
+    <a href="https://dumpthis.sh" target="_blank" rel="noopener">dumpthis.sh</a>
+    <a href="https://maroon-series.art" target="_blank" rel="noopener">maroon-series.art</a>
   </nav>
 </header>
 
@@ -849,7 +963,7 @@ a:focus-visible{
   <div class="portrait-glitch" aria-hidden="true" style="background-image: url('assets/sarah_pod_001.PNG')"></div>
 </div>
 
-<span class="span-mark block" data-span="39"><a href="http://newlife2084.com/">New Life</a> sold the pod as the <span class="highlight">"Consciousness Suite”</span> to pre-upload prospects. Everything you thought you were was actually simulated.
+<span class="span-mark block" data-span="39"><a href="https://newlife2084.com/" target="_blank" rel="noopener">New Life</a> sold the pod as the <span class="highlight">"Consciousness Suite”</span> to pre-upload prospects. Everything you thought you were was actually simulated.
 
 <span class="span-mark block" data-span="40">The screen was not a screen but the air itself, saturated with overlays that shifted with her gaze. Permissions locked her in surveillance mode only. Her job: observe, calculate, process. Find the moment someone cracked open just enough to let the system in.</span>
 
@@ -917,7 +1031,7 @@ A heartbeat.
 
 <span class="span-mark block" data-span="70"><span class="pop-bloom">He simply appeared.</span></span>
 
-<span class="span-mark block" data-span="71"><span class="architect-title toxic-gas">The Architect.</span></span>
+<span class="span-mark block" data-span="71"><span class="architect-title toxic-gas glow">The Architect.</span></span>
 
 <span class="span-mark block" data-span="72"><span class="mask">His presence sliced a line through her node like a hot knife through polymer.</span> Seamless penetration bypassing all security barriers.</span>
 
@@ -1002,8 +1116,20 @@ A heartbeat.
 
 
  </div>
+
+<!-- Scroll down indicator -->
+<div class="scroll-indicator" id="scrollIndicator">
+  <div class="scroll-indicator__content">
+    <div class="scroll-indicator__text">SCROLL</div>
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <path class="arrow-path" d="M 12 15 L 20 23 L 28 15" />
+      <path class="arrow-path" d="M 12 22 L 20 30 L 28 22" />
+    </svg>
+  </div>
+</div>
+
 <footer class="maroon-footer">
-  <a class="maroon-home" href="http://maroon-series.art">
+  <a class="maroon-home" href="https://maroon-series.art" target="_blank" rel="noopener">
     <span class="maroon-mark blink-word glitch">MAR00N</span>
     <span class="maroon-sub">return to root</span>
   </a>
@@ -1116,7 +1242,6 @@ A heartbeat.
   // Replay single-run animations periodically so they remain visible during testing
   (function(){
     const reps = [
-      {sel: '.architect-title', cls: 'architect-title', interval: 5000},
       {sel: '.slice-reveal .mask', cls: 'mask', interval: 4200},
       {sel: '.soft-collapse', cls: 'soft-collapse', interval: 5200},
       {sel: '.pop-bloom', cls: 'pop-bloom', interval: 3000},
@@ -1176,7 +1301,6 @@ A heartbeat.
       if (!sentinel) return;
       let triggered = false;
       let scrollSeen = false;
-9
       // mark that the user has scrolled at least once — required before we trigger
       window.addEventListener('scroll', function onFirstScroll(){
         scrollSeen = true;
@@ -1246,10 +1370,89 @@ A heartbeat.
     // random bursts
     setInterval(() => { quotes.forEach(q => { if (Math.random() > 0.86) trigger(q); }); }, 600);
   })();
-</script>
+
+  // Link hover glitch initializer
+  (function(){
+    function makeGlitchable(sel){
+      document.querySelectorAll(sel).forEach(a=>{
+        if (!a) return;
+        a.classList.add('glitch-hover');
+        if (!a.dataset.text) a.dataset.text = a.textContent.trim();
+        a.addEventListener('mouseenter', ()=>{
+          a.classList.add('hovering');
+          setTimeout(()=> a.classList.remove('hovering'), 520);
+        });
+        a.addEventListener('focus', ()=>{
+          a.classList.add('hovering');
+          setTimeout(()=> a.classList.remove('hovering'), 520);
+        });
+      });
+    }
+    const run = ()=>{
+      makeGlitchable('nav a');
+      makeGlitchable('.manuscript-text a');
+      makeGlitchable('.maroon-home');
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  })();
 </script>
 
 <!-- sentinel used to detect bottom of document for transition -->
+<script>
+  (function(){
+    function initScrollTransition(){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // opt-out
+      const sentinel = document.getElementById('end-of-doc');
+      if (!sentinel) return;
+      let triggered = false;
+      let scrollSeen = false;
+      // mark that the user has scrolled at least once — required before we trigger
+      window.addEventListener('scroll', function onFirstScroll(){
+        scrollSeen = true;
+      }, { passive: true });
+
+      function maybeTrigger(){
+        if (triggered) return;
+        triggered = true;
+        setTimeout(()=>{
+          if (window.__maroonGlitch && window.__maroonGlitch.triggerTransition){
+            window.__maroonGlitch.triggerTransition({ duration: 4200, target: 'processing2.html' });
+          } else {
+            window.location.href = 'processing2.html';
+          }
+        }, 700);
+      }
+
+      if ('IntersectionObserver' in window){
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{
+            // only trigger if sentinel is intersecting AND the user has scrolled (prevents immediate fire on short pages)
+            if (e.isIntersecting && !triggered && scrollSeen){
+              maybeTrigger();
+            }
+          });
+        }, { threshold: 1.0 });
+        io.observe(sentinel);
+      } else {
+        // fallback: check scroll position periodically but only after user scrolled
+        const check = ()=>{
+          if (triggered || !scrollSeen) return;
+          if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2){
+            maybeTrigger();
+          }
+        };
+        window.addEventListener('scroll', check, { passive: true });
+        // do not run immediately — wait for user scroll
+      }
+    }
+
+    if (document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initScrollTransition);
+    } else {
+      initScrollTransition();
+    }
+  })();
+</script>
 <div id="end-of-doc" style="height:1px; width:100%;"></div>
 
 </body>
