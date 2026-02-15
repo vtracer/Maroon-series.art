@@ -210,8 +210,8 @@
     body.cursor-hidden { cursor: none; }
     body.cursor-hidden a,
     body.cursor-hidden button { cursor: none; }
-    body.cursor-hidden [role="button"]
-    body.cursor.hidden label {cursor:none !important;}
+    body.cursor-hidden [role="button"] { cursor: none; }
+    body.cursor-hidden label { cursor: none !important; }
     input, textarea { cursor: text; }
 
     /* custom crosshair cursor */
