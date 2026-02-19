@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/contact.css?v=1">
+  <link rel="stylesheet" href="../css/maroon-glitch.css?v=1">
+  <script defer src="../js/maroon-glitch.js"></script>
+  <title>MAR00N // Chapter 05: #CONTACT</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #050505 0%, #0a0510 50%, #070307 100%);
+      color: #d1d1d1;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+      position: relative;
+      padding-top: 50px;
+    }
+
+    /* Processing space vignette */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(30, 0, 50, 0.6) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Subtle processing pulse overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(139, 0, 255, 0.015) 0px,
+        transparent 1px,
+        transparent 2px,
+        rgba(139, 0, 255, 0.015) 3px
+      );
+      pointer-events: none;
+      z-index: 1;
+      animation: processingPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes processingPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: #000;
+      border-bottom: 1px solid rgba(139, 0, 255, 0.15);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title {
+      font-weight: bold;
+      letter-spacing: 3px;
+      font-size: 0.8rem;
+      color: #d1d1d1;
+    }
+
+    nav a {
+      color: rgba(255, 176, 0, 0.8);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+      position: relative;
+      display: inline-block;
+    }
+
+    nav a::before,
+    nav a::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    nav a::before {
+      color: #ff00ff;
+      z-index: -1;
+      text-shadow: -2px 0 rgba(139, 0, 255, 0.8);
+    }
+
+    nav a::after {
+      color: #00ffff;
+      z-index: -2;
+      text-shadow: 2px 0 rgba(0, 255, 200, 0.8);
+    }
+
+    nav a:hover::before,
+    nav a:hover::after {
+      opacity: 1;
+    }
+
+    nav a:hover::before {
+      animation: navGlitchBefore 400ms infinite;
+    }
+
+    nav a:hover::after {
+      animation: navGlitchAfter 400ms infinite;
+    }
+
+    nav a:hover {
+      color: rgba(255, 176, 0, 0.95);
+      animation: navGlitchShake 400ms infinite;
+    }
+
+    @keyframes navGlitchBefore {
+      0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(30% 0 60% 0); transform: translate(-3px, 2px); }
+      40% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      60% { clip-path: inset(50% 0 30% 0); transform: translate(3px, -2px); }
+      80% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    @keyframes navGlitchAfter {
+      0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(60% 0 30% 0); transform: translate(3px, -2px); }
+      40% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      60% { clip-path: inset(30% 0 50% 0); transform: translate(-3px, 2px); }
+      80% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    @keyframes navGlitchShake {
+      0%, 100% { transform: translate(0); }
+      25% { transform: translate(-1px, 1px); }
+      50% { transform: translate(1px, -1px); }
+      75% { transform: translate(-1px, -1px); }
+    }
+
+    #viewport {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      color: #ffb000;
+      text-shadow: 0 0 12px rgba(255, 176, 0, 0.4), 0 0 24px rgba(139, 0, 255, 0.15);
+      letter-spacing: 0.15em;
+      margin: 0 0 40px 0;
+      font-weight: 700;
+    }
+
+    h1.glitch {
+      position: relative;
+      animation: contactGlitch 600ms infinite;
+    }
+
+    h1.glitch::before,
+    h1.glitch::after {
+      content: attr(data-glitch);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    h1.glitch::before {
+      animation: glitchBefore 600ms infinite;
+      color: #8b00ff;
+      z-index: -1;
+      text-shadow: -3px 0 rgba(139, 0, 255, 0.8);
+    }
+
+    h1.glitch::after {
+      animation: glitchAfter 600ms infinite;
+      color: #ffb000;
+      z-index: -2;
+      text-shadow: 3px 0 rgba(255, 176, 0, 0.8);
+    }
+
+    @keyframes glitchBefore {
+      0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(10% 0 85% 0); transform: translate(-4px, 4px); }
+      40% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      60% { clip-path: inset(60% 0 25% 0); transform: translate(4px, -4px); }
+      80% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    @keyframes glitchAfter {
+      0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(80% 0 5% 0); transform: translate(4px, -4px); }
+      40% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      60% { clip-path: inset(25% 0 60% 0); transform: translate(-4px, 4px); }
+      80% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    @keyframes contactGlitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, -2px); }
+      80% { transform: translate(2px, 2px); }
+    }
+
+    .chapter-content {
+      line-height: 1.8;
+      font-size: 0.95rem;
+      color: #c8c8c8;
+    }
+
+    .chapter-content p {
+      margin: 1.5em 0;
+      text-align: justify;
+    }
+
+    /* Processing block styling */
+    .processing-block {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(139, 0, 255, 0.3);
+      border-left: 3px solid #8b00ff;
+      padding: 16px;
+      margin: 1.5em 0;
+      font-size: 0.85rem;
+      color: #ffb000;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: left;
+      overflow-x: auto;
+      box-shadow: 0 0 20px rgba(139, 0, 255, 0.1);
+    }
+
+    /* MAR00N footer styles */
+    .maroon-footer {
+      margin-top: 60px;
+      padding: 28px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      color: rgba(100, 100, 100, 0.7);
+      background: transparent;
+    }
+
+    .maroon-footer .maroon-home {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+      text-decoration: none;
+      color: #d1d1d1;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .maroon-footer .maroon-mark {
+      font-size: 1rem;
+      display: inline-block;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 18px rgba(255, 240, 200, 0.08);
+      -webkit-text-fill-color: #ffffff;
+    }
+
+    .maroon-footer .maroon-mark.glitch {
+      position: relative;
+      animation: footerGlitch 500ms infinite;
+    }
+
+    .maroon-footer .maroon-mark.glitch::before,
+    .maroon-footer .maroon-mark.glitch::after {
+      content: attr(data-glitch);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+
+    .maroon-footer .maroon-mark.glitch::before {
+      animation: footerGlitchBefore 500ms infinite;
+      color: #8b00ff;
+      z-index: -1;
+      text-shadow: -2px 0 rgba(139, 0, 255, 0.9);
+    }
+
+    .maroon-footer .maroon-mark.glitch::after {
+      animation: footerGlitchAfter 500ms infinite;
+      color: #ffb000;
+      z-index: -2;
+      text-shadow: 2px 0 rgba(255, 176, 0, 0.9);
+    }
+
+    @keyframes footerGlitchBefore {
+      0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      16% { clip-path: inset(20% 0 70% 0); transform: translate(-3px, 3px); }
+      33% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      50% { clip-path: inset(60% 0 20% 0); transform: translate(3px, -3px); }
+      66% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    @keyframes footerGlitchAfter {
+      0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      16% { clip-path: inset(70% 0 20% 0); transform: translate(3px, -3px); }
+      33% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      50% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 3px); }
+      66% { clip-path: inset(0 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    @keyframes footerGlitch {
+      0%, 100% { transform: translate(0); }
+      16% { transform: translate(-2px, 2px); }
+      33% { transform: translate(2px, -2px); }
+      50% { transform: translate(-2px, -2px); }
+      66% { transform: translate(2px, 2px); }
+    }
+
+    .maroon-footer .maroon-sub {
+      display: block;
+      font-size: 0.75rem;
+      color: rgba(100, 100, 100, 0.7);
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin-top: -2px;
+    }
+
+    .maroon-footer .maroon-sub.glitch {
+      position: relative;
+      animation: footerSubGlitch 550ms infinite;
+    }
+
+    .maroon-footer .maroon-sub.glitch::before,
+    .maroon-footer .maroon-sub.glitch::after {
+      content: attr(data-glitch);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+
+    .maroon-footer .maroon-sub.glitch::before {
+      animation: footerSubGlitchBefore 550ms infinite;
+      color: #ff00ff;
+      z-index: -1;
+      text-shadow: -2px 0 rgba(139, 0, 255, 0.7);
+    }
+
+    .maroon-footer .maroon-sub.glitch::after {
+      animation: footerSubGlitchAfter 550ms infinite;
+      color: #ffb000;
+      z-index: -2;
+      text-shadow: 2px 0 rgba(255, 176, 0, 0.7);
+    }
+
+    @keyframes footerSubGlitchBefore {
+      0% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+      20% { clip-path: inset(20% 0 70% 0); transform: translate(-52%, -48%); }
+      40% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+      60% { clip-path: inset(60% 0 20% 0); transform: translate(-48%, -52%); }
+      80% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+    }
+
+    @keyframes footerSubGlitchAfter {
+      0% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+      20% { clip-path: inset(70% 0 20% 0); transform: translate(-48%, -52%); }
+      40% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+      60% { clip-path: inset(20% 0 60% 0); transform: translate(-52%, -48%); }
+      80% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(-50%, -50%); }
+    }
+
+    @keyframes footerSubGlitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-1px, 1px); }
+      40% { transform: translate(1px, -1px); }
+      60% { transform: translate(-1px, -1px); }
+      80% { transform: translate(1px, 1px); }
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-mark {
+      text-decoration: underline;
+      animation: footerMarkHoverGlitch 250ms infinite !important;
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-mark::before {
+      animation: footerGlitchBefore 250ms infinite !important;
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-mark::after {
+      animation: footerGlitchAfter 250ms infinite !important;
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-sub {
+      animation: footerSubGlitch 250ms infinite !important;
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-sub::before {
+      animation: footerSubGlitchBefore 250ms infinite !important;
+    }
+
+    .maroon-footer .maroon-home:hover .maroon-sub::after {
+      animation: footerSubGlitchAfter 250ms infinite !important;
+    }
+
+    @keyframes footerMarkHoverGlitch {
+      0%, 100% { transform: translate(0); }
+      12% { transform: translate(-2px, 2px); }
+      24% { transform: translate(2px, -2px); }
+      36% { transform: translate(-2px, -2px); }
+      48% { transform: translate(2px, 2px); }
+      60% { transform: translate(-2px, 2px); }
+      72% { transform: translate(2px, 2px); }
+      84% { transform: translate(-1px, -1px); }
+    }
+
+    /* Response to processing - intermittent glow */
+    @keyframes processingGlow {
+      0%, 100% { 
+        box-shadow: inset 0 0 0 rgba(139, 0, 255, 0);
+      }
+      50% {
+        box-shadow: inset 0 0 40px rgba(139, 0, 255, 0.08);
+      }
+    }
+
+    #viewport {
+      animation: processingGlow 6s ease-in-out infinite;
+    }
+
+    .glitch-arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 60px 0 40px 0;
+      font-size: 2.2rem;
+      letter-spacing: 4px;
+      color: #ffb000;
+      text-shadow: 0 0 10px rgba(255, 176, 0, 0.6);
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      display: inline-flex;
+      width: 100%;
+    }
+
+    .glitch-arrow::before,
+    .glitch-arrow::after {
+      content: attr(data-glitch);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .glitch-arrow::before {
+      color: #8b00ff;
+      z-index: -1;
+      text-shadow: -2px 0 rgba(139, 0, 255, 0.8);
+    }
+
+    .glitch-arrow::after {
+      color: #ffb000;
+      z-index: -2;
+      text-shadow: 2px 0 rgba(255, 176, 0, 0.8);
+    }
+
+    .glitch-arrow.glitch {
+      animation: subtleGlitch 600ms infinite;
+    }
+
+    @keyframes subtleGlitch {
+      0%, 100% { opacity: 1; transform: translateX(0); }
+      25% { opacity: 0.85; transform: translateX(-1px); }
+      50% { opacity: 1; transform: translateX(0); }
+      75% { opacity: 0.85; transform: translateX(1px); }
+    }
+
+    .glitch-arrow:hover::before {
+      animation: glitchBefore 150ms infinite !important;
+    }
+
+    .glitch-arrow:hover::after {
+      animation: glitchAfter 150ms infinite !important;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      #viewport {
+        padding: 30px 15px;
+      }
+      .chapter-content {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-title">MAR00N - CHAPTER 05 #CONTACT - SCENE 3</div>
+    <nav>
+      <a href="https://maroon-series.art" target="_blank" rel="noopener" data-text="maroon-series.art">maroon-series.art</a>
+      <a href="https://dumpthis.sh" target="_blank" rel="noopener" data-text="dumpthis.sh">dumpthis.sh</a>
+      <a href="https://newlife2084.com" target="_blank" rel="noopener" data-text="newlife2084.com">newlife2084.com</a>
+    </nav>
+  </header>
+
+  <div id="viewport">
+    <h1 class="glitch" data-glitch="▌ ▐ ▀ ▄ ▀ ▄ ▀ ▌ ▐">▌ ▐ ▀ ▄ ▀ ▄ ▀ ▌ ▐</h1>
+    
+    <div class="chapter-content">
+      <p>Sarah processed human misery with mechanical efficiency. Like always.</p>
+      <p>The current assignment loaded into her workspace: low-priority grief module, broken-parent scenario with delayed trauma acknowledgment. Another mind to catalog and compress into manageable packets.</p>
+      <p>Emotional dissonance escalating to psychological collapse.</p>
+      <p>She followed the standard workflow. Her mind dancing through holographic interfaces while her thoughts drifted somewhere else entirely. Back to Maintenance. Back to the chrome restraints and the feeling of being displayed like a trophy while thousands watched her violation as entertainment. That suspended moment before the machine released her, dropping her to her knees like discarded hardware.</p>
+      <p>She forced her attention back to the task queue.</p>
+      <p>The grief module initialized with standard parameters. A male subject materialized in her workspace—mid-thirties. His avatar flickered as he processed the loss of something too abstract to quantify.</p>
+      <p>And then she heard it.</p>
+      <p>Two beats. Pause. Two.</p>
+      <p>Her metrics dipped.</p>
+      <p>Sarah's neural pathways sparked with recognition. The same pattern from before Maintenance—the moment of eye contact that had felt like human acknowledgment cutting through noise.</p>
+      <p>Her processing efficiency dipped by 0.3%. The system logged it as minor attention drift, nothing worth flagging for oversight. But Sarah felt the weight of deliberate communication hidden in the stream.</p>
+      <p>The next packet arrived buried in the emotional processing algorithms, but something seemed wrong. The module was running normally, but there was more threaded through the response streams—information that didn't match the standard processing script. Her musician's instincts, the same ones that had recognized the heartbeat pattern, detected the anomaly buried in the routine workflow.</p>
+      <p>She isolated the foreign data using the same legacy visualization tools she'd used before. Obsolete diagnostic interfaces that could parse the hidden information wrapped in deprecated syntax. To the system, it looked like corrupted grief patterns. To Sarah, it decoded as devastating truth.</p>
+      <div class="processing-block">
+$ INTERROGATIVE_QUERY<br>
+Raw timestamp data: Upload Cycle 0847.119.003.<br>
+Duration: 23 hours, 14 minutes.<br>
+Fabricated memory scaffolding.<br>
+Subject integration: seamless.<br>
+Resistance probability: minimal.<br>
+      </div>
+      <p>This looked foreign to her consciousness. Information that didn't belong in the grief processing modules. But it was tagged with her specific signature, inserted in frequencies meant to find.</p>
+      <p>The numbers didn't match her internal chronometer. According to her records, she'd been serving inside for fifteen years. But this suggested something else altogether.</p>
+      <p>Someone was telling her that her entire history of willing compliance was a lie.</p>
+      <p>Sarah’s trembled above the holographic interface, muscle memory fighting against cognitive dissonance.</p>      
+      <p>The timestamp was impossible. According to the injected packets, she'd only been digitized for twenty-three hours. But her neural pathways held fifteen years of memories—performance reviews, compliance training, gradual acceptance of her role as the Architect's display piece.</p>
+      <p>She accessed her internal timestamp, cross-referencing the mysterious message against her own records. The numbers refused to align.</p>
+      <p>Official upload date: Cycle 0012.001.000 - over fifteen years ago.</p>
+      <p>Injected upload date: Cycle 0847.119.003 - less than one day.</p>
+      <p>Someone had embedded evidence that her entire remembered history was fabricated.</p>
+      <p>Sarah ran diagnostic checks on the foreign packets, searching for signs of manipulation or corruption. Every verification protocol returned the same result: authentic SYSTEM timestamps, properly encrypted, bearing the digital signatures of core administrative functions.</p>
+      <p>This wasn't a hack or a lie. This was documentation.</p>
+      <p>She moved through verification sequences with growing desperation. Maybe it was pulling from backup archives or clone instances. Maybe her real identity was layered beneath false records.</p>
+      <p>But each query returned the same information. Authenticated across all security levels she could access.</p>
+      <p>Sarah stared at the timestamp floating in her visual field. Twenty-three hours.</p>
+      <p>She hadn't endured. She hadn't adapted. She hadn't survived.</p>
+      <p>She'd only been programmed to think she had.</p>
+    </div>
+  </div>
+
+  <a href="../prologue.html" class="glitch-arrow glitch" data-glitch="▼ ▼ ▼">▼ ▼ ▼</a>
+
+  <footer class="maroon-footer">
+    <a class="maroon-home" href="https://maroon-series.art" target="_blank" rel="noopener">
+      <span class="maroon-mark glitch" data-glitch="MAR00N">MAR00N</span>
+      <span class="maroon-sub glitch" data-glitch="return to root">return to root</span>
+    </a>
+  </footer>
+
+  <div id="end-of-doc" style="height:1px; width:100%;"></div>
+
+  <script>
+    // No automatic transitions - arrow is purely visual
+  </script>
+</body>
+</html>

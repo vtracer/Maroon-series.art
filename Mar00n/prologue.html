@@ -245,8 +245,8 @@
 
   /* glitch title reveal (more aggressive) */
   .glitch-title{position:relative;color:transparent;z-index:6}
-  .glitch-title::after{content:'#CONTACT';position:absolute;left:0;top:0;color:#ff4d4d;opacity:0;letter-spacing:1px;font-weight:800;animation:glitchReveal 3.6s steps(1,end) infinite}
-  .glitch-title::before{content:'#CONTACT';position:absolute;left:1px;top:0;color:#00ffd6;opacity:0;mix-blend-mode:screen;animation:glitchReveal 3.6s steps(1,end) infinite;animation-delay:0.12s}
+  .glitch-title::after{content:'#CORE';position:absolute;left:0;top:0;color:#ff4d4d;opacity:0;letter-spacing:1px;font-weight:800;animation:glitchReveal 3.6s steps(1,end) infinite}
+  .glitch-title::before{content:'#CORE';position:absolute;left:1px;top:0;color:#00ffd6;opacity:0;mix-blend-mode:screen;animation:glitchReveal 3.6s steps(1,end) infinite;animation-delay:0.12s}
 
   @keyframes glitchReveal{
     0%,70%{opacity:0}
@@ -296,7 +296,20 @@
     <div class="recos-cta">ENTER →</div>
   </a>
 
-  <a class="recos-card classified" href="#" aria-label="Classified — Chapter 06" onclick="event.preventDefault();">
+  <a class="recos-card" href="contact/contact.html">
+    <div class="recos-meta">
+      <span class="pill red">FLAGGED</span>
+      <span class="pill cyan">CLASSIFIED</span>
+      <span class="pill">CHAPTER 06</span>
+      <span class="pill">3 PARTS</span>
+    </div>
+
+    <h2 class="recos-title">#CONTACT</h2>
+    <p class="recos-dek">Architect surveillance, hacker infiltration, and consciousness fragmentation in the contact layer.</p>
+    <div class="recos-cta">ENTER →</div>
+  </a>
+
+  <a class="recos-card classified" href="#" aria-label="Classified — Chapter 07" onclick="event.preventDefault();">
     <div class="glitch-overlay" aria-hidden="true">
       <div class="glitch-border" aria-hidden="true"></div>
       <div class="glitch-layer l1"></div>
@@ -311,10 +324,10 @@
     <div class="recos-meta">
       <span class="pill red">RESTRICTED</span>
       <span class="pill cyan">CLASSIFIED</span>
-      <span class="pill">CHAPTER 06</span>
+      <span class="pill">CHAPTER 07</span>
     </div>
 
-    <h2 class="recos-title glitch-title">#CONTACT</h2>
+    <h2 class="recos-title glitch-title">#CORE</h2>
     <p class="recos-dek">[REDACTED — ACCESS DENIED]</p>
     <div class="recos-cta disabled" aria-disabled="true">RESTRICTED</div>
   </a>
